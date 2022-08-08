@@ -1,0 +1,37 @@
+{
+  "init_title": "Initializing",
+  "init_loading_config": "設定ファイルを読み込み中",
+  "init_loaded_config": "設定ファイルの読み込み完了",
+  "init_checking_env": "環境を確認中",
+  "init_checked_env": "設定ファイルの読み込み完了",
+  "init_checking_srv": "サーバー情報の取得中",
+  "init_checked_srv": "サーバー情報の取得完了",
+  "init_checking_username": "ユーザー名を取得中",
+  "init_checked_username": "ユーザー名を取得完了",
+  "init_check_username_fail": "ユーザー名の取得失敗",
+
+  "login_select_title": "ログイン方法を選択",
+
+  "login_browser_title": "ブラウザでログイン",
+  "login_browser_starting_server": "処理中です\n内部サーバーを起動中です",
+  "login_browser_server_started": "処理中です\n内部サーバーを起動しました",
+  "login_browser_server_start_failed": "内部サーバーの起動に失敗しました",
+  "login_browser_launching_browser": "処理中です\nブラウザを起動中です",
+  "login_browser_launched_browser": "ブラウザを開きました\n開いたブラウザでログインしてください",
+  "login_browser_launch_browser_failed": "ブラウザを開けませんでした\n再試行するか、別の方法でログインしてください",
+  "login_browser_relaunch_browser": "ブラウザをもう一度開く",
+  "login_browser_copy_url": "URLをコピー",
+  "login_browser_response_success": "認証に成功しました。PCCClientに戻ってください。",
+  "login_browser_response_failed": "認証に失敗しました。PCCClientに戻ってください。",
+  "login_browser_success": "認証に成功しました",
+  "login_browser_failed": "認証に失敗しました\n再試行するかサーバー管理者にお問い合わせください",
+
+  "loggingin_title": "ログイン処理中...",
+  "loggingin_getting_password": "ネットワークドライブのパスワードを取得中...",
+  "loggingin_got_password": "ネットワークドライブのパスワードを取得完了",
+  "loggingin_mounting": "ネットワークドライブをマウント中...",
+  "loggingin_mounted": "ネットワークドライブのマウント完了",
+
+  "home_title": "Home",
+  "home_drawer_settings": "設定"
+}
