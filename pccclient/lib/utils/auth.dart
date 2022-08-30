@@ -1,18 +1,20 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:cookie_jar/cookie_jar.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/server_info.dart';
+import 'package:http/http.dart' as http;
 
-import '../screens/login_select.dart';
+import 'local_config.dart';
 
-StateMsgSet getEnv() {
-  return StateMsgSet(ProcessState.ok, "環境チェック未実装");
+void getEnv() {
+  return;
 }
 
-StateMsgSet getServer() {
+void getServer() {
   getServerInfo();
-  return StateMsgSet(ProcessState.ok, "サーバー情報固定");
+  return;
 }
 
 Uri getTokenEndpoint() {
@@ -20,20 +22,16 @@ Uri getTokenEndpoint() {
   if (loginState.username != null) {
     url += loginState.username!;
   }
-  return Uri.dataFromString(url);
+  return Uri.parse(url);
 }
 
-Future<StateMsgSet> getUser() async {
-  try {
-    var process = await Process.run('wmic', ["netuse", "where", "LocalName=\"U:\"", "get", "UserName", "/value"]);
-    var result = process.stdout.toString();
-    var index = result.indexOf("ts");
-    loginState.username = result.substring(index, index+7);
-  } catch (e) {
-    print(e.toString());
-    return StateMsgSet(ProcessState.failed, str.init_check_username_fail);
-  }
-  return StateMsgSet(ProcessState.ok, str.init_checked_username);
+void getUser() async {
+  var process = await Process.run('wmic',
+      ["netuse", "where", "LocalName=\"U:\"", "get", "UserName", "/value"]);
+  var result = process.stdout.toString();
+  var index = result.indexOf("ts");
+  loginState.username = result.substring(index, index + 7);
+  return;
 }
 
 StateMsgSet getSavedToken() {
@@ -41,10 +39,19 @@ StateMsgSet getSavedToken() {
 }
 
 LoginState loginState = LoginState();
+
 class LoginState {
   String? username;
   String? accessToken;
   String? sambaPassword;
+}
+
+void parseToken() async {
+  String normalizedSource =
+      base64Url.normalize(loginState.accessToken!.split(".")[1]);
+  String rawJson = utf8.decode(base64Url.decode(normalizedSource));
+  var jsonMap = jsonDecode(rawJson);
+  loginState.username = jsonMap["preferred_username"];
 }
 
 // Future<StateMsgSet> getToken() async {
@@ -62,10 +69,57 @@ class LoginState {
 //   return StateMsgSet(ProcessState.ok, "トークンの取得成功");
 // }
 
-StateMsgSet getSambaPass() {
-  return StateMsgSet(ProcessState.ok, str.loggingin_got_password);
+// @JsonSerializable()
+// class PasswordData {
+//   @JsonKey()
+//   final String type;
+//   final String data;
+//
+//   PasswordData(this.type, this.data);
+//
+//   factory PasswordData.fromJson(Map<String, dynamic> json) => _$PasswordDataFromJson(json);
+//
+//   Map<String, dynamic> toJson() => _$PasswordDataToJson(this);
+// }
+
+Future<void> getSambaPass() async {
+  http.Response response = await http.get(Uri.parse(serverInfo.getSambaPassURL),
+      headers: {"Authorization": "Bearer ${loginState.accessToken!}"});
+  if (response.statusCode != 200) {
+    throw Exception("Failed to get token status: ${response.statusCode}, body: ${response.body}");
+  }
+  var json = jsonDecode(response.body);
+  if (json["mode"] is! int) {
+    throw Exception("Unexpected password data: $json");
+  }
+  switch (json["mode"]) {
+    case 0:
+      loginState.sambaPassword = json["data"];
+      break;
+    case 1:
+      loginState.sambaPassword = json["data"];
+      break;
+    case 2:
+      throw UnimplementedError("Password encryption not supported yet");
+    case 3:
+      throw UnimplementedError("Password unlisted not supported yet");
+    default:
+      throw Exception("Unexpected password type: ${json["mode"]}");
+  }
 }
 
-StateMsgSet mountSamba() {
-  return StateMsgSet(ProcessState.ok, str.loggingin_mounted);
+void mountSamba() async {
+  await _mountCmd(loginState.username!, loginState.sambaPassword!, "${serverInfo.sambaPath}pcc_homes_v3", "A");
+  await _mountCmd(loginState.username!, loginState.sambaPassword!, "${serverInfo.sambaPath}share_v3", "B");
+  return;
+}
+
+Future<void> _mountCmd(
+    String username, String password, String server, String letter) async {
+  var process = await Process.run(
+      'net', ["use", letter, server, password, "/user:$username", "/y"]);
+  if (process.exitCode != 0) {
+    throw Exception(
+        "Failed to mount $letter: ${process.stderr} ${process.stdout}");
+  }
 }

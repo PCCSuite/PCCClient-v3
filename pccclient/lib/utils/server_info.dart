@@ -17,9 +17,17 @@ class ServerInfo {
   final String getTipsAddress;
   final String pccCliManAddress;
 
-  ServerInfo(this.tokenEndpoint, this.defaultAuthMethod, this.getSambaPassURL, this.sambaPath, this.setBrowserURL, this.getTipsAddress, this.pccCliManAddress);
+  ServerInfo(
+      this.tokenEndpoint,
+      this.defaultAuthMethod,
+      this.getSambaPassURL,
+      this.sambaPath,
+      this.setBrowserURL,
+      this.getTipsAddress,
+      this.pccCliManAddress);
 
-  factory ServerInfo.fromJson(Map<String, dynamic> json) => _$ServerInfoFromJson(json);
+  factory ServerInfo.fromJson(Map<String, dynamic> json) =>
+      _$ServerInfoFromJson(json);
 
   Map<String, dynamic> toJson() => _$ServerInfoToJson(this);
 }
@@ -31,12 +39,13 @@ getServerInfo() async {
   // response = await http.get(Uri.parse(localConfig.serverURL));
   // var json = jsonDecode(response.body);
   // serverInfo = ServerInfo.fromJson(json);
-  serverInfo = ServerInfo("http://pccs1.tama-st-h.local/keycloak/realms/pcc/protocol/openid-connect/auth?client_id=pccclient&response_type=token&scope=samba&redirect_uri=http%3A%2F%2Flocalhost%3A15456%2Freturn&response_mode=form_post&login_hint=",
+  serverInfo = ServerInfo(
+      "http://pccs1.tama-st-h.local/keycloak/realms/pcc/protocol/openid-connect/auth?client_id=pccclient&response_type=token&scope=samba&redirect_uri=http%3A%2F%2Flocalhost%3A15456%2Freturn&response_mode=form_post&login_hint=",
       "browser",
-      "http://pccs1.tama-st-h.local/samba/get",
+      "http://pccs2.tama-st-h.local:8081/getPassword",
       "//pcc1.tama-st-h.local/",
       "http://pccs1.tama-st-h.local/",
       "pccs1.tama-st-h.local",
-  "ws://pccs1.tama-st-h.local:8081/pccclient");
+      "ws://pccs1.tama-st-h.local:8081/pccclient");
   return serverInfo;
 }

@@ -49,49 +49,102 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
   late StateMsgSet _mountSambaState;
   late StateMsgSet _connectCliManState;
 
-  int done = 0;
+  int _remainProcess = 3;
+  int _errorShowing = 0;
 
   @override
   void initState() {
     setState(() {
       _getSambaPassState =
-          StateMsgSet(ProcessState.waiting, "ネットワークドライブのパスワードを取得中");
-      _mountSambaState = StateMsgSet(ProcessState.waiting, "ネットワークドライブのマウント待ち");
-      _connectCliManState = StateMsgSet(ProcessState.waiting, "PCCCliMan接続中");
+          StateMsgSet(ProcessState.getting, str.loggingin_get_password_start);
+      _mountSambaState =
+          StateMsgSet(ProcessState.waiting, str.loggingin_mount_wait);
+      _connectCliManState =
+          StateMsgSet(ProcessState.getting, str.loggingin_climan_start);
     });
     var getSambaPassFuture = Future(getSambaPass);
-    getSambaPassFuture.then((value) {
-      done++;
+    getSambaPassFuture.then((_) {
+      _remainProcess--;
       setState(() {
-        _getSambaPassState = value;
+        _getSambaPassState =
+            StateMsgSet(ProcessState.ok, str.loggingin_get_password_done);
         _mountSambaState =
-            StateMsgSet(ProcessState.waiting, "ネットワークドライブのマウント中");
+            StateMsgSet(ProcessState.getting, str.loggingin_mount_start);
       });
       var mountSambaFuture = Future(mountSamba);
-      mountSambaFuture.then((value) {
-        done++;
+      mountSambaFuture.then((_) {
+        _remainProcess--;
         setState(() {
-          _mountSambaState = value;
+          _mountSambaState =
+              StateMsgSet(ProcessState.ok, str.loggingin_mount_done);
         });
         _checkDone();
+      }).catchError((e, trace) {
+        setState(() {
+          _mountSambaState =
+              StateMsgSet(ProcessState.failed, str.loggingin_mount_fail);
+        });
+        _errorShow(e, trace);
       });
+    }).catchError((e, trace) {
+      setState(() {
+        _getSambaPassState =
+            StateMsgSet(ProcessState.failed, str.loggingin_get_password_fail);
+      });
+      _errorShow(e, trace);
     });
     var connectCliManFuture = Future(init);
-    getSambaPassFuture.then((value) {
-      done++;
+    connectCliManFuture.then((value) {
+      _remainProcess--;
       setState(() {
-        _connectCliManState = StateMsgSet(ProcessState.ok, "PCCCliMan接続完了");
+        _connectCliManState =
+            StateMsgSet(ProcessState.ok, str.loggingin_climan_done);
       });
       _checkDone();
+    }).catchError((e, trace) {
+      setState(() {
+        _connectCliManState =
+            StateMsgSet(ProcessState.failed, str.loggingin_climan_fail);
+      });
+      _errorShow(e, trace);
     });
     super.initState();
   }
 
   _checkDone() {
-    if (done >= 3) {
-      Navigator.popUntil(context, ModalRoute.withName(LoginSelectScreen.routeName));
+    if (_remainProcess == 0 && _errorShowing == 0) {
+      Navigator.popUntil(
+          context, ModalRoute.withName(LoginSelectScreen.routeName));
       Navigator.popAndPushNamed(context, HomeScreen.routeName);
     }
+  }
+
+  void _errorShow(err, trace) async {
+    _errorShowing++;
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              title: Text(str.error_dialog_title),
+              scrollable: true,
+              content: Column(
+                children: [
+                  Text(str.error_dialog_description),
+                  Text("$err\n$trace"),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    str.error_dialog_ignore,
+                    style: TextStyle(color: Colors.redAccent),
+                  ),
+                )
+              ],
+            ));
+    _errorShowing--;
+    _remainProcess--;
+    _checkDone();
   }
 
   @override

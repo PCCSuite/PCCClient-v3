@@ -32,51 +32,108 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
   late StateMsgSet _usernameState;
 
   int _remainProcess = 4;
+  int _errorShowing = 0;
 
   @override
   void initState() {
-    _configState = StateMsgSet(ProcessState.getting, str.init_loading_config);
+    _configState =
+        StateMsgSet(ProcessState.getting, str.init_load_config_start);
     Future<void> configFuture = Future(readConfig);
     configFuture.then((value) {
       setState(() {
-        _configState = StateMsgSet(ProcessState.ok, str.init_loaded_config);
+        _configState = StateMsgSet(ProcessState.ok, str.init_load_config_done);
       });
       _remainProcess--;
-      checkState();
+      _checkState();
     });
-    _envState = StateMsgSet(ProcessState.getting, str.init_checking_env);
-    Future<StateMsgSet> envFuture = Future(getEnv);
+    configFuture.catchError((e, trace) {
+      setState(() {
+        _configState =
+            StateMsgSet(ProcessState.failed, str.init_load_config_fail);
+      });
+      _errorShow(e, trace);
+    });
+    _envState = StateMsgSet(ProcessState.getting, str.init_check_env_start);
+    Future<void> envFuture = Future(getEnv);
     envFuture.then((value) {
       setState(() {
-        _envState = value;
+        _envState = StateMsgSet(ProcessState.ok, str.init_check_env_done);
       });
       _remainProcess--;
-      checkState();
+      _checkState();
     });
-    _serverState = StateMsgSet(ProcessState.getting, str.init_checking_srv);
-    Future<StateMsgSet> serverFuture =
+    envFuture.catchError((e, trace) {
+      setState(() {
+        _envState = StateMsgSet(ProcessState.failed, str.init_check_env_fail);
+      });
+      _errorShow(e, trace);
+    });
+    _serverState = StateMsgSet(ProcessState.getting, str.init_check_srv_start);
+    Future<void> serverFuture =
         Future.delayed(const Duration(seconds: 3), getServer);
     serverFuture.then((value) {
       setState(() {
-        _serverState = value;
+        _serverState = StateMsgSet(ProcessState.ok, str.init_check_srv_done);
       });
       _remainProcess--;
-      checkState();
+      _checkState();
     });
-    _usernameState = StateMsgSet(ProcessState.getting, str.init_checking_username);
-    Future<StateMsgSet> usernameFuture = getUser();
-    usernameFuture.then((value) {
+    serverFuture.catchError((e, trace) {
       setState(() {
-        _usernameState = value;
+        _serverState =
+            StateMsgSet(ProcessState.failed, str.init_check_srv_fail);
+      });
+      _errorShow(e, trace);
+    });
+    _usernameState =
+        StateMsgSet(ProcessState.getting, str.init_check_username_start);
+    Future<void> usernameFuture = Future(getUser);
+    usernameFuture.then((_) {
+      setState(() {
+        _usernameState =
+            StateMsgSet(ProcessState.ok, str.init_check_username_done);
       });
       _remainProcess--;
-      checkState();
+      _checkState();
+    });
+    usernameFuture.catchError((e, trace) {
+      setState(() {
+        _usernameState =
+            StateMsgSet(ProcessState.failed, str.init_check_username_fail);
+      });
+      _errorShow(e, trace);
     });
     super.initState();
   }
 
-  void checkState() {
-    if (_remainProcess == 0) {
+  void _errorShow(err, trace) async {
+    _errorShowing++;
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              title: Text(str.error_dialog_title),
+              content: Column(
+                children: [
+                  Text(str.error_dialog_description),
+                  SingleChildScrollView(
+                    child: Text("$err\n$trace"),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(str.error_dialog_ignore, style: TextStyle(color: Colors.redAccent),),
+                )
+              ],
+            ));
+    _errorShowing--;
+    _remainProcess--;
+    _checkState();
+  }
+
+  void _checkState() {
+    if (_remainProcess == 0 && _errorShowing == 0) {
       Navigator.popAndPushNamed(context, LoginSelectScreen.routeName);
     }
   }
