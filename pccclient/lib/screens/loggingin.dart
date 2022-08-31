@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pccclient/screens/home.dart';
 import 'package:pccclient/screens/login_select.dart';
+import 'package:pccclient/screens/part/error.dart';
 import 'package:pccclient/utils/auth.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/manager.dart';
@@ -121,27 +122,7 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
 
   void _errorShow(err, trace) async {
     _errorShowing++;
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              title: Text(str.error_dialog_title),
-              scrollable: true,
-              content: Column(
-                children: [
-                  Text(str.error_dialog_description),
-                  Text("$err\n$trace"),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    str.error_dialog_ignore,
-                    style: TextStyle(color: Colors.redAccent),
-                  ),
-                )
-              ],
-            ));
+    await showError(context, err, trace);
     _errorShowing--;
     _remainProcess--;
     _checkDone();

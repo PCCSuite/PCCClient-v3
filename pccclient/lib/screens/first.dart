@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pccclient/screens/part/error.dart';
 import 'package:pccclient/utils/local_config.dart';
 
 import '../utils/auth.dart';
@@ -108,25 +109,7 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
 
   void _errorShow(err, trace) async {
     _errorShowing++;
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              title: Text(str.error_dialog_title),
-              content: Column(
-                children: [
-                  Text(str.error_dialog_description),
-                  SingleChildScrollView(
-                    child: Text("$err\n$trace"),
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(str.error_dialog_ignore, style: TextStyle(color: Colors.redAccent),),
-                )
-              ],
-            ));
+    await showError(context, err, trace);
     _errorShowing--;
     _remainProcess--;
     _checkState();
