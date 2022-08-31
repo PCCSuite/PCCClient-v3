@@ -54,34 +54,6 @@ void parseToken() async {
   loginState.username = jsonMap["preferred_username"];
 }
 
-// Future<StateMsgSet> getToken() async {
-//   Uri tokenEndpoint = Uri.dataFromString(serverInfo.tokenEndpoint);
-//   List<Cookie> addCookies = [];
-//   String? loginToken = loginState.loginToken;
-//   if (loginToken != null) {
-//     addCookies.add(Cookie("KEYCLOAK_IDENTITY", loginToken));
-//   }
-//   loginState.jar.saveFromResponse(tokenEndpoint, addCookies);
-//   HttpClientRequest request = await HttpClient().getUrl(tokenEndpoint);
-//   request.cookies.addAll(await loginState.jar.loadForRequest(tokenEndpoint));
-//   HttpClientResponse response = await request.close();
-//   loginState.jar.saveFromResponse(tokenEndpoint, response.cookies);
-//   return StateMsgSet(ProcessState.ok, "トークンの取得成功");
-// }
-
-// @JsonSerializable()
-// class PasswordData {
-//   @JsonKey()
-//   final String type;
-//   final String data;
-//
-//   PasswordData(this.type, this.data);
-//
-//   factory PasswordData.fromJson(Map<String, dynamic> json) => _$PasswordDataFromJson(json);
-//
-//   Map<String, dynamic> toJson() => _$PasswordDataToJson(this);
-// }
-
 Future<void> getSambaPass() async {
   http.Response response = await http.get(Uri.parse(serverInfo.getSambaPassURL),
       headers: {"Authorization": "Bearer ${loginState.accessToken!}"});
