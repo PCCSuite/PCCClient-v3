@@ -108,7 +108,7 @@ Future<void> getSambaPass() async {
   }
 }
 
-void mountSamba() async {
+Future<void> mountSamba() async {
   await _mountCmd(loginState.username!, loginState.sambaPassword!, "${serverInfo.sambaPath}pcc_homes_v3", "A:");
   await _mountCmd(loginState.username!, loginState.sambaPassword!, "${serverInfo.sambaPath}share_v3", "B:");
   return;
@@ -117,10 +117,11 @@ void mountSamba() async {
 // letter should "X:"
 Future<void> _mountCmd(
     String username, String password, String server, String letter) async {
+  List<String> param = ["use", letter, server, password, "/user:$username", "/y"];
   var process = await Process.run(
-      'net', ["use", letter, server, password, "/user:$username", "/y"]);
+      'net', param);
   if (process.exitCode != 0) {
     throw Exception(
-        "Failed to mount $letter: ${process.stderr} ${process.stdout}");
+        "Failed to execute: net ${param.join(" ")}\n${process.stderr} ${process.stdout}");
   }
 }

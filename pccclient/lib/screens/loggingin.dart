@@ -63,7 +63,7 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
       _connectCliManState =
           StateMsgSet(ProcessState.getting, str.loggingin_climan_start);
     });
-    var getSambaPassFuture = Future(getSambaPass);
+    var getSambaPassFuture = getSambaPass();
     getSambaPassFuture.then((_) {
       _remainProcess--;
       setState(() {
@@ -72,7 +72,7 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
         _mountSambaState =
             StateMsgSet(ProcessState.getting, str.loggingin_mount_start);
       });
-      var mountSambaFuture = Future(mountSamba);
+      var mountSambaFuture = mountSamba();
       mountSambaFuture.then((_) {
         _remainProcess--;
         setState(() {
