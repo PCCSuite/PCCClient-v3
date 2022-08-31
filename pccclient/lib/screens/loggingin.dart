@@ -122,7 +122,7 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
 
   void _errorShow(err, trace) async {
     _errorShowing++;
-    await showError(context, err, trace);
+    await showError(context, err.toString(), trace.toString());
     _errorShowing--;
     _remainProcess--;
     _checkDone();

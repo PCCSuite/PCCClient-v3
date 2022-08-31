@@ -30,7 +30,7 @@ void getUser() async {
       ["netuse", "where", "LocalName=\"U:\"", "get", "UserName", "/value"]);
   var result = process.stdout.toString();
   var index = result.indexOf("ts");
-  loginState.username = result.substring(index, index + 7);
+  result = result.substring(index, index + 7).replaceFirst("ts", "pc");
   return;
 }
 
