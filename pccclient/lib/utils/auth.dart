@@ -30,7 +30,7 @@ void getUser() async {
       ["netuse", "where", "LocalName=\"U:\"", "get", "UserName", "/value"]);
   var result = process.stdout.toString();
   var index = result.indexOf("ts");
-  result = result.substring(index, index + 7).replaceFirst("ts", "pc");
+  result = result.substring(index, index + 7).replaceAll("ts", "pc");
   return;
 }
 
@@ -109,11 +109,12 @@ Future<void> getSambaPass() async {
 }
 
 void mountSamba() async {
-  await _mountCmd(loginState.username!, loginState.sambaPassword!, "${serverInfo.sambaPath}pcc_homes_v3", "A");
-  await _mountCmd(loginState.username!, loginState.sambaPassword!, "${serverInfo.sambaPath}share_v3", "B");
+  await _mountCmd(loginState.username!, loginState.sambaPassword!, "${serverInfo.sambaPath}pcc_homes_v3", "A:");
+  await _mountCmd(loginState.username!, loginState.sambaPassword!, "${serverInfo.sambaPath}share_v3", "B:");
   return;
 }
 
+// letter should "X:"
 Future<void> _mountCmd(
     String username, String password, String server, String letter) async {
   var process = await Process.run(
