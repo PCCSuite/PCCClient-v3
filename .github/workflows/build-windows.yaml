@@ -1,0 +1,38 @@
+name: Build windows app
+
+on:
+  push:
+    branches: [ main ]
+
+# https://blog.dalt.me/3249
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ env.FLUTTER_HOME }}/.pub-cache
+            **/.packages
+            **/.flutter-plugins
+            **/.flutter-plugin-dependencies
+            **/.dart_tool/package_config.json
+          key: build-pubspec-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            build-pubspec-
+      - name: Build
+        run: flutter build windows
+        working-directory: ./pccclient
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows
+          path: pccclient/build/windows/runner/Release
