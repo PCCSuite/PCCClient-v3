@@ -3,6 +3,12 @@ name: Build windows app
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'pccclient/**'
+# https://intothelambda.com/blog/github-actions-with-paths/
+defaults:
+  run:
+    working-directory: pccclient
 
 # https://blog.dalt.me/3249
 jobs:
@@ -15,24 +21,10 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          cache: true
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ${{ env.FLUTTER_HOME }}/.pub-cache
-            **/.packages
-            **/.flutter-plugins
-            **/.flutter-plugin-dependencies
-            **/.dart_tool/package_config.json
-          key: build-pubspec-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            build-pubspec-
       - name: Build
         run: flutter build windows
-        working-directory: ./pccclient
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: windows
-          path: pccclient/build/windows/runner/Release
+          path: build/windows/runner/Release
