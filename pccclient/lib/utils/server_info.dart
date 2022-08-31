@@ -34,7 +34,7 @@ class ServerInfo {
 
 late ServerInfo serverInfo;
 
-getServerInfo() async {
+Future<ServerInfo> getServerInfo() async {
   // http.Response response;
   // response = await http.get(Uri.parse(localConfig.serverURL));
   // var json = jsonDecode(response.body);

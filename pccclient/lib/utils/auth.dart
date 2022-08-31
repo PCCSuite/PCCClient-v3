@@ -12,8 +12,8 @@ void getEnv() {
   return;
 }
 
-void getServer() {
-  getServerInfo();
+Future<void> getServer() async {
+  await getServerInfo();
   return;
 }
 

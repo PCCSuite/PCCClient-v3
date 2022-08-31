@@ -70,8 +70,7 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
       _errorShow(e, trace);
     });
     _serverState = StateMsgSet(ProcessState.getting, str.init_check_srv_start);
-    Future<void> serverFuture =
-        Future.delayed(const Duration(seconds: 3), getServer);
+    Future<void> serverFuture = getServer();
     serverFuture.then((value) {
       setState(() {
         _serverState = StateMsgSet(ProcessState.ok, str.init_check_srv_done);
