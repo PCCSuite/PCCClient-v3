@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pccclient/screens/part/error.dart';
+import 'package:pccclient/utils/environment.dart';
 import 'package:pccclient/utils/local_config.dart';
 
 import '../utils/auth.dart';
@@ -55,7 +56,7 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
       _errorShow(e, trace);
     });
     _envState = StateMsgSet(ProcessState.getting, str.init_check_env_start);
-    Future<void> envFuture = Future(getEnv);
+    Future<void> envFuture = checkEnv();
     envFuture.then((value) {
       setState(() {
         _envState = StateMsgSet(ProcessState.ok, str.init_check_env_done);

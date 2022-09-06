@@ -8,10 +8,6 @@ import 'package:http/http.dart' as http;
 
 import 'local_config.dart';
 
-void getEnv() {
-  return;
-}
-
 Future<void> getServer() async {
   await getServerInfo();
   return;
@@ -25,13 +21,16 @@ Uri getTokenEndpoint() {
   return Uri.parse(url);
 }
 
-void getUser() async {
+Future<bool> getUser() async {
+  if (!Platform.isWindows) {
+    return false;
+  }
   var process = await Process.run('wmic',
       ["netuse", "where", "LocalName=\"U:\"", "get", "UserName", "/value"]);
   var result = process.stdout.toString();
   var index = result.indexOf("ts");
   result = result.substring(index, index + 7).replaceAll("ts", "pc");
-  return;
+  return true;
 }
 
 StateMsgSet getSavedToken() {

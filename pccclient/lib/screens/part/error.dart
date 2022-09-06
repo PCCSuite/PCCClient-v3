@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/general.dart';
 
-Future<void> showError(BuildContext context, String err, String trace) async {
+Future<void> showError(BuildContext context, err, trace) async {
   await showDialog(
       context: context,
       barrierDismissible: false,
@@ -14,7 +14,7 @@ Future<void> showError(BuildContext context, String err, String trace) async {
     content: Column(
       children: [
         Text(str.error_dialog_description),
-        Text("$err\n$trace"),
+        Text("${err.toString()}\n${trace.toString()}"),
       ],
     ),
     actions: [
@@ -22,7 +22,7 @@ Future<void> showError(BuildContext context, String err, String trace) async {
         onPressed: () => Navigator.pop(context),
         child: Text(
           str.error_dialog_ignore,
-          style: TextStyle(color: Colors.redAccent),
+          style: const TextStyle(color: Colors.redAccent),
         ),
       )
     ],
