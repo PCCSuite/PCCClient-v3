@@ -28,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: linux
-          path: pccclient/build/linux/runner/Release
+          path: pccclient/build/linux/x64/release/bundle
