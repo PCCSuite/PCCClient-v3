@@ -12,7 +12,7 @@ class ServerInfo {
   final String tokenEndpoint;
   final String defaultAuthMethod;
   final String getSambaPassURL;
-  final String sambaPath;
+  final String sambaServer;
   final String setBrowserURL;
   final String getTipsAddress;
   final String pccCliManAddress;
@@ -21,7 +21,7 @@ class ServerInfo {
       this.tokenEndpoint,
       this.defaultAuthMethod,
       this.getSambaPassURL,
-      this.sambaPath,
+      this.sambaServer,
       this.setBrowserURL,
       this.getTipsAddress,
       this.pccCliManAddress);
@@ -43,7 +43,7 @@ Future<ServerInfo> getServerInfo() async {
       "http://pccs1.tama-st-h.local/keycloak/realms/pcc/protocol/openid-connect/auth?client_id=pccclient&response_type=token&scope=samba&redirect_uri=http%3A%2F%2Flocalhost%3A15456%2Freturn&response_mode=form_post&login_hint=",
       "browser",
       "http://pccs2.tama-st-h.local:8081/getPassword",
-      "\\\\pccs2.tama-st-h.local\\",
+      "pccs2.tama-st-h.local",
       "http://pccs1.tama-st-h.local/",
       "pccs1.tama-st-h.local",
       "ws://pccs1.tama-st-h.local:8081/pccclient");

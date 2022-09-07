@@ -1,0 +1,31 @@
+name: Build windows app
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'pccclient/**'
+      - '.github/workflows/build-linux.yaml'
+# https://intothelambda.com/blog/github-actions-with-paths/
+defaults:
+  run:
+    working-directory: pccclient
+
+# https://blog.dalt.me/3249
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Build
+        run: flutter build linux
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux
+          path: pccclient/build/linux/runner/Release

@@ -80,19 +80,44 @@ Future<void> getSambaPass() async {
 }
 
 Future<void> mountSamba() async {
-  await _mountCmd(loginState.username!, loginState.sambaPassword!, "${serverInfo.sambaPath}pcc_homes_v3", "A:");
-  await _mountCmd(loginState.username!, loginState.sambaPassword!, "${serverInfo.sambaPath}share_v3", "B:");
-  return;
+  if (Platform.isWindows) {
+    await _mountWindows();
+    return;
+  }
+  if (Platform.isLinux) {
+    await _mountLinux();
+    return;
+  }
+  throw UnimplementedError("Unsupported platform to mount");
+}
+
+Future<void> _mountWindows() async {
+  await _mountWindowsCmd(loginState.username!, loginState.sambaPassword!, "\\\\${serverInfo.sambaServer}\\pcc_homes_v3", "A:");
+  await _mountWindowsCmd(loginState.username!, loginState.sambaPassword!, "\\\\${serverInfo.sambaServer}\\share_v3", "B:");
 }
 
 // letter should "X:"
-Future<void> _mountCmd(
-    String username, String password, String server, String letter) async {
-  List<String> param = ["use", letter, server, password, "/user:$username", "/y"];
+Future<void> _mountWindowsCmd(
+    String username, String password, String path, String letter) async {
+  List<String> param = ["use", letter, path, password, "/user:$username", "/y"];
   var process = await Process.run(
       'net', param);
   if (process.exitCode != 0) {
     throw Exception(
         "Failed to execute: net ${param.join(" ")}\n${process.stderr} ${process.stdout}");
+  }
+}
+
+Future<void> _mountLinux() async {
+  await _mountLinuxCmd(loginState.username!, loginState.sambaPassword!, serverInfo.sambaServer, "pcc_homes_v3");
+  await _mountLinuxCmd(loginState.username!, loginState.sambaPassword!, serverInfo.sambaServer, "share_v3");
+}
+
+Future<void> _mountLinuxCmd(
+    String username, String password, String server, String name) async {
+  List<String> param = ["mount", "smb://$username:$password@$server/$name"];
+  var process = await Process.run('gio', param);
+  if (process.exitCode != 0) {
+    throw Exception("Failed to mount: gio ${param.join(" ")}\n${process.stderr} ${process.stdout}");
   }
 }
