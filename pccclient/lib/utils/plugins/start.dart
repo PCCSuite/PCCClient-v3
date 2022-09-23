@@ -6,7 +6,7 @@ import 'package:pccclient/utils/plugins/status_enum.dart';
 import 'package:pccclient/utils/server_info.dart';
 
 Future<void> startPluginSys() async {
-  var process = await Process.start("$serverInfo.pluginSysPath\\PCCPluginSys.exe", ["host", "$serverInfo\\config.json"]);
+  var process = await Process.start("${serverInfo.pluginSysPath}\\PCCPluginSys.exe", ["host", "${serverInfo.pluginSysPath}\\config.json"]);
   process.stdout.pipe(stdout);
   process.stderr.pipe(stderr);
 }
