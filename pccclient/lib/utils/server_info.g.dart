@@ -14,6 +14,7 @@ ServerInfo _$ServerInfoFromJson(Map<String, dynamic> json) => ServerInfo(
       json['setBrowserURL'] as String,
       json['getTipsAddress'] as String,
       json['pccCliManAddress'] as String,
+      json['pluginSysPath'] as String,
     );
 
 Map<String, dynamic> _$ServerInfoToJson(ServerInfo instance) =>
@@ -25,4 +26,5 @@ Map<String, dynamic> _$ServerInfoToJson(ServerInfo instance) =>
       'setBrowserURL': instance.setBrowserURL,
       'getTipsAddress': instance.getTipsAddress,
       'pccCliManAddress': instance.pccCliManAddress,
+      'pluginSysPath': instance.pluginSysPath,
     };

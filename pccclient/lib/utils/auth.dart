@@ -115,9 +115,10 @@ Future<void> _mountLinux() async {
 
 Future<void> _mountLinuxCmd(
     String username, String password, String server, String name) async {
-  List<String> param = ["mount", "smb://$username:$password@$server/$name"];
-  var process = await Process.run('gio', param);
-  if (process.exitCode != 0) {
-    throw Exception("Failed to mount: gio ${param.join(" ")}\n${process.stderr} ${process.stdout}");
+  List<String> param = ["mount", "smb://$username@$server/$name"];
+  var process = await Process.start('gio', param);
+  process.stdin.write("\n$password\n");
+  if (await process.exitCode != 0) {
+    throw Exception("Failed to mount: gio ${param.join(" ")}\n${await process.stderr.transform(utf8.decoder).join()} ${await process.stdout.transform(utf8.decoder).join()}");
   }
 }

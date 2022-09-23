@@ -38,10 +38,14 @@
   "loggingin_get_password_start": "ネットワークドライブのパスワードを取得中...",
   "loggingin_get_password_done": "ネットワークドライブのパスワードを取得完了",
   "loggingin_get_password_fail": "ネットワークドライブのパスワードを取得失敗",
-  "loggingin_mount_wait": "ネットワークドライブのマウント待ち",
+  "loggingin_mount_wait": "ネットワークドライブのマウント: パスワードを待機中",
   "loggingin_mount_start": "ネットワークドライブをマウント中...",
   "loggingin_mount_done": "ネットワークドライブのマウント完了",
   "loggingin_mount_fail": "ネットワークドライブのマウント失敗",
+  "loggingin_plugin_wait": "PluginSys起動: マウントを待機中",
+  "loggingin_plugin_start": "PluginSysを起動中...",
+  "loggingin_plugin_done": "PluginSysの起動完了",
+  "loggingin_plugin_fail": "PluginSysの起動失敗",
   "loggingin_climan_start": "PCCCliMan接続中...",
   "loggingin_climan_done": "PCCCliMan接続完了",
   "loggingin_climan_fail": "PCCCliMan接続失敗",
@@ -54,5 +58,12 @@
   "plugin_status_waitLock": "排他制御開放待ち",
   "plugin_status_running": "動作中",
   "plugin_status_done": "完了",
-  "plugin_status_failed": "失敗"
+  "plugin_status_failed": "失敗",
+
+  "plugin_sys_status_starting": "起動中",
+  "plugin_sys_status_readying": "準備中",
+  "plugin_sys_status_ready": "準備完了",
+  "plugin_sys_status_restoring": "リストア中",
+  "plugin_sys_status_standby": "待機中",
+  "plugin_sys_status_stopped": "停止中(クラッシュ?)"
 }

@@ -16,6 +16,7 @@ class ServerInfo {
   final String setBrowserURL;
   final String getTipsAddress;
   final String pccCliManAddress;
+  final String pluginSysPath;
 
   ServerInfo(
       this.tokenEndpoint,
@@ -24,7 +25,8 @@ class ServerInfo {
       this.sambaServer,
       this.setBrowserURL,
       this.getTipsAddress,
-      this.pccCliManAddress);
+      this.pccCliManAddress,
+      this.pluginSysPath);
 
   factory ServerInfo.fromJson(Map<String, dynamic> json) =>
       _$ServerInfoFromJson(json);
@@ -46,6 +48,7 @@ Future<ServerInfo> getServerInfo() async {
       "pccs2.tama-st-h.local",
       "http://pccs1.tama-st-h.local/",
       "pccs1.tama-st-h.local",
-      "ws://pccs1.tama-st-h.local:8081/pccclient");
+      "ws://pccs1.tama-st-h.local:8081/pccclient",
+      "B:\\pccplugin\\sys");
   return serverInfo;
 }

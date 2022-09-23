@@ -3,8 +3,10 @@ import 'package:pccclient/screens/home.dart';
 import 'package:pccclient/screens/login_select.dart';
 import 'package:pccclient/screens/part/error.dart';
 import 'package:pccclient/utils/auth.dart';
+import 'package:pccclient/utils/environment/common.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/manager.dart';
+import 'package:pccclient/utils/plugins/start.dart';
 
 class _LoggingInStateRow extends StatelessWidget {
   const _LoggingInStateRow(this.state, {Key? key}) : super(key: key);
@@ -47,46 +49,27 @@ class _LoggingInStateWidget extends StatefulWidget {
 
 class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
   late StateMsgSet _getSambaPassState;
-  late StateMsgSet _mountSambaState;
+  late StateMsgSet _mountSambaState = StateMsgSet(ProcessState.waiting, str.loggingin_mount_wait);
+  late StateMsgSet _startPluginSysState = StateMsgSet(ProcessState.waiting, str.loggingin_plugin_wait);
   late StateMsgSet _connectCliManState;
 
-  int _remainProcess = 3;
+  int _runningProcess = 0;
   int _errorShowing = 0;
 
-  @override
-  void initState() {
+  void _startGetSambaPass() {
     setState(() {
       _getSambaPassState =
           StateMsgSet(ProcessState.getting, str.loggingin_get_password_start);
-      _mountSambaState =
-          StateMsgSet(ProcessState.waiting, str.loggingin_mount_wait);
-      _connectCliManState =
-          StateMsgSet(ProcessState.getting, str.loggingin_climan_start);
     });
+    _runningProcess++;
     var getSambaPassFuture = getSambaPass();
     getSambaPassFuture.then((_) {
-      _remainProcess--;
       setState(() {
         _getSambaPassState =
             StateMsgSet(ProcessState.ok, str.loggingin_get_password_done);
-        _mountSambaState =
-            StateMsgSet(ProcessState.getting, str.loggingin_mount_start);
       });
-      var mountSambaFuture = mountSamba();
-      mountSambaFuture.then((_) {
-        _remainProcess--;
-        setState(() {
-          _mountSambaState =
-              StateMsgSet(ProcessState.ok, str.loggingin_mount_done);
-        });
-        _checkDone();
-      }).catchError((e, trace) {
-        setState(() {
-          _mountSambaState =
-              StateMsgSet(ProcessState.failed, str.loggingin_mount_fail);
-        });
-        _errorShow(e, trace);
-      });
+      _startMountSamba();
+      _runningProcess--;
     }).catchError((e, trace) {
       setState(() {
         _getSambaPassState =
@@ -94,13 +77,71 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
       });
       _errorShow(e, trace);
     });
+  }
+
+  void _startMountSamba() {
+    setState(() {
+      _mountSambaState =
+          StateMsgSet(ProcessState.getting, str.loggingin_mount_start);
+    });
+    _runningProcess++;
+    var mountSambaFuture = mountSamba();
+    mountSambaFuture.then((_) {
+      setState(() {
+        _mountSambaState =
+            StateMsgSet(ProcessState.ok, str.loggingin_mount_done);
+      });
+      _runningProcess--;
+      if (environment.enablePlugin) {
+        _startPluginSys();
+      } else {
+        _checkDone();
+      }
+    }).catchError((e, trace) {
+      setState(() {
+        _mountSambaState =
+            StateMsgSet(ProcessState.failed, str.loggingin_mount_fail);
+      });
+      _errorShow(e, trace);
+    });
+  }
+
+  void _startPluginSys() {
+    setState(() {
+      _startPluginSysState =
+          StateMsgSet(ProcessState.waiting, str.loggingin_plugin_start);
+    });
+    _runningProcess++;
+    var startPluginSysFuture = startPluginSys();
+    startPluginSysFuture.then((_) {
+      setState(() {
+        _startPluginSysState =
+            StateMsgSet(ProcessState.ok, str.loggingin_plugin_done);
+      });
+      _runningProcess--;
+      _checkDone();
+    }).catchError((e, trace) {
+      setState(() {
+        _startPluginSysState =
+            StateMsgSet(ProcessState.failed, str.loggingin_plugin_fail);
+      });
+      _errorShow(e, trace);
+    });
+  }
+
+  void _startConnectCliMan() {
+    setState(() {
+      _connectCliManState =
+          StateMsgSet(ProcessState.getting, str.loggingin_climan_start);
+    });
+    _runningProcess++;
     var connectCliManFuture = Future(init);
     connectCliManFuture.then((value) {
-      _remainProcess--;
       setState(() {
         _connectCliManState =
             StateMsgSet(ProcessState.ok, str.loggingin_climan_done);
       });
+      _runningProcess--;
       _checkDone();
     }).catchError((e, trace) {
       setState(() {
@@ -109,11 +150,17 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
       });
       _errorShow(e, trace);
     });
+  }
+
+  @override
+  void initState() {
+    _startGetSambaPass();
+    _startConnectCliMan();
     super.initState();
   }
 
   _checkDone() {
-    if (_remainProcess == 0 && _errorShowing == 0) {
+    if (_runningProcess == 0 && _errorShowing == 0) {
       Navigator.popUntil(
           context, ModalRoute.withName(LoginSelectScreen.routeName));
       Navigator.popAndPushNamed(context, HomeScreen.routeName);
@@ -124,18 +171,21 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
     _errorShowing++;
     await showError(context, err, trace);
     _errorShowing--;
-    _remainProcess--;
+    _runningProcess--;
     _checkDone();
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> content = [];
+    content.add(_LoggingInStateRow(_getSambaPassState));
+    content.add(_LoggingInStateRow(_mountSambaState));
+    if (environment.enablePlugin) {
+      content.add(_LoggingInStateRow(_startPluginSysState));
+    }
+    content.add(_LoggingInStateRow(_connectCliManState));
     return Column(
-      children: [
-        _LoggingInStateRow(_getSambaPassState),
-        _LoggingInStateRow(_mountSambaState),
-        _LoggingInStateRow(_connectCliManState),
-      ],
+      children: content,
     );
   }
 }

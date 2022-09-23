@@ -1,19 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:pccclient/utils/general.dart';
 
+enum PluginSysStatus {
+  starting(-1),
+  stopped(-2),
+  readying(1),
+  ready(2),
+  restoring(3),
+  standby(4);
+
+  final int data;
+  const PluginSysStatus(this.data);
+  factory PluginSysStatus.from(int data) {
+    return PluginSysStatus.values.firstWhere((element) => element.data == data);
+  }
+}
+
+extension PluginSysStatusExt on PluginSysStatus {
+  String get message {
+    switch (this) {
+      case PluginSysStatus.starting:
+        return str.plugin_sys_status_starting;
+      case PluginSysStatus.stopped:
+        return str.plugin_sys_status_stopped;
+      case PluginSysStatus.readying:
+        return str.plugin_sys_status_readying;
+      case PluginSysStatus.ready:
+        return str.plugin_sys_status_ready;
+      case PluginSysStatus.restoring:
+        return str.plugin_sys_status_restoring;
+      case PluginSysStatus.standby:
+        return str.plugin_sys_status_standby;
+    }
+  }
+}
+
 enum ActionStatus {
-  waitStart,
-  waitLock,
-  waitDepend,
-  running,
-  done,
-  failed,
+  loaded("loaded"),
+  waitStart("wait_start"),
+  running("running"),
+  waitDepend("wait_depend"),
+  waitLock("wait_lock"),
+  done("done"),
+  failed("failed");
+
+  final String data;
+  const ActionStatus(this.data);
+  factory ActionStatus.from(String data) {
+    return ActionStatus.values.firstWhere((element) => element.data == data);
+  }
 }
 
 extension ActionStatusExt on ActionStatus {
   Widget get icon {
     const size = 35.0;
     switch (this) {
+      case ActionStatus.loaded:
+        return Tooltip(
+          message: str.plugin_status_waitStart,
+          child: const Icon(
+            Icons.download_done,
+            size: size,
+          ),
+        );
       case ActionStatus.waitStart:
         return Tooltip(
           message: str.plugin_status_waitStart,
