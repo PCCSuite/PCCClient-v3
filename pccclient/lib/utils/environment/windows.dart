@@ -37,13 +37,13 @@ Future<bool> _isIpValid() async {
   InternetAddress? ipAddress;
   addressSearch:
   for (NetworkInterface i in list) {
-    for (InternetAddress addr in i.addresses) {
-      if (addr.isLoopback ||  addr.isLinkLocal || addr.isMulticast) {
+    for (InternetAddress address in i.addresses) {
+      if (address.isLoopback ||  address.isLinkLocal || address.isMulticast) {
         continue;
       }
       foundAddress = true;
-      if (addr.rawAddress[0] == 10) {
-        ipAddress = addr;
+      if (address.rawAddress[0] == 10) {
+        ipAddress = address;
         break addressSearch;
       }
     }
