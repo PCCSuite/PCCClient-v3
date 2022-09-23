@@ -52,6 +52,7 @@
 
   "home_title": "Home",
   "home_drawer_settings": "設定",
+  "home_drawer_debug": "開発者向け",
 
   "plugin_status_waitStart": "処理開始待ち",
   "plugin_status_waitDepend": "依存関係の完了待ち",
@@ -65,5 +66,7 @@
   "plugin_sys_status_ready": "準備完了",
   "plugin_sys_status_restoring": "リストア中",
   "plugin_sys_status_standby": "待機中",
-  "plugin_sys_status_stopped": "停止中(クラッシュ?)"
+  "plugin_sys_status_stopped": "停止中(クラッシュ?)",
+
+  "debug_title": "Debug"
 }

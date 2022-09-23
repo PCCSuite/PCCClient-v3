@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pccclient/screens/debug.dart';
 import 'package:pccclient/screens/first.dart';
 import 'package:pccclient/screens/home.dart';
 import 'package:pccclient/screens/loggingin.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         LoginAppScreen.routeName: (context) => const LoginAppScreen(),
         LoggingInScreen.routeName: (context) => const LoggingInScreen(),
         HomeScreen.routeName: (context) => const HomeScreen(),
+        DebugScreen.routeName: (context) => const DebugScreen(),
       },
     );
   }

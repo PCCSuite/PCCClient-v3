@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pccclient/screens/debug.dart';
 import 'package:pccclient/utils/environment/common.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/plugins/status_enum.dart';
@@ -51,6 +52,13 @@ class _HomeDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text(str.home_drawer_settings),
+          ),
+          ListTile(
+            leading: Icon(Icons.developer_mode),
+            title: Text(str.home_drawer_debug),
+            onTap: () {
+              Navigator.pushNamed(context, DebugScreen.routeName);
+            },
           )
         ],
       ),
