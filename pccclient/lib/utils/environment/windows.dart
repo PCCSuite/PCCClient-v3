@@ -26,8 +26,9 @@ Future<void> checkEnvWindows() async {
   }
   if (tkg >= 3) {
     environment = Environment(MachineType.resetWindows);
+  } else {
+    environment = Environment(MachineType.unResetWindows);
   }
-  environment = Environment(MachineType.unResetWindows);
 }
 
 Future<bool> _isIpValid() async {

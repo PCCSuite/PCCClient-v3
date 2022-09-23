@@ -29,7 +29,10 @@ Future<bool> getUser() async {
       ["netuse", "where", "LocalName=\"U:\"", "get", "UserName", "/value"]);
   var result = process.stdout.toString();
   var index = result.indexOf("ts");
-  result = result.substring(index, index + 7).replaceAll("ts", "pc");
+  if (index == -1) {
+    return false;
+  }
+  loginState.username = result.substring(index, index + 7).replaceAll("ts", "pc");
   return true;
 }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pccclient/screens/part/error.dart';
-import 'package:pccclient/utils/environment.dart';
 import 'package:pccclient/utils/local_config.dart';
 
 import '../utils/auth.dart';

@@ -20,7 +20,7 @@ enum MachineType {
 
 Future<void> checkEnv() async {
   if (Platform.isWindows) {
-    checkEnvWindows();
+    await checkEnvWindows();
     return;
   }
   if (Platform.isLinux) {
