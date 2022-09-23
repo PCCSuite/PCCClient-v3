@@ -24,6 +24,8 @@ jobs:
           channel: stable
       - name: Build
         run: flutter build windows
+      - name: Copy runtime
+        run: "copy C:\\Windows\\System32\\vcruntime140_1.dll .\\pccclient\\build\\windows\\runner\\Release"
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
