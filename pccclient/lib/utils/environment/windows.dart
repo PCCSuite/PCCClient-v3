@@ -75,7 +75,7 @@ Future<bool> _hasUserDirectory() async {
 }
 
 Future<bool> _hasNetworkDrive() async {
-  Future<bool> public = File.fromUri(Uri.directory("P:", windows: true)).exists();
-  Future<bool> homes = File.fromUri(Uri.directory("U:", windows: true)).exists();
+  Future<bool> public = File.fromUri(Uri.directory("P:\\", windows: true)).exists();
+  Future<bool> homes = File.fromUri(Uri.directory("U:\\", windows: true)).exists();
   return await public && await homes;
 }
