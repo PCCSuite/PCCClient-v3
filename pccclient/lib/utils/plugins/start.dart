@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:html';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:pccclient/utils/plugins/datas.dart';
 import 'package:pccclient/utils/plugins/files.dart';
 import 'package:pccclient/utils/plugins/status_enum.dart';
@@ -10,7 +13,15 @@ import 'package:path/path.dart' as path;
 
 Future<void> startPluginSys() async {
   var logDir = Directory(pluginSysConfig!.tempDir);
-  logDir.createSync();
+  if (await logDir.exists()) {
+    try {
+      _connectPluginSys(0);
+      pluginSysStatus = PluginSysStatus.starting;
+      return;
+    } catch (_) {}
+  } else {
+    await logDir.create();
+  }
   var process = await Process.start("cmd.exe", [
     "/C",
     "${serverInfo.pluginSysPath}\\PCCPluginSys.exe",
@@ -24,21 +35,21 @@ Future<void> startPluginSys() async {
   process.exitCode.whenComplete(() {
     pluginSysStatus = PluginSysStatus.stopped;
   });
-  _connectPluginSys();
+  _connectPluginSys(10);
 }
 
 Socket? socket;
 
-Future<void> _connectPluginSys() async {
-  var sock = await _connectSocket();
+Future<void> _connectPluginSys(int retryNum) async {
+  var sock = await _connectSocket(retryNum);
   sock.write(
       json.encode({"data_type": "negotiate", "client_type": "pccclient"}));
   sock.flush();
   sock.listen(_listener);
 }
 
-Future<Socket> _connectSocket() async {
-  for (int i = 0; i < 10; i++) {
+Future<Socket> _connectSocket(int retryNum) async {
+  for (int i = 0; i < retryNum; i++) {
     try {
       var sock = await Socket.connect("localhost", 15000);
       socket = sock;
@@ -52,8 +63,8 @@ Future<Socket> _connectSocket() async {
   return sock;
 }
 
-void _listener(dynamic data) {
-  Map<String, dynamic> map = json.decode(data);
+void _listener(Uint8List data) {
+  Map<String, dynamic> map = json.decode(utf8.decode(data));
   switch (map["data_type"]) {
     case "notify":
       pluginSysStatus = PluginSysStatus.from(map["status"]);
