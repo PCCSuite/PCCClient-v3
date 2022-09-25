@@ -10,8 +10,8 @@ Future<void> startPluginSys() async {
   var process = await Process.start("${serverInfo.pluginSysPath}\\PCCPluginSys.exe", ["host", "${serverInfo.pluginSysPath}\\config.json"]);
   pluginSysStatus = PluginSysStatus.starting;
   var log = File(localConfig.pluginLog).openWrite();
-  process.stdout.pipe(log);
-  process.stderr.pipe(log);
+  log.addStream(process.stdout);
+  log.addStream(process.stderr);
   process.exitCode.whenComplete(() {
     log.close();
     pluginSysStatus = PluginSysStatus.stopped;
