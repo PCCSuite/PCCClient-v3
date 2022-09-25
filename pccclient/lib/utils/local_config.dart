@@ -30,5 +30,5 @@ readConfig() {
   // String str = file.readAsStringSync();
   // var json = jsonDecode(str);
   // localConfig = LocalConfig.fromJson(json);
-  localConfig = LocalConfig(1, "", "", "A:\\PCCPlugin\\sys.log");
+  localConfig = LocalConfig(1, "", "", "C:\\Users\\user\\Downloads\\PCCPluginSys.log");
 }

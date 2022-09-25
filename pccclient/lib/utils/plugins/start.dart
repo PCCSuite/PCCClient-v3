@@ -15,30 +15,31 @@ Future<void> startPluginSys() async {
   _connectPluginSys();
 }
 
-WebSocket? socket;
+Socket? socket;
 
 Future<void> _connectPluginSys() async {
-  var ws = await _connectWebsocket();
-  ws.add(json.encode({
+  var sock = await _connectSocket();
+  sock.write(json.encode({
     "data_type": "negotiate",
     "client_type": "pccclient"
   }));
-  ws.listen(_listener);
+  sock.flush();
+  sock.listen(_listener);
 }
 
-Future<WebSocket> _connectWebsocket() async {
+Future<Socket> _connectSocket() async {
   for (int i = 0;i < 10;i++) {
     try {
-      var ws = await WebSocket.connect("ws://localhost:15000/");
-      socket = ws;
-      return ws;
+      var sock = await Socket.connect("localhost", 15000);
+      socket = sock;
+      return sock;
     } catch (_) {
       sleep(const Duration(milliseconds: 200));
     }
   }
-  var ws = await WebSocket.connect("ws://localhost:15000/");
-  socket = ws;
-  return ws;
+  var sock = await Socket.connect("localhost", 15000);
+  socket = sock;
+  return sock;
 }
 
 void _listener(dynamic data) {
