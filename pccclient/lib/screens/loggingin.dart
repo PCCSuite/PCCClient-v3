@@ -8,6 +8,8 @@ import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/manager.dart';
 import 'package:pccclient/utils/plugins/start.dart';
 
+import '../utils/plugins/files.dart';
+
 class _LoggingInStateRow extends StatelessWidget {
   const _LoggingInStateRow(this.state, {Key? key}) : super(key: key);
 
@@ -50,7 +52,8 @@ class _LoggingInStateWidget extends StatefulWidget {
 class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
   late StateMsgSet _getSambaPassState;
   late StateMsgSet _mountSambaState = StateMsgSet(ProcessState.waiting, str.loggingin_mount_wait);
-  late StateMsgSet _startPluginSysState = StateMsgSet(ProcessState.waiting, str.loggingin_plugin_wait);
+  late StateMsgSet _startPluginSysState = StateMsgSet(ProcessState.waiting, str.loggingin_load_plugin_wait);
+  late StateMsgSet _loadPluginSysConfigState = StateMsgSet(ProcessState.waiting, str.loggingin_start_plugin_wait);
   late StateMsgSet _connectCliManState;
 
   int _runningProcess = 0;
@@ -93,7 +96,7 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
       });
       _runningProcess--;
       if (environment.enablePlugin) {
-        _startPluginSys();
+        _loadPluginSysConfig();
       } else {
         _checkDone();
       }
@@ -106,24 +109,47 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
     });
   }
 
+  void _loadPluginSysConfig() {
+    setState(() {
+      _loadPluginSysConfigState =
+          StateMsgSet(ProcessState.waiting, str.loggingin_load_plugin_start);
+    });
+    _runningProcess++;
+    var loadPluginSysConfigFuture = loadPluginSysConfig();
+    loadPluginSysConfigFuture.then((_) {
+      setState(() {
+        _loadPluginSysConfigState =
+            StateMsgSet(ProcessState.ok, str.loggingin_load_plugin_done);
+      });
+      _runningProcess--;
+      _startPluginSys();
+    }).catchError((e, trace) {
+      setState(() {
+        _loadPluginSysConfigState =
+            StateMsgSet(ProcessState.failed, str.loggingin_load_plugin_fail);
+      });
+      _errorShow(e, trace);
+    });
+  }
+
   void _startPluginSys() {
     setState(() {
       _startPluginSysState =
-          StateMsgSet(ProcessState.waiting, str.loggingin_plugin_start);
+          StateMsgSet(ProcessState.waiting, str.loggingin_start_plugin_start);
     });
     _runningProcess++;
     var startPluginSysFuture = startPluginSys();
     startPluginSysFuture.then((_) {
       setState(() {
         _startPluginSysState =
-            StateMsgSet(ProcessState.ok, str.loggingin_plugin_done);
+            StateMsgSet(ProcessState.ok, str.loggingin_start_plugin_done);
       });
       _runningProcess--;
       _checkDone();
     }).catchError((e, trace) {
       setState(() {
         _startPluginSysState =
-            StateMsgSet(ProcessState.failed, str.loggingin_plugin_fail);
+            StateMsgSet(ProcessState.failed, str.loggingin_start_plugin_fail);
       });
       _errorShow(e, trace);
     });
@@ -182,6 +208,7 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
     content.add(_LoggingInStateRow(_mountSambaState));
     if (environment.enablePlugin) {
       content.add(_LoggingInStateRow(_startPluginSysState));
+      content.add(_LoggingInStateRow(_loadPluginSysConfigState));
     }
     content.add(_LoggingInStateRow(_connectCliManState));
     return Column(

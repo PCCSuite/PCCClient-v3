@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'local_config.g.dart';
 
-const String fileName = "pccclient_config.json";
+const String _fileName = "pccclient_config.json";
 
 late final LocalConfig localConfig;
 
@@ -14,9 +14,9 @@ class LocalConfig {
   final int configVersion;
   final String serverURL;
   final String authMethod;
-  final String pluginLog;
+  final String pluginSysConfig;
 
-  LocalConfig(this.configVersion, this.serverURL, this.authMethod, this.pluginLog);
+  LocalConfig(this.configVersion, this.serverURL, this.authMethod, this.pluginSysConfig);
 
   factory LocalConfig.fromJson(Map<String, dynamic> json) => _$LocalConfigFromJson(json);
 
@@ -26,9 +26,9 @@ class LocalConfig {
 // Directory.current
 
 readConfig() {
-  // File file = File(fileName);
-  // String str = file.readAsStringSync();
-  // var json = jsonDecode(str);
-  // localConfig = LocalConfig.fromJson(json);
-  localConfig = LocalConfig(1, "", "", "C:\\Users\\user\\Downloads\\PCCPluginSys.log");
+  File file = File(_fileName);
+  String str = file.readAsStringSync();
+  var json = jsonDecode(str);
+  localConfig = LocalConfig.fromJson(json);
+  // localConfig = LocalConfig(1, "", "", "");
 }
