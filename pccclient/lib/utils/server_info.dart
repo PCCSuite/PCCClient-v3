@@ -49,6 +49,6 @@ Future<ServerInfo> getServerInfo() async {
       "http://pccs1.tama-st-h.local/",
       "pccs1.tama-st-h.local",
       "ws://pccs1.tama-st-h.local:8081/pccclient",
-      "B:\\pccplugin\\sys");
+      "B:\\PCCPlugin\\sys");
   return serverInfo;
 }
