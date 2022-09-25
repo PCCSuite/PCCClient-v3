@@ -10,6 +10,7 @@ LocalConfig _$LocalConfigFromJson(Map<String, dynamic> json) => LocalConfig(
       json['configVersion'] as int,
       json['serverURL'] as String,
       json['authMethod'] as String,
+      json['pluginLog'] as String,
     );
 
 Map<String, dynamic> _$LocalConfigToJson(LocalConfig instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$LocalConfigToJson(LocalConfig instance) =>
       'configVersion': instance.configVersion,
       'serverURL': instance.serverURL,
       'authMethod': instance.authMethod,
+      'pluginLog': instance.pluginLog,
     };
