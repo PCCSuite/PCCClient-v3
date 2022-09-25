@@ -14,8 +14,9 @@ class LocalConfig {
   final int configVersion;
   final String serverURL;
   final String authMethod;
+  final String pluginLog;
 
-  LocalConfig(this.configVersion, this.serverURL, this.authMethod);
+  LocalConfig(this.configVersion, this.serverURL, this.authMethod, this.pluginLog);
 
   factory LocalConfig.fromJson(Map<String, dynamic> json) => _$LocalConfigFromJson(json);
 
@@ -29,5 +30,5 @@ readConfig() {
   // String str = file.readAsStringSync();
   // var json = jsonDecode(str);
   // localConfig = LocalConfig.fromJson(json);
-  localConfig = LocalConfig(1, "", "");
+  localConfig = LocalConfig(1, "", "", "A:\\PCCPlugin\\sys.log");
 }
