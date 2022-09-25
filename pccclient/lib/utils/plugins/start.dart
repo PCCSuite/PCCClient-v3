@@ -7,16 +7,17 @@ import 'package:pccclient/utils/plugins/status_enum.dart';
 import 'package:pccclient/utils/server_info.dart';
 
 Future<void> startPluginSys() async {
-  var process = await Process.start("cmd.exe", ["/C", "${serverInfo.pluginSysPath}\\PCCPluginSys.exe", "host", "${serverInfo.pluginSysPath}\\config.json", ">", localConfig.pluginLog, " 2>&1"]);
+  var process = await Process.start("cmd.exe", ["/C", "${serverInfo.pluginSysPath}\\PCCPluginSys.exe", "host", "${serverInfo.pluginSysPath}\\config.json", ">", localConfig.pluginLog, "2>&1"]);
   pluginSysStatus = PluginSysStatus.starting;
   process.exitCode.whenComplete(() {
     pluginSysStatus = PluginSysStatus.stopped;
   });
+  _connectPluginSys();
 }
 
 WebSocket? socket;
 
-Future<void> connectPluginSys() async {
+Future<void> _connectPluginSys() async {
   var ws = await _connectWebsocket();
   ws.add(json.encode({
     "data_type": "negotiate",
