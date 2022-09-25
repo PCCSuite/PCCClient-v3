@@ -67,15 +67,15 @@ Future<void> getSambaPass() async {
     throw Exception("Unexpected password data: $json");
   }
   switch (json["mode"]) {
-    case 0:
-      loginState.sambaPassword = json["data"];
-      break;
     case 1:
       loginState.sambaPassword = json["data"];
       break;
     case 2:
-      throw UnimplementedError("Password encryption not supported yet");
+      loginState.sambaPassword = json["data"];
+      break;
     case 3:
+      throw UnimplementedError("Password encryption not supported yet");
+    case 4:
       throw UnimplementedError("Password unlisted not supported yet");
     default:
       throw Exception("Unexpected password type: ${json["mode"]}");
