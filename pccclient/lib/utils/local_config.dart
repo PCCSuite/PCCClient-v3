@@ -7,7 +7,7 @@ part 'local_config.g.dart';
 
 const String _fileName = "pccclient_config.json";
 
-late final LocalConfig localConfig;
+LocalConfig localConfig = LocalConfig(1, "", "", "");
 
 @JsonSerializable()
 class LocalConfig {
@@ -16,9 +16,11 @@ class LocalConfig {
   final String authMethod;
   final String pluginSysConfig;
 
-  LocalConfig(this.configVersion, this.serverURL, this.authMethod, this.pluginSysConfig);
+  LocalConfig(this.configVersion, this.serverURL, this.authMethod,
+      this.pluginSysConfig);
 
-  factory LocalConfig.fromJson(Map<String, dynamic> json) => _$LocalConfigFromJson(json);
+  factory LocalConfig.fromJson(Map<String, dynamic> json) =>
+      _$LocalConfigFromJson(json);
 
   Map<String, dynamic> toJson() => _$LocalConfigToJson(this);
 }
@@ -30,5 +32,4 @@ readConfig() {
   String str = file.readAsStringSync();
   var json = jsonDecode(str);
   localConfig = LocalConfig.fromJson(json);
-  // localConfig = LocalConfig(1, "", "", "");
 }
