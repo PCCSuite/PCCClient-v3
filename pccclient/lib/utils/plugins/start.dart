@@ -9,6 +9,8 @@ import 'package:pccclient/utils/server_info.dart';
 
 import 'package:path/path.dart' as path;
 
+Process? pluginSysProcess;
+
 Future<void> startPluginSys() async {
   var logDir = Directory(pluginSysConfig!.tempDir);
   if (await logDir.exists()) {
@@ -20,7 +22,7 @@ Future<void> startPluginSys() async {
   } else {
     await logDir.create();
   }
-  var process = await Process.start("cmd.exe", [
+  pluginSysProcess = await Process.start("cmd.exe", [
     "/C",
     "${serverInfo.pluginSysPath}\\PCCPluginSys.exe",
     "host",
@@ -30,7 +32,7 @@ Future<void> startPluginSys() async {
     "2>&1",
   ]);
   pluginSysStatus = PluginSysStatus.starting;
-  process.exitCode.whenComplete(() {
+  pluginSysProcess!.exitCode.whenComplete(() {
     pluginSysStatus = PluginSysStatus.stopped;
   });
   _connectPluginSys(10);
