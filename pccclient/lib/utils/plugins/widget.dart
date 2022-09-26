@@ -74,7 +74,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
         onPressed: () {
           startPluginRestore();
         },
-        child: Text("temp"),
+        child: const Text("temp"),
       ));
     } else {
       List<String> builtName = [];

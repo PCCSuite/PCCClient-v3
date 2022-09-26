@@ -15,7 +15,7 @@ Future<void> startPluginSys() async {
   var logDir = Directory(pluginSysConfig!.tempDir);
   if (await logDir.exists()) {
     try {
-      _connectPluginSys(0);
+      await _connectPluginSys(0);
       pluginSysStatus = PluginSysStatus.starting;
       return;
     } catch (_) {}
