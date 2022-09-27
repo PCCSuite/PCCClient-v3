@@ -38,5 +38,5 @@ class ActivePluginData {
         locking = json["locking"],
         status = ActionStatus.from(json["status"]),
         statusText = json["status_text"],
-        dependency = json["dependency"];
+        dependency = json["dependency"].cast<String>();
 }
