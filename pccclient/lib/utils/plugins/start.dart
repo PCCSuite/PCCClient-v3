@@ -35,16 +35,20 @@ Future<void> startPluginSys() async {
   pluginSysProcess!.exitCode.whenComplete(() {
     pluginSysStatus = PluginSysStatus.stopped;
   });
-  _connectPluginSys(10);
+  await _connectPluginSys(10);
 }
 
 Socket? socket;
 
 Future<void> _connectPluginSys(int retryNum) async {
   var sock = await _connectSocket(retryNum);
+  sock.done.whenComplete(() {
+    pluginSysStatus = PluginSysStatus.stopped;
+  });
   sock.write(
       json.encode({"data_type": "negotiate", "client_type": "pccclient"}));
   sock.flush();
+  print("listener");
   sock.listen(_listener);
 }
 
@@ -64,14 +68,19 @@ Future<Socket> _connectSocket(int retryNum) async {
 }
 
 void _listener(Uint8List data) {
+  print("listen");
   Map<String, dynamic> map = json.decode(utf8.decode(data));
+  print("listen");
   switch (map["data_type"]) {
     case "notify":
+      print("notify");
       pluginSysStatus = PluginSysStatus.from(map["status"]);
       List<ActivePluginData> newActivePlugins = [];
       for (Map<String, dynamic> pluginRaw in map["plugins"]) {
         newActivePlugins.add(ActivePluginData.fromJson(pluginRaw));
       }
       activePlugins = newActivePlugins;
+      print("notify done");
   }
+  print("end");
 }
