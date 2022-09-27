@@ -54,7 +54,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
       dest.add(_PluginStatusRow(
         status: target.status,
         name: target.name,
-        statusText: target.name,
+        statusText: target.statusText,
         indent: depth * indentPerDepth,
       ));
       _builtPluginChildList(dest, builtName, target.dependency, depth + 1);
@@ -81,18 +81,6 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
       _builtPluginChildList(
           list, builtName, pluginsData.map((e) => e.name).toList(), 0);
     }
-    // for (ActivePluginData pluginData in pluginsData) {
-    //   if (builtName.contains(pluginData.name)) {
-    //     continue;
-    //   }
-    //   builtName.add(pluginData.name);
-    //   list.add(_PluginStatusRow(
-    //     status: pluginData.status,
-    //     name: pluginData.name,
-    //     statusText: pluginData.name,
-    //     indent: 0,
-    //   ));
-    // }
     return ListView(
       children: list,
     );
