@@ -11,10 +11,15 @@ LocalConfig localConfig = LocalConfig(1, "", "", "", true);
 
 @JsonSerializable()
 class LocalConfig {
+  @JsonKey(defaultValue: 1)
   final int configVersion;
+  @JsonKey(defaultValue: "")
   final String serverURL;
+  @JsonKey(defaultValue: "")
   final String authMethod;
+  @JsonKey(defaultValue: "")
   final String pluginSysConfig;
+  @JsonKey(defaultValue: true)
   final bool autoRestore;
 
   LocalConfig(this.configVersion, this.serverURL, this.authMethod,
