@@ -72,8 +72,7 @@
   "plugin_sys_status_starting": "起動中",
   "plugin_sys_status_readying": "準備中",
   "plugin_sys_status_ready": "準備完了",
-  "plugin_sys_status_restoring": "リストア中",
-  "plugin_sys_status_standby": "待機中",
+  "plugin_sys_status_running": "動作中",
   "plugin_sys_status_stopped": "停止中(クラッシュ?)",
 
   "plugin_sys_restart": "再起動",

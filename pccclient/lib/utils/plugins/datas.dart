@@ -31,7 +31,7 @@ class ActivePluginData {
 
   @JsonKey(name: "name")
   final String name;
-  @JsonKey(name: "repo_dir")
+  @JsonKey(name: "repodir")
   final String repoDir;
   @JsonKey(name: "installed")
   final bool installed;

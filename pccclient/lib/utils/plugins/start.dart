@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:pccclient/utils/local_config.dart';
+import 'package:pccclient/utils/plugins/command.dart';
 import 'package:pccclient/utils/plugins/datas.dart';
 import 'package:pccclient/utils/plugins/files.dart';
 import 'package:pccclient/utils/plugins/status_enum.dart';
@@ -68,19 +70,17 @@ Future<Socket> _connectSocket(int retryNum) async {
 }
 
 void _listener(Uint8List data) {
-  print("listen");
   Map<String, dynamic> map = json.decode(utf8.decode(data));
-  print("listen");
   switch (map["data_type"]) {
     case "notify":
-      print("notify");
       pluginSysStatus = PluginSysStatus.from(map["status"]);
       List<ActivePluginData> newActivePlugins = [];
       for (Map<String, dynamic> pluginRaw in map["plugins"]) {
         newActivePlugins.add(ActivePluginData.fromJson(pluginRaw));
       }
       activePlugins = newActivePlugins;
-      print("notify done");
+      if (pluginSysStatus == PluginSysStatus.ready && localConfig.autoRestore) {
+        startPluginRestore();
+      }
   }
-  print("end");
 }

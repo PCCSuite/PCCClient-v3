@@ -7,8 +7,7 @@ enum PluginSysStatus {
   stopped(-2),
   readying(1),
   ready(2),
-  restoring(3),
-  standby(4);
+  running(3);
 
   final int data;
   const PluginSysStatus(this.data);
@@ -28,10 +27,8 @@ extension PluginSysStatusExt on PluginSysStatus {
         return str.plugin_sys_status_readying;
       case PluginSysStatus.ready:
         return str.plugin_sys_status_ready;
-      case PluginSysStatus.restoring:
-        return str.plugin_sys_status_restoring;
-      case PluginSysStatus.standby:
-        return str.plugin_sys_status_standby;
+      case PluginSysStatus.running:
+        return str.plugin_sys_status_running;
     }
   }
 }
