@@ -52,8 +52,8 @@ class _LoggingInStateWidget extends StatefulWidget {
 class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
   late StateMsgSet _getSambaPassState;
   late StateMsgSet _mountSambaState = StateMsgSet(ProcessState.waiting, str.loggingin_mount_wait);
-  late StateMsgSet _startPluginSysState = StateMsgSet(ProcessState.waiting, str.loggingin_load_plugin_wait);
-  late StateMsgSet _loadPluginSysConfigState = StateMsgSet(ProcessState.waiting, str.loggingin_start_plugin_wait);
+  late StateMsgSet _loadPluginSysConfigState = StateMsgSet(ProcessState.waiting, str.loggingin_load_plugin_wait);
+  late StateMsgSet _startPluginSysState = StateMsgSet(ProcessState.waiting, str.loggingin_start_plugin_wait);
   late StateMsgSet _connectCliManState;
 
   int _runningProcess = 0;
@@ -207,8 +207,8 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
     content.add(_LoggingInStateRow(_getSambaPassState));
     content.add(_LoggingInStateRow(_mountSambaState));
     if (environment.enablePlugin) {
-      content.add(_LoggingInStateRow(_startPluginSysState));
       content.add(_LoggingInStateRow(_loadPluginSysConfigState));
+      content.add(_LoggingInStateRow(_startPluginSysState));
     }
     content.add(_LoggingInStateRow(_connectCliManState));
     return Column(
