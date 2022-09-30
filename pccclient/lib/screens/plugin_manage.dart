@@ -28,28 +28,28 @@ class _ManagePluginWidget extends StatefulWidget {
   State<_ManagePluginWidget> createState() => _ManagePluginWidgetState();
 }
 
-final String _INSTALLED = str.manage_plugin_installed;
-final String _FAVORITE = str.manage_plugin_favorite;
+final String _installed = str.manage_plugin_installed;
+final String _favorite = str.manage_plugin_favorite;
 
 class _ManagePluginWidgetState extends State<_ManagePluginWidget> {
-  String showing = _INSTALLED;
+  String showing = _installed;
 
   @override
   Widget build(BuildContext context) {
     List<Widget> list = [
       ListTile(
-        title: Text(_INSTALLED),
+        title: Text(_installed),
         onTap: () {
           setState(() {
-            showing = _INSTALLED;
+            showing = _installed;
           });
         },
       ),
       ListTile(
-        title: Text(_FAVORITE),
+        title: Text(_favorite),
         onTap: () {
           setState(() {
-            showing = _FAVORITE;
+            showing = _favorite;
           });
         },
       ),
