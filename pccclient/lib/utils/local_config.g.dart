@@ -7,11 +7,11 @@ part of 'local_config.dart';
 // **************************************************************************
 
 LocalConfig _$LocalConfigFromJson(Map<String, dynamic> json) => LocalConfig(
-      json['configVersion'] as int,
-      json['serverURL'] as String,
-      json['authMethod'] as String,
-      json['pluginSysConfig'] as String,
-      json['autoRestore'] as bool,
+      json['configVersion'] as int? ?? 1,
+      json['serverURL'] as String? ?? '',
+      json['authMethod'] as String? ?? '',
+      json['pluginSysConfig'] as String? ?? '',
+      json['autoRestore'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$LocalConfigToJson(LocalConfig instance) =>
