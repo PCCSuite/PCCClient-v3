@@ -10,6 +10,8 @@ import 'package:pccclient/screens/login_webview.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+const version = "3.0.0-alpha.1";
+
 void main() async {
   runApp(const MyApp());
 }
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PCCClient v3.0.0-alpha',
+      title: 'PCCClient v$version',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData.dark(),
