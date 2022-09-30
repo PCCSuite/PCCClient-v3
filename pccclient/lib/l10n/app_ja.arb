@@ -58,6 +58,10 @@
   "home_drawer_settings": "設定",
   "home_drawer_debug": "開発者向け",
 
+  "manage_plugin_title": "プラグイン管理",
+  "manage_plugin_installed": "インストール済み",
+  "manage_plugin_favorite": "お気に入り",
+
   "plugin_status_waitStart": "処理開始待ち",
   "plugin_status_waitDepend": "依存関係の完了待ち",
   "plugin_status_waitLock": "排他制御開放待ち",
@@ -71,6 +75,9 @@
   "plugin_sys_status_restoring": "リストア中",
   "plugin_sys_status_standby": "待機中",
   "plugin_sys_status_stopped": "停止中(クラッシュ?)",
+
+  "plugin_sys_restart": "再起動",
+  "plugin_sys_start_restore": "リストア開始",
 
   "debug_title": "Debug"
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pccclient/utils/general.dart';
+import 'package:pccclient/utils/local_config.dart';
 import 'package:pccclient/utils/plugins/command.dart';
 import 'package:pccclient/utils/plugins/datas.dart';
+import 'package:pccclient/utils/plugins/start.dart';
 import 'package:pccclient/utils/plugins/status_enum.dart';
 
 class PluginSysStatusWidget extends StatefulWidget {
@@ -69,18 +72,31 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
         "PluginSysステータス: ${sysStatus.message}",
       ),
     ));
-    if (sysStatus == PluginSysStatus.ready) {
-      list.add(FloatingActionButton(
-        onPressed: () {
-          startPluginRestore();
-        },
-        child: const Text("temp"),
-      ));
-    } else {
-      List<String> builtName = [];
-      _builtPluginChildList(
-          list, builtName, pluginsData.map((e) => e.name).toList(), 0);
+    switch (sysStatus) {
+      case PluginSysStatus.ready: {
+        list.add(FloatingActionButton(
+          onPressed: () {
+            startPluginRestore();
+          },
+          child: Text(str.plugin_sys_start_restore),
+        ));
+        break;
+      }
+      case PluginSysStatus.stopped: {
+        list.add(FloatingActionButton(
+          onPressed: () {
+            startPluginSys();
+          },
+          child: Text(str.plugin_sys_restart),
+        ));
+        break;
+      }
     }
+    if (sysStatus == PluginSysStatus.ready) {
+    }
+    List<String> builtName = [];
+    _builtPluginChildList(
+        list, builtName, pluginsData.map((e) => e.name).toList(), 0);
     return ListView(
       children: list,
     );

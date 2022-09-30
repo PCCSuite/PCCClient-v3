@@ -17,7 +17,7 @@ class PluginSysConfig {
   @JsonKey(name: "plugins_list")
   final String pluginsList;
   @JsonKey(name: "repositories")
-  final List<String> repositories;
+  final Map<String,String> repositories;
   @JsonKey(name: "data_dir")
   final String dataDir;
   @JsonKey(name: "temp_dir")

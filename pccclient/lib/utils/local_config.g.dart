@@ -11,6 +11,7 @@ LocalConfig _$LocalConfigFromJson(Map<String, dynamic> json) => LocalConfig(
       json['serverURL'] as String,
       json['authMethod'] as String,
       json['pluginSysConfig'] as String,
+      json['autoRestore'] as bool,
     );
 
 Map<String, dynamic> _$LocalConfigToJson(LocalConfig instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$LocalConfigToJson(LocalConfig instance) =>
       'serverURL': instance.serverURL,
       'authMethod': instance.authMethod,
       'pluginSysConfig': instance.pluginSysConfig,
+      'autoRestore': instance.autoRestore,
     };

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:pccclient/utils/general.dart';
 
 enum PluginSysStatus {
@@ -35,20 +36,21 @@ extension PluginSysStatusExt on PluginSysStatus {
   }
 }
 
+@JsonEnum(fieldRename: FieldRename.snake)
 enum ActionStatus {
-  loaded("loaded"),
-  waitStart("wait_start"),
-  running("running"),
-  waitDepend("wait_depend"),
-  waitLock("wait_lock"),
-  done("done"),
-  failed("failed");
+  loaded,
+  waitStart,
+  running,
+  waitDepend,
+  waitLock,
+  done,
+  failed;
 
-  final String data;
-  const ActionStatus(this.data);
-  factory ActionStatus.from(String data) {
-    return ActionStatus.values.firstWhere((element) => element.data == data);
-  }
+  // final String data;
+  // const ActionStatus(this.data);
+  // factory ActionStatus.from(String data) {
+  //   return ActionStatus.values.firstWhere((element) => element.data == data);
+  // }
 }
 
 extension ActionStatusExt on ActionStatus {

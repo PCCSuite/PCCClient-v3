@@ -27,7 +27,7 @@ class _LoggingInStateRow extends StatelessWidget {
 class LoggingInScreen extends StatelessWidget {
   static const routeName = "/logging_in";
 
-  static const screenName = "ログイン中...";
+  static final screenName = str.loggingin_title;
 
   const LoggingInScreen({Key? key}) : super(key: key);
 
@@ -35,7 +35,7 @@ class LoggingInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(LoggingInScreen.screenName),
+        title: Text(LoggingInScreen.screenName),
       ),
       body: const _LoggingInStateWidget(),
     );

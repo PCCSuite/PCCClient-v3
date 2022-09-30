@@ -9,7 +9,7 @@ part of 'files.dart';
 PluginSysConfig _$PluginSysConfigFromJson(Map<String, dynamic> json) =>
     PluginSysConfig(
       json['plugins_list'] as String,
-      (json['repositories'] as List<dynamic>).map((e) => e as String).toList(),
+      Map<String, String>.from(json['repositories'] as Map),
       json['data_dir'] as String,
       json['temp_dir'] as String,
     );
