@@ -38,7 +38,7 @@ LocalConfig readConfig() {
     // Failed to read config
   }
   Map<String,dynamic> json = localConfig.toJson();
-  String str = jsonEncode(json);
+  String str = const JsonEncoder.withIndent("    ").convert(json);
   file.writeAsStringSync(str);
   return localConfig;
 }
