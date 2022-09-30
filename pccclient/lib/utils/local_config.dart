@@ -30,11 +30,15 @@ class LocalConfig {
 
 LocalConfig readConfig() {
   File file = File(_fileName);
-  String str = file.readAsStringSync();
-  var json = jsonDecode(str);
-  localConfig = LocalConfig.fromJson(json);
-  json = localConfig.toJson();
-  str = jsonEncode(json);
+  try {
+    String str = file.readAsStringSync();
+    var json = jsonDecode(str);
+    localConfig = LocalConfig.fromJson(json);
+  } catch (_) {
+    // Failed to read config
+  }
+  Map<String,dynamic> json = localConfig.toJson();
+  String str = jsonEncode(json);
   file.writeAsStringSync(str);
   return localConfig;
 }
