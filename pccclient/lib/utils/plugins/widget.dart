@@ -74,7 +74,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
     ));
     switch (sysStatus) {
       case PluginSysStatus.ready: {
-        list.add(FloatingActionButton(
+        list.add(ElevatedButton(
           onPressed: () {
             startPluginRestore();
           },
@@ -83,7 +83,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
         break;
       }
       case PluginSysStatus.stopped: {
-        list.add(FloatingActionButton(
+        list.add(ElevatedButton(
           onPressed: () {
             startPluginSys();
           },
@@ -91,8 +91,6 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
         ));
         break;
       }
-    }
-    if (sysStatus == PluginSysStatus.ready) {
     }
     List<String> builtName = [];
     _builtPluginChildList(
