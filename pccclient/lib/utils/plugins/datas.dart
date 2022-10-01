@@ -27,12 +27,12 @@ set activePlugins(List<ActivePluginData> newData) {
 
 @JsonSerializable()
 class ActivePluginData {
-  ActivePluginData(this.name, this.repoDir, this.installed, this.locking, this.status, this.statusText, this.dependency);
+  ActivePluginData(this.name, this.repository, this.installed, this.locking, this.status, this.statusText, this.dependency);
 
   @JsonKey(name: "name")
   final String name;
-  @JsonKey(name: "repodir")
-  final String repoDir;
+  @JsonKey(name: "repository")
+  final String repository;
   @JsonKey(name: "installed")
   final bool installed;
   @JsonKey(name: "locking")

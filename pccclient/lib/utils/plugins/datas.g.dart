@@ -9,7 +9,7 @@ part of 'datas.dart';
 ActivePluginData _$ActivePluginDataFromJson(Map<String, dynamic> json) =>
     ActivePluginData(
       json['name'] as String,
-      json['repodir'] as String,
+      json['repository'] as String,
       json['installed'] as bool,
       json['locking'] as bool,
       $enumDecode(_$ActionStatusEnumMap, json['status']),
@@ -20,7 +20,7 @@ ActivePluginData _$ActivePluginDataFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ActivePluginDataToJson(ActivePluginData instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'repodir': instance.repoDir,
+      'repository': instance.repository,
       'installed': instance.installed,
       'locking': instance.locking,
       'status': _$ActionStatusEnumMap[instance.status]!,
