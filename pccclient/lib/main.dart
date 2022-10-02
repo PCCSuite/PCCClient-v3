@@ -10,7 +10,7 @@ import 'package:pccclient/screens/login_webview.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-const version = "3.0.0-alpha.1";
+const version = "3.0.0-alpha.2";
 
 void main() async {
   runApp(const MyApp());
