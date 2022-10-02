@@ -78,7 +78,7 @@ class _DebugMenuState extends State<_DebugMenu> {
             }();
             future.then((value) {
               setState(() {
-                result = value;
+                result = value ? "true" : "false";
               });
             });
             future.catchError((err, trace) {
