@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/server_info.dart';
 import 'package:http/http.dart' as http;
@@ -81,9 +82,9 @@ Future<void> getSambaPass() async {
   }
 }
 
-Future<void> mountSamba() async {
+Future<void> mountSamba(BuildContext context) async {
   if (Platform.isWindows) {
-    await _mountWindows();
+    await _mountWindows(context);
     return;
   }
   if (Platform.isLinux) {
@@ -93,7 +94,30 @@ Future<void> mountSamba() async {
   throw UnimplementedError("Unsupported platform to mount");
 }
 
-Future<void> _mountWindows() async {
+Future<void> _mountWindows(BuildContext context) async {
+  bool hasMounted =
+      await File.fromUri(Uri.directory("A:\\", windows: true)).exists();
+  if (hasMounted) {
+    bool remount = await showDialog(context: context, builder: (context) => AlertDialog(
+      content: Text(str.mount_already_mounted),
+      actions: [
+        SimpleDialogOption(
+          child: Text(str.mount_unmount),
+          onPressed: () => Navigator.pop(context, true),
+        ),
+        SimpleDialogOption(
+          child: Text(str.mount_skip),
+          onPressed: () => Navigator.pop(context, false),
+        ),
+      ],
+    ));
+    if (remount) {
+      await _unmountWindowsCmd("A:");
+      await _unmountWindowsCmd("B:");
+    } else {
+      return;
+    }
+  }
   await _mountWindowsCmd(loginState.username!, loginState.sambaPassword!,
       "\\\\${serverInfo.sambaServer}\\pcc_homes_v3", "A:");
   await _mountWindowsCmd(loginState.username!, loginState.sambaPassword!,
@@ -104,6 +128,16 @@ Future<void> _mountWindows() async {
 Future<void> _mountWindowsCmd(
     String username, String password, String path, String letter) async {
   List<String> param = ["use", letter, path, password, "/user:$username", "/y"];
+  var process = await Process.run('net', param);
+  if (process.exitCode != 0) {
+    throw Exception(
+        "Failed to execute: net ${param.join(" ")}\n${process.stderr} ${process.stdout}");
+  }
+}
+
+// letter should "X:"
+Future<void> _unmountWindowsCmd(String letter) async {
+  List<String> param = ["use", letter, "/DELETE", "/y"];
   var process = await Process.run('net', param);
   if (process.exitCode != 0) {
     throw Exception(

@@ -89,7 +89,7 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
           StateMsgSet(ProcessState.getting, str.loggingin_mount_start);
     });
     _runningProcess++;
-    var mountSambaFuture = mountSamba();
+    var mountSambaFuture = mountSamba(context);
     mountSambaFuture.then((_) {
       setState(() {
         _mountSambaState =

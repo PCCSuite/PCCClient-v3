@@ -54,6 +54,10 @@
   "loggingin_climan_done": "PCCCliMan接続完了",
   "loggingin_climan_fail": "PCCCliMan接続失敗",
 
+  "mount_already_mounted": "pcc_homesはすでにマウント済みです。",
+  "mount_unmount": "アンマウントして再マウントする",
+  "mount_skip": "何もしない",
+
   "home_title": "Home",
   "home_drawer_plugin": "プラグイン管理",
   "home_drawer_settings": "設定",
