@@ -43,6 +43,7 @@ dependencies:
   url_launcher: ^6.1.5
   web_socket_channel: ^2.2.0
   path: ^1.8.2
+  xml: ^6.1.0
 
 dev_dependencies:
   flutter_test:
