@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/loggingin.dart';
-
-import '../utils/auth.dart';
-import '../utils/general.dart';
 
 class LoginAppScreen extends StatefulWidget {
   const LoginAppScreen({Key? key}) : super(key: key);

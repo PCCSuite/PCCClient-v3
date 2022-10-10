@@ -1,5 +1,4 @@
 import 'package:pccclient/utils/general.dart';
-import 'package:pccclient/utils/server_info.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 late WebSocketChannel _channel;

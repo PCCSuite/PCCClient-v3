@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pccclient/screens/loggingin.dart';
+import 'package:pccclient/screens/part/error.dart';
 import 'package:pccclient/utils/auth.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/server_info.dart';
@@ -79,8 +80,8 @@ class _LoginBrowserScreenState extends State<LoginBrowserScreen> {
         status = str.login_browser_server_started;
       });
       _openBrowser();
-    } on Exception catch (e) {
-      print(e);
+    } catch (err, trace) {
+      showError(context, err, trace);
       setState(() {
         status = str.login_browser_server_start_failed;
       });
@@ -99,8 +100,8 @@ class _LoginBrowserScreenState extends State<LoginBrowserScreen> {
       setState(() {
         status = str.login_browser_launched_browser;
       });
-    } on Exception catch (e) {
-      print(e);
+    } catch (err, trace) {
+      showError(context, err, trace);
       setState(() {
         status = str.login_browser_launch_browser_failed;
       });

@@ -50,7 +50,6 @@ Future<void> _connectPluginSys(int retryNum) async {
   sock.write(
       json.encode({"data_type": "negotiate", "client_type": "pccclient"}));
   sock.flush();
-  print("listener");
   sock.listen(_listener);
 }
 

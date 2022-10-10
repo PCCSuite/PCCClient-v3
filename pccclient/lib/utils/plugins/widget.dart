@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pccclient/utils/general.dart';
-import 'package:pccclient/utils/local_config.dart';
 import 'package:pccclient/utils/plugins/command.dart';
 import 'package:pccclient/utils/plugins/datas.dart';
 import 'package:pccclient/utils/plugins/start.dart';
@@ -91,6 +90,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
         ));
         break;
       }
+      default:
     }
     List<String> builtName = [];
     _builtPluginChildList(

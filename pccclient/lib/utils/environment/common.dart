@@ -20,8 +20,8 @@ enum MachineType {
 
 Future<void> checkEnv() async {
   // debug
-  environment = Environment(MachineType.resetWindows);
-  return;
+  // environment = Environment(MachineType.resetWindows);
+  // return;
 
   if (Platform.isWindows) {
     await checkEnvWindows();

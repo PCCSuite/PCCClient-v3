@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:json_annotation/json_annotation.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/server_info.dart';
 import 'package:http/http.dart' as http;
-
-import 'local_config.dart';
 
 Future<void> getServer() async {
   await getServerInfo();
