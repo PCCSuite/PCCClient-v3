@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/general.dart';
+import '../utils/general.dart';
 
-Future<void> showError(BuildContext context, err, trace) async {
+Future<void> showPluginAddDialog(
+    BuildContext context, String plugin, bool install, bool favorite) async {
   await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => AlertDialog(
-            title: Text(str.error_dialog_title),
+            title: Text(str.plugin_add_dialog_title),
             scrollable: true,
-            content: getErrorContent(err, trace),
+            content: Form(
+              child: Column(
+                children: [
+                  Checkbox(
+                    value: true,
+                    onChanged: (bool? value) {},
+                  ),
+                ],
+              )
+            ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -20,13 +30,4 @@ Future<void> showError(BuildContext context, err, trace) async {
               )
             ],
           ));
-}
-
-Column getErrorContent(err, trace) {
-  return Column(
-    children: [
-      Text(str.error_dialog_description),
-      Text("${err.toString()}\n${trace.toString()}"),
-    ],
-  );
 }

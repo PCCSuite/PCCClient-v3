@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pccclient/utils/plugins/status_enum.dart';
 import 'package:pccclient/utils/plugins/widget.dart';
@@ -48,13 +47,12 @@ class ActivePluginData {
       _$ActivePluginDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$ActivePluginDataToJson(this);
+}
 
-  // ActivePluginData.fromJson(Map<String, dynamic> json)
-  //     : name = json["name"],
-  //       repoDir = json["repodir"],
-  //       installed = json["installed"],
-  //       locking = json["locking"],
-  //       status = ActionStatus.from(json["status"]),
-  //       statusText = json["status_text"],
-  //       dependency = json["dependency"].cast<String>();
+class Plugin {
+  final String name;
+  final String? repositoryName;
+  final String? dir;
+
+  Plugin(this.name, this.repositoryName, this.dir);
 }

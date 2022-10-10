@@ -9,6 +9,8 @@ import 'package:pccclient/screens/login_select.dart';
 import 'package:pccclient/screens/login_webview.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pccclient/screens/plugin_detail.dart';
+import 'package:pccclient/screens/plugin_manage.dart';
 
 const version = "3.0.0-alpha.2";
 
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
         LoginAppScreen.routeName: (context) => const LoginAppScreen(),
         LoggingInScreen.routeName: (context) => const LoggingInScreen(),
         HomeScreen.routeName: (context) => const HomeScreen(),
+        PluginManageScreen.routeName: (context) => const PluginManageScreen(),
+        PluginDetailScreen.routeName: (context) => const PluginDetailScreen(),
         DebugScreen.routeName: (context) => const DebugScreen(),
       },
     );

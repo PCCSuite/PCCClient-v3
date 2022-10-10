@@ -55,12 +55,25 @@
   "loggingin_climan_fail": "PCCCliMan接続失敗",
 
   "home_title": "Home",
+  "home_drawer_plugin": "プラグイン管理",
   "home_drawer_settings": "設定",
   "home_drawer_debug": "開発者向け",
 
-  "manage_plugin_title": "プラグイン管理",
-  "manage_plugin_installed": "インストール済み",
-  "manage_plugin_favorite": "お気に入り",
+  "plugin_manage_title": "プラグイン管理",
+  "plugin_manage_installed": "インストール済み",
+  "plugin_manage_favorite": "お気に入り",
+  "plugin_manage_repository": "リポジトリ",
+
+  "plugin_detail_title": "プラグイン詳細",
+  "plugin_detail_name": "プラグイン名",
+  "plugin_detail_repository": "リポジトリ",
+  "plugin_detail_version": "プラグインバージョン",
+  "plugin_detail_description": "説明",
+  "plugin_detail_author": "プラグイン作成者",
+  "plugin_detail_licence": "プラグインのライセンス",
+  "plugin_detail_dependency": "依存関係",
+  "plugin_detail_config": "設定",
+  "plugin_detail_unknown": "不明",
 
   "plugin_status_waitStart": "処理開始待ち",
   "plugin_status_waitDepend": "依存関係の完了待ち",
@@ -68,6 +81,8 @@
   "plugin_status_running": "動作中",
   "plugin_status_done": "完了",
   "plugin_status_failed": "失敗",
+
+  "plugin_add_dialog_title": "プラグインの追加",
 
   "plugin_sys_status_starting": "起動中",
   "plugin_sys_status_readying": "準備中",

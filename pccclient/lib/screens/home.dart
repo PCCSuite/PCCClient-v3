@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:pccclient/screens/debug.dart';
+import 'package:pccclient/screens/plugin_manage.dart';
 import 'package:pccclient/utils/environment/common.dart';
 import 'package:pccclient/utils/general.dart';
-import 'package:pccclient/utils/plugins/status_enum.dart';
 import 'package:pccclient/utils/plugins/widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -52,11 +50,18 @@ class _HomeDrawer extends StatelessWidget {
       child: ListView(
         children: [
           ListTile(
-            leading: Icon(Icons.settings),
+            leading: const Icon(Icons.settings_applications),
+            title: Text(str.home_drawer_plugin),
+            onTap: () {
+              Navigator.pushNamed(context, PluginManageScreen.routeName);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
             title: Text(str.home_drawer_settings),
           ),
           ListTile(
-            leading: Icon(Icons.developer_mode),
+            leading: const Icon(Icons.developer_mode),
             title: Text(str.home_drawer_debug),
             onTap: () {
               Navigator.pushNamed(context, DebugScreen.routeName);
