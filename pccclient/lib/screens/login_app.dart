@@ -87,11 +87,11 @@ class _LoginAppScreenState extends State<LoginAppScreen> {
                     ElevatedButton(
                       onPressed: isChangeable
                           ? () {
-                        if (_formKey.currentState!.validate()) {
-                          // loginState.entered = true;
-                          // loginState.checkState();
-                        }
-                      }
+                              if (_formKey.currentState!.validate()) {
+                                // loginState.entered = true;
+                                // loginState.checkState();
+                              }
+                            }
                           : null,
                       child: Padding(
                           padding: const EdgeInsets.all(16.0),

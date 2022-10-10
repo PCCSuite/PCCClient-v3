@@ -1,15 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-enum ProcessState {
-  waiting,
-  getting,
-  ok,
-  failed
-}
+enum ProcessState { waiting, getting, ok, failed }
 
 late AppLocalizations str;
 

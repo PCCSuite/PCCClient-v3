@@ -55,7 +55,7 @@ class _PluginManageWidgetState extends State<_PluginManageWidget> {
             showing = _installed;
           });
           _getInstalledView().then(
-                (value) {
+            (value) {
               setState(() {
                 content = value;
               });
@@ -175,17 +175,18 @@ class RepositoryView extends StatelessWidget {
 Future<Widget> _getInstalledView() async {
   try {
     List<Plugin> list = [];
-      for (var plugin in activePlugins) {
-        if (!plugin.installed && plugin.status == ActionStatus.failed) {
-          continue;
-        }
-        String? repoDir = pluginSysConfig!.repositories[plugin.repository];
-        if (repoDir != null) {
-          list.add(Plugin(plugin.name, plugin.repository, path.join(repoDir, plugin.name)));
-        } else {
-          list.add(Plugin(plugin.name, plugin.repository, null));
-        }
+    for (var plugin in activePlugins) {
+      if (!plugin.installed && plugin.status == ActionStatus.failed) {
+        continue;
       }
+      String? repoDir = pluginSysConfig!.repositories[plugin.repository];
+      if (repoDir != null) {
+        list.add(Plugin(
+            plugin.name, plugin.repository, path.join(repoDir, plugin.name)));
+      } else {
+        list.add(Plugin(plugin.name, plugin.repository, null));
+      }
+    }
     return InstalledView(
       list: list,
     );
@@ -195,8 +196,7 @@ Future<Widget> _getInstalledView() async {
 }
 
 class InstalledView extends StatelessWidget {
-  const InstalledView({Key? key, required this.list})
-      : super(key: key);
+  const InstalledView({Key? key, required this.list}) : super(key: key);
 
   final List<Plugin> list;
 
@@ -209,14 +209,14 @@ class InstalledView extends StatelessWidget {
       body: ListView(
         children: list
             .map((e) => ListTile(
-          title: Text(e.repositoryName != null
-              ? "${e.name} (${e.repositoryName})"
-              : e.name),
-          onTap: () {
-            Navigator.pushNamed(context, PluginDetailScreen.routeName,
-                arguments: e);
-          },
-        ))
+                  title: Text(e.repositoryName != null
+                      ? "${e.name} (${e.repositoryName})"
+                      : e.name),
+                  onTap: () {
+                    Navigator.pushNamed(context, PluginDetailScreen.routeName,
+                        arguments: e);
+                  },
+                ))
             .toList(),
       ),
     );

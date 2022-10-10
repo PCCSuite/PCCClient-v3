@@ -25,8 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
     ));
     if (environment.enablePlugin) {
       content.add(const SizedBox(
-          width: 400,
-          child: PluginSysStatusWidget()
+        width: 400,
+        child: PluginSysStatusWidget(),
       ));
     }
     return Scaffold(

@@ -18,7 +18,6 @@ class PluginDetailScreen extends StatefulWidget {
 }
 
 class _PluginDetailScreenState extends State<PluginDetailScreen> {
-
   Widget xmlWidget = const Text("Loading...");
 
   bool initiated = false;
@@ -33,24 +32,22 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
   @override
   Widget build(BuildContext context) {
     if (plugin == null) {
-      Plugin plugin = ModalRoute
-          .of(context)!
-          .settings
-          .arguments as Plugin;
+      Plugin plugin = ModalRoute.of(context)!.settings.arguments as Plugin;
       this.plugin = plugin;
       if (plugin.dir != null) {
-        Future<PluginXml> xmlFuture = loadPluginXml(
-            path.join(plugin.dir!, "plugin.xml"));
+        Future<PluginXml> xmlFuture =
+            loadPluginXml(path.join(plugin.dir!, "plugin.xml"));
         xmlFuture.then((value) {
           setState(() {
-            xmlWidget = _PluginXmlWidget(xml: value,);
+            xmlWidget = _PluginXmlWidget(
+              xml: value,
+            );
           });
-        },
-            onError: (err, trace) {
-              setState(() {
-                xmlWidget = getErrorContent(err, trace);
-              });
-            });
+        }, onError: (err, trace) {
+          setState(() {
+            xmlWidget = getErrorContent(err, trace);
+          });
+        });
       } else {
         xmlWidget = Container();
       }
@@ -62,7 +59,8 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
       body: ListView(
         children: [
           _PluginDetailRow(str.plugin_detail_name, plugin!.name),
-          _PluginDetailRow(str.plugin_detail_repository, plugin!.repositoryName),
+          _PluginDetailRow(
+              str.plugin_detail_repository, plugin!.repositoryName),
           xmlWidget,
         ],
       ),
@@ -84,10 +82,8 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
 //   }
 // }
 
-
 class _PluginXmlWidget extends StatelessWidget {
-  const _PluginXmlWidget({Key? key, required this.xml})
-      : super(key: key);
+  const _PluginXmlWidget({Key? key, required this.xml}) : super(key: key);
 
   final PluginXml xml;
 
@@ -99,7 +95,8 @@ class _PluginXmlWidget extends StatelessWidget {
         _PluginDetailRow(str.plugin_detail_description, xml.description),
         _PluginDetailRow(str.plugin_detail_author, xml.author),
         _PluginDetailRow(str.plugin_detail_licence, xml.licence),
-        _PluginDetailRow(str.plugin_detail_dependency, xml.dependency.join(", ")),
+        _PluginDetailRow(
+            str.plugin_detail_dependency, xml.dependency.join(", ")),
       ],
     );
   }
@@ -115,14 +112,16 @@ class _PluginDetailRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-        children: [
-          Container(
-            width: 300,
-            padding: const EdgeInsets.all(10.0),
-            child: Text(name,),
+      children: [
+        Container(
+          width: 300,
+          padding: const EdgeInsets.all(10.0),
+          child: Text(
+            name,
           ),
-          Text(value != null ? value! : str.plugin_detail_unknown),
-        ],
-      );
+        ),
+        Text(value != null ? value! : str.plugin_detail_unknown),
+      ],
+    );
   }
 }

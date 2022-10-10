@@ -11,15 +11,14 @@ Future<void> showPluginAddDialog(
             title: Text(str.plugin_add_dialog_title),
             scrollable: true,
             content: Form(
-              child: Column(
-                children: [
-                  Checkbox(
-                    value: true,
-                    onChanged: (bool? value) {},
-                  ),
-                ],
-              )
-            ),
+                child: Column(
+              children: [
+                Checkbox(
+                  value: true,
+                  onChanged: (bool? value) {},
+                ),
+              ],
+            )),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),

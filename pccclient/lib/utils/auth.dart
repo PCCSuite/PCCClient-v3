@@ -29,7 +29,8 @@ Future<bool> getUser() async {
   if (index == -1) {
     return false;
   }
-  loginState.username = result.substring(index, index + 7).replaceAll("ts", "pc");
+  loginState.username =
+      result.substring(index, index + 7).replaceAll("ts", "pc");
   return true;
 }
 
@@ -57,7 +58,8 @@ Future<void> getSambaPass() async {
   http.Response response = await http.get(Uri.parse(serverInfo.getSambaPassURL),
       headers: {"Authorization": "Bearer ${loginState.accessToken!}"});
   if (response.statusCode != 200) {
-    throw Exception("Failed to get token status: ${response.statusCode}, body: ${response.body}");
+    throw Exception(
+        "Failed to get token status: ${response.statusCode}, body: ${response.body}");
   }
   var json = jsonDecode(response.body);
   if (json["mode"] is! int) {
@@ -92,16 +94,17 @@ Future<void> mountSamba() async {
 }
 
 Future<void> _mountWindows() async {
-  await _mountWindowsCmd(loginState.username!, loginState.sambaPassword!, "\\\\${serverInfo.sambaServer}\\pcc_homes_v3", "A:");
-  await _mountWindowsCmd(loginState.username!, loginState.sambaPassword!, "\\\\${serverInfo.sambaServer}\\share_v3", "B:");
+  await _mountWindowsCmd(loginState.username!, loginState.sambaPassword!,
+      "\\\\${serverInfo.sambaServer}\\pcc_homes_v3", "A:");
+  await _mountWindowsCmd(loginState.username!, loginState.sambaPassword!,
+      "\\\\${serverInfo.sambaServer}\\share_v3", "B:");
 }
 
 // letter should "X:"
 Future<void> _mountWindowsCmd(
     String username, String password, String path, String letter) async {
   List<String> param = ["use", letter, path, password, "/user:$username", "/y"];
-  var process = await Process.run(
-      'net', param);
+  var process = await Process.run('net', param);
   if (process.exitCode != 0) {
     throw Exception(
         "Failed to execute: net ${param.join(" ")}\n${process.stderr} ${process.stdout}");
@@ -109,8 +112,10 @@ Future<void> _mountWindowsCmd(
 }
 
 Future<void> _mountLinux() async {
-  await _mountLinuxCmd(loginState.username!, loginState.sambaPassword!, serverInfo.sambaServer, "pcc_homes_v3");
-  await _mountLinuxCmd(loginState.username!, loginState.sambaPassword!, serverInfo.sambaServer, "share_v3");
+  await _mountLinuxCmd(loginState.username!, loginState.sambaPassword!,
+      serverInfo.sambaServer, "pcc_homes_v3");
+  await _mountLinuxCmd(loginState.username!, loginState.sambaPassword!,
+      serverInfo.sambaServer, "share_v3");
 }
 
 Future<void> _mountLinuxCmd(
@@ -119,6 +124,7 @@ Future<void> _mountLinuxCmd(
   var process = await Process.start('gio', param);
   process.stdin.write("\n$password\n");
   if (await process.exitCode != 0) {
-    throw Exception("Failed to mount: gio ${param.join(" ")}\n${await process.stderr.transform(utf8.decoder).join()} ${await process.stdout.transform(utf8.decoder).join()}");
+    throw Exception(
+        "Failed to mount: gio ${param.join(" ")}\n${await process.stderr.transform(utf8.decoder).join()} ${await process.stdout.transform(utf8.decoder).join()}");
   }
 }

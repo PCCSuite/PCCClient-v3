@@ -12,8 +12,8 @@ PluginSysConfig? pluginSysConfig;
 
 @JsonSerializable()
 class PluginSysConfig {
-  PluginSysConfig(this.pluginsList, this.repositories, this.dataDir,
-      this.tempDir);
+  PluginSysConfig(
+      this.pluginsList, this.repositories, this.dataDir, this.tempDir);
 
   @JsonKey(name: "plugins_list")
   final String pluginsList;
@@ -55,7 +55,8 @@ class PluginXml {
   factory PluginXml.fromXml(XmlDocument xml) {
     XmlElement plugin = xml.getElement("plugin")!;
     XmlElement general = plugin.getElement("general")!;
-    List<String> splitDesc = general.getElement("description")!.innerText.trim().split("\n");
+    List<String> splitDesc =
+        general.getElement("description")!.innerText.trim().split("\n");
     String description = splitDesc.map((e) => e.trim()).join("\n");
     XmlElement dependency = plugin.getElement("dependency")!;
     List<String> dependencyList = [];

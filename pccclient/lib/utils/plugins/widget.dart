@@ -72,24 +72,26 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
       ),
     ));
     switch (sysStatus) {
-      case PluginSysStatus.ready: {
-        list.add(ElevatedButton(
-          onPressed: () {
-            startPluginRestore();
-          },
-          child: Text(str.plugin_sys_start_restore),
-        ));
-        break;
-      }
-      case PluginSysStatus.stopped: {
-        list.add(ElevatedButton(
-          onPressed: () {
-            startPluginSys();
-          },
-          child: Text(str.plugin_sys_restart),
-        ));
-        break;
-      }
+      case PluginSysStatus.ready:
+        {
+          list.add(ElevatedButton(
+            onPressed: () {
+              startPluginRestore();
+            },
+            child: Text(str.plugin_sys_start_restore),
+          ));
+          break;
+        }
+      case PluginSysStatus.stopped:
+        {
+          list.add(ElevatedButton(
+            onPressed: () {
+              startPluginSys();
+            },
+            child: Text(str.plugin_sys_restart),
+          ));
+          break;
+        }
       default:
     }
     List<String> builtName = [];

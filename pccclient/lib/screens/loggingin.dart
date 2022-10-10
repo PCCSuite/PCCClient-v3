@@ -50,11 +50,16 @@ class _LoggingInStateWidget extends StatefulWidget {
 }
 
 class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
-  late StateMsgSet _getSambaPassState = StateMsgSet(ProcessState.waiting, str.loggingin_get_password_start);
-  late StateMsgSet _mountSambaState = StateMsgSet(ProcessState.waiting, str.loggingin_mount_wait);
-  late StateMsgSet _loadPluginSysConfigState = StateMsgSet(ProcessState.waiting, str.loggingin_load_plugin_wait);
-  late StateMsgSet _startPluginSysState = StateMsgSet(ProcessState.waiting, str.loggingin_start_plugin_wait);
-  late StateMsgSet _connectCliManState = StateMsgSet(ProcessState.waiting, str.loggingin_climan_start);
+  late StateMsgSet _getSambaPassState =
+      StateMsgSet(ProcessState.waiting, str.loggingin_get_password_start);
+  late StateMsgSet _mountSambaState =
+      StateMsgSet(ProcessState.waiting, str.loggingin_mount_wait);
+  late StateMsgSet _loadPluginSysConfigState =
+      StateMsgSet(ProcessState.waiting, str.loggingin_load_plugin_wait);
+  late StateMsgSet _startPluginSysState =
+      StateMsgSet(ProcessState.waiting, str.loggingin_start_plugin_wait);
+  late StateMsgSet _connectCliManState =
+      StateMsgSet(ProcessState.waiting, str.loggingin_climan_start);
 
   int _runningProcess = 0;
   int _errorShowing = 0;

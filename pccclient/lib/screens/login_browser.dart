@@ -59,7 +59,8 @@ class _LoginBrowserScreenState extends State<LoginBrowserScreen> {
           request.response.headers.contentType =
               ContentType("text", "html", charset: "utf-8");
           request.response.write("<script>window.close()</script>");
-          request.response.write("<h1>${str.login_browser_response_success}</h1>");
+          request.response
+              .write("<h1>${str.login_browser_response_success}</h1>");
           request.response.close();
           loginState.accessToken = params["access_token"];
           parseToken();

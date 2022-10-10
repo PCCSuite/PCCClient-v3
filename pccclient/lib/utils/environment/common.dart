@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:pccclient/utils/environment/windows.dart';
@@ -9,14 +8,11 @@ class Environment {
   MachineType machineType;
   bool enablePlugin;
 
-  Environment(this.machineType) : enablePlugin = (machineType == MachineType.resetWindows);
+  Environment(this.machineType)
+      : enablePlugin = (machineType == MachineType.resetWindows);
 }
 
-enum MachineType {
-  resetWindows,
-  unResetWindows,
-  linux
-}
+enum MachineType { resetWindows, unResetWindows, linux }
 
 Future<void> checkEnv() async {
   // debug
