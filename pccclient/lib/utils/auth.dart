@@ -96,7 +96,7 @@ Future<void> mountSamba(BuildContext context) async {
 
 Future<void> _mountWindows(BuildContext context) async {
   bool hasMounted =
-      await File.fromUri(Uri.directory("A:\\", windows: true)).exists();
+      await Directory.fromUri(Uri.directory("A:\\", windows: true)).exists();
   if (hasMounted) {
     bool remount = await showDialog(context: context, builder: (context) => AlertDialog(
       content: Text(str.mount_already_mounted),

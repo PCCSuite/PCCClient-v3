@@ -66,18 +66,18 @@ Future<bool> _isIpValid() async {
 }
 
 Future<bool> _hasLogonScript() async {
-  return await File.fromUri(Uri.directory("C:\\logon", windows: true)).exists();
+  return await Directory.fromUri(Uri.directory("C:\\logon", windows: true)).exists();
 }
 
 Future<bool> _hasUserDirectory() async {
-  return await File.fromUri(Uri.directory("C:\\Users\\user", windows: true))
+  return await Directory.fromUri(Uri.directory("C:\\Users\\user", windows: true))
       .exists();
 }
 
 Future<bool> _hasNetworkDrive() async {
   Future<bool> public =
-      File.fromUri(Uri.directory("P:\\", windows: true)).exists();
+      Directory.fromUri(Uri.directory("P:\\", windows: true)).exists();
   Future<bool> homes =
-      File.fromUri(Uri.directory("U:\\", windows: true)).exists();
+      Directory.fromUri(Uri.directory("U:\\", windows: true)).exists();
   return await public && await homes;
 }
