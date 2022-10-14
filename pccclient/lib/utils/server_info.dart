@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
@@ -37,18 +38,23 @@ class ServerInfo {
 late ServerInfo serverInfo;
 
 Future<ServerInfo> getServerInfo() async {
-  // http.Response response;
-  // response = await http.get(Uri.parse(localConfig.serverURL));
-  // var json = jsonDecode(response.body);
-  // serverInfo = ServerInfo.fromJson(json);
-  serverInfo = ServerInfo(
-      "http://pccs1.tama-st-h.local/keycloak/realms/pcc/protocol/openid-connect/auth?client_id=pccclient&response_type=token&scope=samba&redirect_uri=http%3A%2F%2Flocalhost%3A15456%2Freturn&response_mode=form_post&login_hint=",
-      "browser",
-      "http://pccs2.tama-st-h.local:8081/getPassword",
-      "pccs2.tama-st-h.local",
-      "http://pccs1.tama-st-h.local/",
-      "pccs1.tama-st-h.local",
-      "ws://pccs1.tama-st-h.local:8081/pccclient",
-      "B:\\PCCPlugin\\sys");
+  Uri uri = Uri.parse(localConfig.serverInfoURL);
+  String raw;
+  switch (uri.scheme.toLowerCase()) {
+    case "http":
+    case "https":
+      http.Response response = await http.get(uri);
+      raw = response.body;
+      var json = jsonDecode(response.body);
+      break;
+    case "file":
+      File file = File.fromUri(uri);
+      raw = file.readAsStringSync();
+      break;
+    default:
+      throw UnsupportedError("This uri is not supported");
+  }
+  var json = jsonDecode(raw);
+  serverInfo = ServerInfo.fromJson(json);
   return serverInfo;
 }
