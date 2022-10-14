@@ -11,10 +11,8 @@ LocalConfig localConfig = LocalConfig(1, "", "", "", true);
 
 @JsonSerializable()
 class LocalConfig {
-  @JsonKey(defaultValue: 1)
   final int configVersion;
-  @JsonKey(defaultValue: "")
-  final String serverURL;
+  final String serverInfoURL;
   @JsonKey(defaultValue: "")
   final String authMethod;
   @JsonKey(defaultValue: "")
@@ -22,7 +20,7 @@ class LocalConfig {
   @JsonKey(defaultValue: true)
   final bool autoRestore;
 
-  LocalConfig(this.configVersion, this.serverURL, this.authMethod,
+  LocalConfig(this.configVersion, this.serverInfoURL, this.authMethod,
       this.pluginSysConfig, this.autoRestore);
 
   factory LocalConfig.fromJson(Map<String, dynamic> json) =>
@@ -35,12 +33,10 @@ class LocalConfig {
 
 LocalConfig readConfig() {
   File file = File(_fileName);
-  try {
+  if (file.existsSync()) {
     String str = file.readAsStringSync();
     var json = jsonDecode(str);
     localConfig = LocalConfig.fromJson(json);
-  } catch (_) {
-    // Failed to read config
   }
   Map<String, dynamic> json = localConfig.toJson();
   String str = const JsonEncoder.withIndent("    ").convert(json);
