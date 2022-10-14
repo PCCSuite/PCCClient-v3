@@ -25,8 +25,8 @@ Future<void> showError(BuildContext context, err, trace) async {
 Column getErrorContent(err, trace) {
   return Column(
     children: [
-      Text(str.error_dialog_description),
-      Text("${err.toString()}\n${trace.toString()}"),
+      SelectableText(str.error_dialog_description),
+      SelectableText("${err.toString()}\n${trace.toString()}"),
     ],
   );
 }
