@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:pccclient/utils/environment/windows.dart';
+import 'package:pccclient/utils/local_config.dart';
 
 late Environment environment;
 
@@ -15,9 +16,11 @@ class Environment {
 enum MachineType { resetWindows, unResetWindows, linux }
 
 Future<void> checkEnv() async {
-  // debug
-  // environment = Environment(MachineType.resetWindows);
-  // return;
+  if (localConfig.environment != "") {
+    MachineType type = MachineType.values.byName(localConfig.environment);
+    environment = Environment(type);
+    return;
+  }
 
   if (Platform.isWindows) {
     await checkEnvWindows();

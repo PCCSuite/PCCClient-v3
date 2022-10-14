@@ -12,6 +12,7 @@ LocalConfig _$LocalConfigFromJson(Map<String, dynamic> json) => LocalConfig(
       json['authMethod'] as String? ?? '',
       json['pluginSysConfig'] as String? ?? '',
       json['autoRestore'] as bool? ?? true,
+      json['environment'] as String? ?? '',
     );
 
 Map<String, dynamic> _$LocalConfigToJson(LocalConfig instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$LocalConfigToJson(LocalConfig instance) =>
       'authMethod': instance.authMethod,
       'pluginSysConfig': instance.pluginSysConfig,
       'autoRestore': instance.autoRestore,
+      'environment': instance.environment,
     };
