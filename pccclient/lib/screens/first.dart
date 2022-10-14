@@ -28,97 +28,113 @@ class _InitializeStateView extends StatefulWidget {
 }
 
 class _InitializeStateViewState extends State<_InitializeStateView> {
-  late StateMsgSet _configState;
-  late StateMsgSet _envState;
-  late StateMsgSet _serverState;
-  late StateMsgSet _usernameState;
+  StateMsgSet _configState =
+      StateMsgSet(ProcessState.getting, str.init_load_config_start);
+  StateMsgSet _envState =
+      StateMsgSet(ProcessState.getting, str.init_check_env_start);
+  StateMsgSet _serverState =
+      StateMsgSet(ProcessState.getting, str.init_load_srv_info_wait);
+  StateMsgSet _usernameState =
+      StateMsgSet(ProcessState.getting, str.init_check_username_start);
 
-  int _remainProcess = 4;
+  int _runningProcess = 0;
   int _errorShowing = 0;
 
-  @override
-  void initState() {
-    _configState =
-        StateMsgSet(ProcessState.getting, str.init_load_config_start);
-    Future<void> configFuture = Future(readConfig);
-    configFuture.then((value) {
+  Future<void> _loadConfig() async {
+    try {
+      _runningProcess++;
+      readConfig();
       setState(() {
         _configState = StateMsgSet(ProcessState.ok, str.init_load_config_done);
       });
-      _remainProcess--;
-      _checkState();
-    });
-    configFuture.catchError((e, trace) {
+      _loadServer();
+      _runningProcess--;
+    } catch (e, trace) {
       setState(() {
         _configState =
             StateMsgSet(ProcessState.failed, str.init_load_config_fail);
       });
       _errorShow(e, trace);
-    });
-    _envState = StateMsgSet(ProcessState.getting, str.init_check_env_start);
-    Future<void> envFuture = checkEnv();
-    envFuture.then((value) {
+    }
+  }
+
+  Future<void> _loadServer() async {
+    try {
+      _runningProcess++;
+      setState(() {
+        _serverState = StateMsgSet(ProcessState.ok, str.init_load_srv_info_start);
+      });
+      await getServer();
+      setState(() {
+        _serverState = StateMsgSet(ProcessState.ok, str.init_load_srv_info_done);
+      });
+      _runningProcess--;
+      _checkDone();
+    } catch (e, trace) {
+      setState(() {
+        _serverState =
+            StateMsgSet(ProcessState.failed, str.init_load_srv_info_fail);
+      });
+      _errorShow(e, trace);
+    }
+  }
+
+  Future<void> _checkEnv() async {
+    try {
+      _runningProcess++;
+      await checkEnv();
       setState(() {
         _envState = StateMsgSet(ProcessState.ok, str.init_check_env_done);
       });
-      _remainProcess--;
-      _checkState();
-    });
-    envFuture.catchError((e, trace) {
+      _runningProcess--;
+      _checkDone();
+    } catch (e, trace) {
       setState(() {
         _envState = StateMsgSet(ProcessState.failed, str.init_check_env_fail);
       });
       _errorShow(e, trace);
-    });
-    _serverState = StateMsgSet(ProcessState.getting, str.init_check_srv_start);
-    Future<void> serverFuture = getServer();
-    serverFuture.then((value) {
-      setState(() {
-        _serverState = StateMsgSet(ProcessState.ok, str.init_check_srv_done);
-      });
-      _remainProcess--;
-      _checkState();
-    });
-    serverFuture.catchError((e, trace) {
-      setState(() {
-        _serverState =
-            StateMsgSet(ProcessState.failed, str.init_check_srv_fail);
-      });
-      _errorShow(e, trace);
-    });
-    _usernameState =
-        StateMsgSet(ProcessState.getting, str.init_check_username_start);
-    Future<void> usernameFuture = Future(getUser);
-    usernameFuture.then((_) {
+    }
+  }
+
+  Future<void> _getUsername() async {
+    try {
+      _runningProcess++;
+      await getUser();
       setState(() {
         _usernameState =
             StateMsgSet(ProcessState.ok, str.init_check_username_done);
       });
-      _remainProcess--;
-      _checkState();
-    });
-    usernameFuture.catchError((e, trace) {
+      _runningProcess--;
+      _checkDone();
+    } catch (e, trace) {
       setState(() {
         _usernameState =
             StateMsgSet(ProcessState.failed, str.init_check_username_fail);
       });
       _errorShow(e, trace);
-    });
-    super.initState();
+    }
+  }
+
+  _checkDone() {
+    if (_runningProcess == 0 && _errorShowing == 0) {
+      Navigator.popAndPushNamed(context, LoginSelectScreen.routeName);
+    }
   }
 
   void _errorShow(err, trace) async {
     _errorShowing++;
     await showError(context, err, trace);
     _errorShowing--;
-    _remainProcess--;
-    _checkState();
+    _runningProcess--;
+    _checkDone();
   }
 
-  void _checkState() {
-    if (_remainProcess == 0 && _errorShowing == 0) {
-      Navigator.popAndPushNamed(context, LoginSelectScreen.routeName);
-    }
+  @override
+  void initState() {
+    _loadConfig();
+    _checkEnv();
+    _getUsername();
+    super.initState();
   }
 
   @override
@@ -127,8 +143,8 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(child: _InitializeStateRow(_configState)),
-        Expanded(child: _InitializeStateRow(_envState)),
         Expanded(child: _InitializeStateRow(_serverState)),
+        Expanded(child: _InitializeStateRow(_envState)),
         Expanded(child: _InitializeStateRow(_usernameState)),
       ],
     );
