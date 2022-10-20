@@ -98,19 +98,23 @@ Future<void> _mountWindows(BuildContext context) async {
   bool hasMounted =
       await Directory.fromUri(Uri.directory("A:\\", windows: true)).exists();
   if (hasMounted) {
-    bool remount = await showDialog(context: context, builder: (context) => AlertDialog(
-      content: Text(str.mount_already_mounted),
-      actions: [
-        SimpleDialogOption(
-          child: Text(str.mount_unmount),
-          onPressed: () => Navigator.pop(context, true),
-        ),
-        SimpleDialogOption(
-          child: Text(str.mount_skip),
-          onPressed: () => Navigator.pop(context, false),
-        ),
-      ],
-    ));
+    bool remount = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        content: Text(str.mount_already_mounted),
+        actions: [
+          SimpleDialogOption(
+            child: Text(str.mount_unmount),
+            onPressed: () => Navigator.pop(context, true),
+          ),
+          SimpleDialogOption(
+            child: Text(str.mount_skip),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+        ],
+      ),
+    );
     if (remount) {
       await _unmountWindowsCmd("A:");
       await _unmountWindowsCmd("B:");
