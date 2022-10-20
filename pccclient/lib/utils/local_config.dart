@@ -31,17 +31,13 @@ class LocalConfig {
   Map<String, dynamic> toJson() => _$LocalConfigToJson(this);
 }
 
-// Directory.current
-
 LocalConfig readConfig() {
   File file = File(_fileName);
-  if (file.existsSync()) {
-    String str = file.readAsStringSync();
-    var json = jsonDecode(str);
-    localConfig = LocalConfig.fromJson(json);
-  }
-  Map<String, dynamic> json = localConfig.toJson();
-  String str = const JsonEncoder.withIndent("    ").convert(json);
+  String str = file.readAsStringSync();
+  Map<String, dynamic> json = jsonDecode(str);
+  localConfig = LocalConfig.fromJson(json);
+  json = localConfig.toJson();
+  str = const JsonEncoder.withIndent("    ").convert(json);
   file.writeAsStringSync(str);
   return localConfig;
 }
