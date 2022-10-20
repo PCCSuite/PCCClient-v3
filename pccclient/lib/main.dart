@@ -12,7 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pccclient/screens/plugin_detail.dart';
 import 'package:pccclient/screens/plugin_manage.dart';
 
-const version = "3.0.0-alpha.2";
+const version = "3.0.0-alpha.3";
 
 void main() async {
   runApp(const MyApp());
