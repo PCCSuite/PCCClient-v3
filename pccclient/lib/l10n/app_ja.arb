@@ -62,7 +62,7 @@
   "home_title": "Home",
   "home_drawer_plugin": "プラグイン管理",
   "home_drawer_settings": "設定",
-  "home_drawer_debug": "開発者向け",
+  "home_drawer_debug": "デバッグ",
 
   "plugin_manage_title": "プラグイン管理",
   "plugin_manage_installed": "インストール済み",
