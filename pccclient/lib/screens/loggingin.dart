@@ -192,7 +192,7 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
 
   void _errorShow(err, trace) async {
     _errorShowing++;
-    await showError(context, err, trace);
+    await Future.delayed(Duration.zero, () => showError(context, err, trace));
     _errorShowing--;
     _runningProcess--;
     _checkDone();

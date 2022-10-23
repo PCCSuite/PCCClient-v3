@@ -77,6 +77,7 @@ void _listener(Uint8List data) {
       for (Map<String, dynamic> pluginRaw in map["plugins"]) {
         newActivePlugins.add(ActivePluginData.fromJson(pluginRaw));
       }
+      activePlugins = newActivePlugins;
       List<AskData> newAskData = [];
       for (Map<String, dynamic> askRaw in map["asking"]) {
         newAskData.add(AskData.fromJson(askRaw));
