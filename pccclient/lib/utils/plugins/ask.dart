@@ -40,7 +40,7 @@ Future<void> showAskDialog(BuildContext context, AskData data) async {
   var formKey = GlobalKey<FormState>();
   bool submit = await showDialog(
     context: context,
-    barrierDismissible: true,
+    barrierDismissible: false,
     builder: (BuildContext context) => AlertDialog(
       title: Text(str.plugin_ask_title),
       scrollable: true,
@@ -50,7 +50,10 @@ Future<void> showAskDialog(BuildContext context, AskData data) async {
           children: [
             SelectableText(
               "Package: ${data.package}, Plugin: ${data.plugin}",
-              style: const TextStyle(fontSize: 0.8),
+              textScaleFactor: 0.8,
+            ),
+            Container(
+              height: 10,
             ),
             SelectableText(data.message),
             field,
