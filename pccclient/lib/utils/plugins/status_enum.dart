@@ -35,7 +35,6 @@ extension PluginSysStatusExt on PluginSysStatus {
 
 @JsonEnum(fieldRename: FieldRename.snake)
 enum ActionStatus {
-  loaded,
   waitStart,
   running,
   waitDepend,
@@ -54,14 +53,6 @@ extension ActionStatusExt on ActionStatus {
   Widget get icon {
     const size = 35.0;
     switch (this) {
-      case ActionStatus.loaded:
-        return Tooltip(
-          message: str.plugin_status_waitStart,
-          child: const Icon(
-            Icons.download_done,
-            size: size,
-          ),
-        );
       case ActionStatus.waitStart:
         return Tooltip(
           message: str.plugin_status_waitStart,

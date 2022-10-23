@@ -68,20 +68,6 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
   }
 }
 
-// class _PluginDetailWidget extends StatefulWidget {
-//   const _PluginDetailWidget({Key? key}) : super(key: key);
-//
-//   @override
-//   State<_PluginDetailWidget> createState() => _PluginDetailWidgetState();
-// }
-//
-// class _PluginDetailWidgetState extends State<_PluginDetailWidget> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container();
-//   }
-// }
-
 class _PluginXmlWidget extends StatelessWidget {
   const _PluginXmlWidget({Key? key, required this.xml}) : super(key: key);
 

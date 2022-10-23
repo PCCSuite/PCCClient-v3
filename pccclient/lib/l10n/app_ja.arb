@@ -3,6 +3,8 @@
   "error_dialog_description": "対応方法がわからない場合はサーバー管理者へお問い合わせください。",
   "error_dialog_ignore": "無視して続行する(非推奨)",
 
+  "input_integer_error": "数値を入力してください",
+
   "init_title": "Initializing",
   "init_load_config_start": "設定ファイルを読み込み中",
   "init_load_config_done": "設定ファイルの読み込み完了",
@@ -88,6 +90,13 @@
   "plugin_status_failed": "失敗",
 
   "plugin_add_dialog_title": "プラグインの追加",
+  "plugin_add_dialog_plugin_id": "プラグイン識別子",
+  "plugin_add_dialog_install": "すぐにインストールする",
+  "plugin_add_dialog_installed": "インストール済みです",
+  "plugin_add_dialog_add_favorite": "お気に入り",
+  "plugin_add_dialog_auto_restore": "起動時に自動リストア",
+  "plugin_add_dialog_submit": "実行",
+  "plugin_add_dialog_cancel": "キャンセル",
 
   "plugin_sys_status_starting": "起動中",
   "plugin_sys_status_readying": "準備中",
@@ -97,6 +106,10 @@
 
   "plugin_sys_restart": "再起動",
   "plugin_sys_start_restore": "リストア開始",
+
+  "plugin_ask_title": "プラグインからのダイアログ",
+  "plugin_ask_submit": "送信",
+  "plugin_ask_cancel": "キャンセル",
 
   "debug_title": "Debug"
 }

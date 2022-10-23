@@ -3,12 +3,13 @@ import 'dart:io';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pccclient/utils/local_config.dart';
+import 'package:pccclient/utils/plugins/list_file.dart';
 import 'package:pccclient/utils/server_info.dart';
 import 'package:xml/xml.dart';
 
 part 'files.g.dart';
 
-PluginSysConfig? pluginSysConfig;
+late PluginSysConfig pluginSysConfig;
 
 @JsonSerializable()
 class PluginSysConfig {
@@ -39,6 +40,8 @@ Future<void> loadPluginSysConfig() async {
   String str = await configFile.readAsString();
   var jsonRaw = jsonDecode(str);
   pluginSysConfig = PluginSysConfig.fromJson(jsonRaw);
+
+  await loadFavoritePlugins();
 }
 
 Map<String, PluginXml> pluginXmls = {};

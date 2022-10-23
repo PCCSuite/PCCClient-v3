@@ -49,13 +49,13 @@ class _HomeDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          ListTile(
+          environment.enablePlugin ? ListTile(
             leading: const Icon(Icons.settings_applications),
             title: Text(str.home_drawer_plugin),
             onTap: () {
               Navigator.pushNamed(context, PluginManageScreen.routeName);
             },
-          ),
+          ) : Container(),
           ListTile(
             leading: const Icon(Icons.settings),
             title: Text(str.home_drawer_settings),

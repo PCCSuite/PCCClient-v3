@@ -8,7 +8,7 @@ part of 'datas.dart';
 
 ActivePluginData _$ActivePluginDataFromJson(Map<String, dynamic> json) =>
     ActivePluginData(
-      json['name'] as String,
+      json['identifier'] as String,
       json['repository'] as String,
       json['installed'] as bool,
       json['locking'] as bool,
@@ -19,7 +19,7 @@ ActivePluginData _$ActivePluginDataFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ActivePluginDataToJson(ActivePluginData instance) =>
     <String, dynamic>{
-      'name': instance.name,
+      'identifier': instance.identifier,
       'repository': instance.repository,
       'installed': instance.installed,
       'locking': instance.locking,
@@ -29,7 +29,6 @@ Map<String, dynamic> _$ActivePluginDataToJson(ActivePluginData instance) =>
     };
 
 const _$ActionStatusEnumMap = {
-  ActionStatus.loaded: 'loaded',
   ActionStatus.waitStart: 'wait_start',
   ActionStatus.running: 'running',
   ActionStatus.waitDepend: 'wait_depend',
@@ -37,3 +36,19 @@ const _$ActionStatusEnumMap = {
   ActionStatus.done: 'done',
   ActionStatus.failed: 'failed',
 };
+
+AskData _$AskDataFromJson(Map<String, dynamic> json) => AskData(
+      json['id'] as int,
+      json['package'] as String,
+      json['plugin'] as String,
+      json['type'] as String,
+      json['message'] as String,
+    );
+
+Map<String, dynamic> _$AskDataToJson(AskData instance) => <String, dynamic>{
+      'id': instance.id,
+      'package': instance.package,
+      'plugin': instance.plugin,
+      'type': instance.type,
+      'message': instance.message,
+    };

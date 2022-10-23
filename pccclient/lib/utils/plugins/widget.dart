@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pccclient/screens/part/error.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/plugins/command.dart';
 import 'package:pccclient/utils/plugins/datas.dart';
 import 'package:pccclient/utils/plugins/start.dart';
 import 'package:pccclient/utils/plugins/status_enum.dart';
+
+import 'ask.dart';
 
 class PluginSysStatusWidget extends StatefulWidget {
   const PluginSysStatusWidget({Key? key}) : super(key: key);
@@ -39,8 +42,29 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
     });
   }
 
+  void updateAsk(List<AskData> newData) {
+    setState(() {
+      _askData = newData;
+    });
+  }
+
+  Future<void> checkAsk() async {
+    for (var data in _askData) {
+      AskStatus? status = askStatus[data.id];
+      if (status == null) {
+        askStatus[data.id] = AskStatus.showing;
+        showAskDialog(context, data).then((value) {
+          askStatus[data.id] = AskStatus.done;
+        }).catchError((err, trace) {
+          showError(context, err, trace);
+        });
+      }
+    }
+  }
+
   PluginSysStatus sysStatus = pluginSysStatus;
   List<ActivePluginData> pluginsData = activePlugins;
+  List<AskData> _askData = askData;
 
   static const double indentPerDepth = 30.0;
 
@@ -51,11 +75,11 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
         continue;
       }
       ActivePluginData target =
-          pluginsData.firstWhere((element) => element.name == targetName);
-      builtName.add(target.name);
+          pluginsData.firstWhere((element) => element.identifier == targetName);
+      builtName.add(target.identifier);
       dest.add(_PluginStatusRow(
         status: target.status,
-        name: target.name,
+        name: target.identifier,
         statusText: target.statusText,
         indent: depth * indentPerDepth,
       ));
@@ -96,11 +120,12 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
     }
     List<String> builtName = [];
     _builtPluginChildList(
-        list, builtName, pluginsData.map((e) => e.name).toList(), 0);
+        list, builtName, pluginsData.map((e) => e.identifier).toList(), 0);
     return ListView(
       children: list,
     );
   }
+
 }
 
 class _PluginStatusRow extends StatelessWidget {
