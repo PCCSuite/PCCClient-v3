@@ -35,10 +35,10 @@ extension PluginSysStatusExt on PluginSysStatus {
 
 @JsonEnum(fieldRename: FieldRename.snake)
 enum ActionStatus {
-  waitStart,
   running,
   waitDepend,
   waitLock,
+  waitAsk,
   done,
   failed;
 
