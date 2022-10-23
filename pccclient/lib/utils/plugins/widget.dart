@@ -21,6 +21,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
   @override
   void initState() {
     pluginSysStatusWidgets.add(this);
+    Future.delayed(Duration.zero, checkAsk);
     super.initState();
   }
 
@@ -45,6 +46,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
   void updateAsk(List<AskData> newData) {
     setState(() {
       _askData = newData;
+      checkAsk();
     });
   }
 
