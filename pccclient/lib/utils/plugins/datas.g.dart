@@ -29,6 +29,7 @@ Map<String, dynamic> _$ActivePluginDataToJson(ActivePluginData instance) =>
     };
 
 const _$ActionStatusEnumMap = {
+  ActionStatus.waitStart: 'wait_start',
   ActionStatus.running: 'running',
   ActionStatus.waitDepend: 'wait_depend',
   ActionStatus.waitLock: 'wait_lock',

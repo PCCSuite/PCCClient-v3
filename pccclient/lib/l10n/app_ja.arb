@@ -85,6 +85,7 @@
   "plugin_status_waitStart": "処理開始待ち",
   "plugin_status_waitDepend": "依存関係の完了待ち",
   "plugin_status_waitLock": "排他制御開放待ち",
+  "plugin_status_waitAsk": "ユーザーの応答待ち",
   "plugin_status_running": "動作中",
   "plugin_status_done": "完了",
   "plugin_status_failed": "失敗",

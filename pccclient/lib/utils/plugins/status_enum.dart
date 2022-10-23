@@ -35,6 +35,7 @@ extension PluginSysStatusExt on PluginSysStatus {
 
 @JsonEnum(fieldRename: FieldRename.snake)
 enum ActionStatus {
+  waitStart,
   running,
   waitDepend,
   waitLock,
@@ -74,6 +75,14 @@ extension ActionStatusExt on ActionStatus {
           message: str.plugin_status_waitLock,
           child: const Icon(
             Icons.lock_clock,
+            size: size,
+          ),
+        );
+      case ActionStatus.waitAsk:
+        return Tooltip(
+          message: str.plugin_status_waitAsk,
+          child: const Icon(
+            Icons.question_answer,
             size: size,
           ),
         );
