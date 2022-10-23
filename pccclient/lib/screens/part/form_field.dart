@@ -16,7 +16,7 @@ class ToggleFormField extends FormField<bool> {
             return Row(
               children: [
                 Switch(
-                  value: initialValue,
+                  value: state.value!,
                   onChanged: state.didChange,
                 ),
                 state.hasError
