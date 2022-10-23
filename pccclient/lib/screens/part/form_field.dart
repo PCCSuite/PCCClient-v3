@@ -56,6 +56,9 @@ class IntegerFormField extends FormField<int> {
                 return state.errorText;
               },
               onChanged: (val) => state.didChange(int.tryParse(val)),
+              decoration: InputDecoration(
+                hintText: str.plugin_ask_int,
+              ),
             );
           },
         );

@@ -109,6 +109,9 @@
   "plugin_sys_start_restore": "リストア開始",
 
   "plugin_ask_title": "プラグインからのダイアログ",
+  "plugin_ask_string": "文字列",
+  "plugin_ask_password": "文字列",
+  "plugin_ask_int": "整数値",
   "plugin_ask_submit": "送信",
   "plugin_ask_cancel": "キャンセル",
 

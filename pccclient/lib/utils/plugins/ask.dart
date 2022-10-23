@@ -15,12 +15,21 @@ Future<void> showAskDialog(BuildContext context, AskData data) async {
     case "string":
       field = TextFormField(
         keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          hintText: str.plugin_ask_string,
+        ),
         onSaved: (val) => result = val.toString(),
       );
       break;
     case "password":
       field = TextFormField(
+        obscureText: true,
+        enableSuggestions: false,
+        autocorrect: false,
         keyboardType: TextInputType.visiblePassword,
+        decoration: InputDecoration(
+          hintText: str.plugin_ask_password,
+        ),
         onSaved: (val) => result = val.toString(),
       );
       break;
