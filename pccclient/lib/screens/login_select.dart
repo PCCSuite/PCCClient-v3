@@ -26,24 +26,24 @@ class _LoginSelectScreenState extends State<LoginSelectScreen> {
       switch (localConfig.authMethod) {
         case "browser":
           Navigator.pushNamed(context, LoginBrowserScreen.routeName);
-          break;
+          return;
         case "webview":
           Navigator.pushNamed(context, LoginWebviewScreen.routeName);
-          break;
+          return;
         case "app":
           Navigator.pushNamed(context, LoginAppScreen.routeName);
-          break;
+          return;
       }
       switch (serverInfo.defaultAuthMethod) {
         case "browser":
           Navigator.pushNamed(context, LoginBrowserScreen.routeName);
-          break;
+          return;
         case "webview":
           Navigator.pushNamed(context, LoginWebviewScreen.routeName);
-          break;
+          return;
         case "app":
           Navigator.pushNamed(context, LoginAppScreen.routeName);
-          break;
+          return;
       }
     });
   }
