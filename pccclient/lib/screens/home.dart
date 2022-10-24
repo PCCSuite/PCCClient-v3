@@ -3,7 +3,7 @@ import 'package:pccclient/screens/debug.dart';
 import 'package:pccclient/screens/plugin_manage.dart';
 import 'package:pccclient/utils/environment/common.dart';
 import 'package:pccclient/utils/general.dart';
-import 'package:pccclient/utils/plugins/widget.dart';
+import 'package:pccclient/utils/plugins/status_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

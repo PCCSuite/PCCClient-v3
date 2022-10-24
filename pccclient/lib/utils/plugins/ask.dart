@@ -90,8 +90,8 @@ Future<void> showAskDialog(BuildContext context, AskData data) async {
     ),
   );
   if (submit) {
-    answerAsking(data.id, result.toString());
+    answerAskingCommand(data.id, result.toString());
   } else {
-    cancelAction(data.package);
+    cancelActionCommand(data.package);
   }
 }

@@ -34,7 +34,7 @@ Future<List<FavoritePlugin>> loadFavoritePlugins() async {
 }
 
 Future<void> saveFavoritePlugins() async {
-  var jsonRaw = jsonEncode({"plugins": favoritePlugins.map((e) => e.toJson())});
+  var jsonRaw = const JsonEncoder.withIndent("	").convert({"plugins": favoritePlugins.map((e) => e.toJson()).toList()});
   File file = File(pluginSysConfig.pluginsList);
   await file.writeAsString(jsonRaw);
 }

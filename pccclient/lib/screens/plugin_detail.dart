@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 import 'package:pccclient/screens/part/error.dart';
+import 'package:pccclient/utils/plugins/buttons_widget.dart';
 import 'package:pccclient/utils/plugins/files.dart';
 
 import '../utils/general.dart';
@@ -19,6 +20,7 @@ class PluginDetailScreen extends StatefulWidget {
 
 class _PluginDetailScreenState extends State<PluginDetailScreen> {
   Widget xmlWidget = const Text("Loading...");
+  Widget buttonsWidget = const Text("Loading...");
 
   bool initiated = false;
 
@@ -42,14 +44,23 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
             xmlWidget = _PluginXmlWidget(
               xml: value,
             );
+            buttonsWidget = PluginButtonsWidget(
+              plugin: plugin,
+              xml: value,
+            );
           });
         }, onError: (err, trace) {
           setState(() {
             xmlWidget = getErrorContent(err, trace);
+            buttonsWidget = Container();
           });
         });
       } else {
         xmlWidget = Container();
+        buttonsWidget = PluginButtonsWidget(
+          plugin: plugin,
+          xml: null,
+        );
       }
     }
     return Scaffold(
@@ -62,6 +73,7 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
           _PluginDetailRow(
               str.plugin_detail_repository, plugin!.repositoryName),
           xmlWidget,
+          buttonsWidget,
         ],
       ),
     );

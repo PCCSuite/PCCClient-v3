@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pccclient/utils/plugins/status_enum.dart';
-import 'package:pccclient/utils/plugins/widget.dart';
+import 'package:pccclient/utils/plugins/status_widget.dart';
+
+import 'buttons_widget.dart';
 
 
 
@@ -25,8 +27,11 @@ set activePlugins(List<ActivePluginData> newData) {
   _activePlugins = newData;
   List<ActivePluginData> list = [];
   _installingAndInstalledPlugins = _activePlugins.where((element) => element.installed || element.status != ActionStatus.failed).toList();
-  for (PluginSysStatusWidgetState list in pluginSysStatusWidgets) {
-    list.updateList(newData);
+  for (PluginSysStatusWidgetState wid in pluginSysStatusWidgets) {
+    wid.updateList(newData);
+  }
+  for (PluginButtonsWidgetState wid in pluginButtonsWidgets) {
+    wid.updateList(newData);
   }
 }
 
@@ -56,6 +61,16 @@ class ActivePluginData {
       _$ActivePluginDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$ActivePluginDataToJson(this);
+
+  bool isInstalledOrInstalling() {
+    if (installed) {
+      return true;
+    }
+    if (status == ActionStatus.failed) {
+      return false;
+    }
+    return true;
+  }
 }
 
 List<AskData> _askData = <AskData>[];

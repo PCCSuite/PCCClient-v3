@@ -82,6 +82,8 @@
   "plugin_detail_config": "設定",
   "plugin_detail_unknown": "不明",
 
+  "plugin_config_title": "プラグイン設定",
+
   "plugin_status_waitStart": "処理開始待ち",
   "plugin_status_waitDepend": "依存関係の完了待ち",
   "plugin_status_waitLock": "排他制御開放待ち",
@@ -90,12 +92,21 @@
   "plugin_status_done": "完了",
   "plugin_status_failed": "失敗",
 
-  "plugin_add_dialog_title": "プラグインの追加",
+  "plugin_button_install": "インストールする",
+  "plugin_button_favorite": "お気に入り設定の変更",
+  "plugin_button_config": "設定を開く",
+  "plugin_button_clean": "このプラグインのユーザーデータを全て削除する",
+  "plugin_button_clean_description": "このプラグインがdatadir(変更していなければpcc_homes_v3)に保存しているデータ(設定など)をすべて削除します。\nリポジトリにあるプラグイン本体は削除されません。\nまた、このPCにソフトウェアがインストールされていてもそれは削除されません。再起動してください。\nこの操作は元に戻せません。本当に実行しますか？",
+  "plugin_button_clean_confirm": "削除する",
+  "plugin_button_clean_cancel": "キャンセル",
+
+  "plugin_add_dialog_title": "プラグインの追加/削除",
   "plugin_add_dialog_plugin_id": "プラグイン識別子",
   "plugin_add_dialog_install": "すぐにインストールする",
   "plugin_add_dialog_installed": "インストール済みです",
   "plugin_add_dialog_add_favorite": "お気に入り",
   "plugin_add_dialog_auto_restore": "起動時に自動リストア",
+  "plugin_add_dialog_priority": "リストア優先度",
   "plugin_add_dialog_submit": "実行",
   "plugin_add_dialog_cancel": "キャンセル",
 
@@ -104,7 +115,6 @@
   "plugin_sys_status_ready": "準備完了",
   "plugin_sys_status_running": "動作中",
   "plugin_sys_status_stopped": "停止中(クラッシュ?)",
-
   "plugin_sys_restart": "再起動",
   "plugin_sys_start_restore": "リストア開始",
 
