@@ -147,7 +147,7 @@ class _PluginStatusRow extends StatelessWidget {
         leading: plugin.status.icon,
         title: Text(plugin.identifier),
         subtitle: Text(plugin.statusText),
-        onTap: () => Navigator.pushNamed(context, PluginDetailScreen.routeName, arguments: plugin),
+        onTap: () => Navigator.pushNamed(context, PluginDetailScreen.routeName, arguments: plugin.toPlugin()),
       ),
     );
   }
