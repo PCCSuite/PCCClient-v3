@@ -177,8 +177,7 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
 
   @override
   void initState() {
-    // _startGetSambaPass();
-    _loadPluginSysConfig();
+    _startGetSambaPass();
     _startConnectCliMan();
     super.initState();
   }
