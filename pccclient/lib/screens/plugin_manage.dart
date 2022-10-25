@@ -185,7 +185,7 @@ class InstalledView extends StatelessWidget {
 Future<Widget> _getFavoriteView() async {
   try {
     List<FavoritePlugin> favorites = await loadFavoritePlugins();
-    List<Plugin> list = favorites.map((e) => Plugin.fromIdentifier(e.name)).toList();
+    List<Plugin> list = favorites.map((e) => Plugin.fromIdentifier(e.identifier)).toList();
     return FavoriteView(
       list: list,
     );
@@ -216,8 +216,7 @@ class FavoriteView extends StatelessWidget {
                   onTap: () {
                     if (e.repositoryName == null) {
                       try {
-                        var inRepo =  getPluginsInRepositories().firstWhere((element) => element.name == e.name);
-                        e = Plugin(e.identifier, e.name, inRepo.repositoryName, inRepo.dir);
+                        e = getPluginsInRepositories().firstWhere((element) => element.name == e.name);
                       } on StateError catch (_) {}
                     }
                     Navigator.pushNamed(context, PluginDetailScreen.routeName,
@@ -236,7 +235,7 @@ Future<Widget> _getRepositoryView(String? repoName) async {
     if (repoName != null) {
       String repoDir = pluginSysConfig!.repositories[repoName]!;
       for (var dir in Directory(repoDir).listSync()) {
-        list.add(Plugin("$repoName:${path.basename(dir.path)}", path.basename(dir.path), repoName, dir.path));
+        list.add(Plugin(path.basename(dir.path), repoName, dir.path));
       }
     } else {
       list = getPluginsInRepositories();
@@ -280,7 +279,7 @@ List<Plugin> getPluginsInRepositories() {
   List<Plugin> list = [];
   for (var repo in pluginSysConfig!.repositories.entries) {
     for (var dir in Directory(repo.value).listSync()) {
-      list.add(Plugin("${repo.key}:${path.basename(dir.path)}", path.basename(dir.path), repo.key, dir.path));
+      list.add(Plugin(path.basename(dir.path), repo.key, dir.path));
     }
   }
   return list;

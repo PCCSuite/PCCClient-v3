@@ -61,7 +61,7 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
         ListTile(
           title: Text(str.plugin_button_install),
           onTap: () => showPluginAddDialog(
-              context, PluginAddInfo(identifier: widget.plugin.identifier, install: true)),
+              context, PluginAddInfo(identifier: widget.plugin.getIdentifier(), install: true)),
         ),
       );
     }
@@ -69,7 +69,7 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
       ListTile(
         title: Text(str.plugin_button_favorite),
         onTap: () =>
-            showPluginAddDialog(context, PluginAddInfo(identifier: widget.plugin.identifier)),
+            showPluginAddDialog(context, PluginAddInfo(identifier: widget.plugin.getIdentifier())),
       ),
     );
     if (dataExists) {

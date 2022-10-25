@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pccclient/utils/plugins/command.dart';
 import 'package:pccclient/utils/plugins/datas.dart';
+import 'package:pccclient/utils/plugins/files.dart';
 import 'package:pccclient/utils/plugins/list_file.dart';
 import 'package:pccclient/utils/plugins/status_enum.dart';
 
@@ -38,33 +39,40 @@ class _PluginAddDialogState extends State<_PluginAddDialog> {
 
   bool _installed = false;
 
-  Future<void> _checkPluginStatus() async {
+  Future<void> _checkPluginStatus(bool overwriteIdentifier) async {
     if (info.identifier.isNotEmpty) {
       try {
         installingAndInstalledPlugins.firstWhere(
             (element) => element.name == info.identifier.split(":").last);
-        info.install = false;
-        _installed = true;
+        setState(() {
+          info.install = false;
+          _installed = true;
+        });
       } on StateError catch (_) {
-        _installed = false;
+        setState(() {
+          _installed = false;
+        });
       }
-      try {
-        FavoritePlugin plugin = favoritePlugins
-            .firstWhere((element) => element.name == info.identifier);
-        info.favorite = true;
-        info.autoRestore = plugin.enabled;
-        info.priority = plugin.priority;
-      } on StateError catch (_) {
-        // if not in favorite
-        info.favorite = false;
-        info.autoRestore = false;
-      }
+      FavoritePlugin? favorite = _getMatchFavorite(info.identifier);
+      setState(() {
+        if (favorite == null) {
+          info.favorite = false;
+          info.autoRestore = false;
+        } else {
+          if (overwriteIdentifier) {
+            info.identifier = favorite.identifier;
+          }
+          info.favorite = true;
+          info.autoRestore = favorite.enabled;
+          info.priority = favorite.priority;
+        }
+      });
     }
   }
 
   @override
   void initState() {
-    _checkPluginStatus();
+    _checkPluginStatus(true);
     super.initState();
   }
 
@@ -77,7 +85,7 @@ class _PluginAddDialogState extends State<_PluginAddDialog> {
           child: Column(
         children: [
           Focus(
-            onFocusChange: (val) => _checkPluginStatus(),
+            onFocusChange: (val) => _checkPluginStatus(false),
             child: TextFormField(
               decoration: InputDecoration(
                   labelText: str.plugin_add_dialog_plugin_id,
@@ -86,8 +94,8 @@ class _PluginAddDialogState extends State<_PluginAddDialog> {
               onChanged: (val) => setState(() {
                 info.identifier = val;
               }),
-              onFieldSubmitted: (val) => _checkPluginStatus(),
-              onEditingComplete: () => _checkPluginStatus(),
+              onFieldSubmitted: (val) => _checkPluginStatus(false),
+              onEditingComplete: () => _checkPluginStatus(false),
             ),
           ),
           CheckboxListTile(
@@ -151,8 +159,9 @@ class _PluginAddDialogState extends State<_PluginAddDialog> {
   }
 }
 
-Future<void> showPluginAddDialog(
-    BuildContext context, PluginAddInfo info) async {
+Future<void> showPluginAddDialog(BuildContext context, PluginAddInfo info,
+    {Plugin? plugin}) async {
+  if (info.identifier == "" && plugin != null) {}
   bool? submit = await showDialog(
     context: context,
     builder: (context) => _PluginAddDialog(info),
@@ -163,16 +172,44 @@ Future<void> showPluginAddDialog(
   if (info.install) {
     installPackageCommand(info.identifier);
   }
-  FavoritePlugin? favoritePlugin;
-  try {
-    favoritePlugin = (await loadFavoritePlugins())
-        .firstWhere((element) => element.name == info.identifier);
-  } on StateError catch (_) {}
+  await loadFavoritePlugins();
+  FavoritePlugin? favoritePlugin = _getMatchFavorite(info.identifier);
   if (favoritePlugin != null) {
     favoritePlugins.remove(favoritePlugin);
   }
   if (info.favorite) {
-    favoritePlugins.add(FavoritePlugin(info.identifier, info.priority, info.autoRestore));
+    favoritePlugins
+        .add(FavoritePlugin(info.identifier, info.priority, info.autoRestore));
   }
   await saveFavoritePlugins();
+}
+
+
+FavoritePlugin? _getMatchFavorite(String identifier) {
+  List<String> splitId = identifier.split(":");
+  String? repo;
+  bool isInternal = true;
+  if (splitId.length == 2) {
+    repo = splitId.first;
+    isInternal = pluginSysConfig.repositories[repo] != null;
+  }
+  String name = splitId.last;
+  for (FavoritePlugin plugin in favoritePlugins) {
+    if (plugin.identifier == identifier) {
+      return plugin;
+    }
+    if (isInternal) {
+      List<String> splitId = plugin.identifier.split(":");
+      if (splitId.last != name) {
+        continue;
+      }
+      if (splitId.length == 1) {
+        return plugin;
+      }
+      if (repo == null && pluginSysConfig.repositories[splitId[0]] != null) {
+        return plugin;
+      }
+    }
+  }
+  return null;
 }

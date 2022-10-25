@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pccclient/screens/plugin_manage.dart';
 import 'package:pccclient/utils/plugins/files.dart';
 import 'package:pccclient/utils/plugins/status_enum.dart';
 import 'package:pccclient/utils/plugins/status_widget.dart';
@@ -74,7 +75,11 @@ class ActivePluginData {
   }
 
   Plugin toPlugin() {
-    return Plugin.autoDir(identifier, name, repositoryName);
+    return Plugin.autoDir(name, repositoryName);
+  }
+
+  String getFullIdentifier() {
+    return "$repositoryName:$name";
   }
 }
 
@@ -115,34 +120,36 @@ class AskData {
 }
 
 class Plugin {
-  final String identifier;
   final String name;
   final String? repositoryName;
   final String? dir;
 
-  Plugin(this.identifier, this.name, this.repositoryName, this.dir);
-  factory Plugin.autoDir(String identifier, String name, String? repositoryName) {
+  Plugin(this.name, this.repositoryName, this.dir);
+  factory Plugin.autoDir(String name, String? repositoryName) {
     var repoDir = pluginSysConfig.repositories[repositoryName];
     String? dir;
     if (repoDir != null) {
       dir = path.join(repoDir, name);
     }
-    return Plugin(identifier, name, repositoryName, dir);
+    return Plugin(name, repositoryName, dir);
   }
   factory Plugin.fromIdentifier(String identifier) {
-    String name;
-    String? repo;
     var split = identifier.split(":");
     if (split.length == 1) {
-      name = identifier;
       try {
-        ActivePluginData plugin = activePlugins.firstWhere((element) => element.name == name);
-        repo = plugin.repositoryName;
+        return getPluginsInRepositories().firstWhere((element) => element.name == identifier);
       } on StateError catch (_) {}
+      return Plugin.autoDir(identifier, null);
     } else {
-      repo = split[0];
-      name = split[1];
+      return Plugin.autoDir(split[1], split[0]);
     }
-    return Plugin.autoDir(identifier, split.last, split.length == 2 ? split.first : null);
+  }
+
+  String getIdentifier() {
+    if (repositoryName == null) {
+      return name;
+    } else {
+      return "$repositoryName:$name";
+    }
   }
 }

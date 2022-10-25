@@ -10,10 +10,10 @@ List<FavoritePlugin> favoritePlugins = [];
 
 @JsonSerializable()
 class FavoritePlugin {
-  FavoritePlugin(this.name, this.priority, this.enabled);
+  FavoritePlugin(this.identifier, this.priority, this.enabled);
 
-  @JsonKey(name: "name")
-  final String name;
+  @JsonKey(name: "identifier")
+  final String identifier;
   @JsonKey(name: "priority")
   final int priority;
   @JsonKey(name: "enabled")
