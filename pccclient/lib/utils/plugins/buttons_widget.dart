@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:pccclient/screens/plugin_add.dart';
 import 'package:pccclient/screens/plugin_config.dart';
 import 'package:pccclient/utils/general.dart';
+import 'package:pccclient/utils/plugins/command.dart';
 import 'package:pccclient/utils/plugins/datas.dart';
 import 'package:pccclient/utils/plugins/files.dart';
 
 import 'package:path/path.dart' as path;
+import 'package:pccclient/utils/plugins/status_enum.dart';
 
 List<PluginButtonsWidgetState> pluginButtonsWidgets = [];
 
@@ -62,6 +64,13 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
           title: Text(str.plugin_button_install),
           onTap: () => showPluginAddDialog(
               context, PluginAddInfo(identifier: widget.plugin.getIdentifier(), install: true)),
+        ),
+      );
+    } else if (activePlugin?.isRunning() == true) {
+      buttons.add(
+        ListTile(
+          title: Text(str.plugin_button_stop_action),
+          onTap: () => cancelActionCommand(activePlugin!.identifier),
         ),
       );
     }

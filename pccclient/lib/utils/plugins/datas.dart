@@ -13,6 +13,7 @@ part 'datas.g.dart';
 PluginSysStatus _pluginSysStatus = PluginSysStatus.stopped;
 
 PluginSysStatus get pluginSysStatus => _pluginSysStatus;
+
 set pluginSysStatus(PluginSysStatus newData) {
   _pluginSysStatus = newData;
   for (PluginSysStatusWidgetState list in pluginSysStatusWidgets) {
@@ -24,11 +25,17 @@ List<ActivePluginData> _activePlugins = <ActivePluginData>[];
 List<ActivePluginData> _installingAndInstalledPlugins = <ActivePluginData>[];
 
 List<ActivePluginData> get activePlugins => _activePlugins;
-List<ActivePluginData> get installingAndInstalledPlugins => _installingAndInstalledPlugins;
+
+List<ActivePluginData> get installingAndInstalledPlugins =>
+    _installingAndInstalledPlugins;
+
 set activePlugins(List<ActivePluginData> newData) {
   _activePlugins = newData;
   List<ActivePluginData> list = [];
-  _installingAndInstalledPlugins = _activePlugins.where((element) => element.installed || element.status != ActionStatus.failed).toList();
+  _installingAndInstalledPlugins = _activePlugins
+      .where((element) =>
+          element.installed || element.status != ActionStatus.failed)
+      .toList();
   for (PluginSysStatusWidgetState wid in pluginSysStatusWidgets) {
     wid.updateList(newData);
   }
@@ -39,9 +46,9 @@ set activePlugins(List<ActivePluginData> newData) {
 
 @JsonSerializable()
 class ActivePluginData {
-  ActivePluginData(this.identifier, this.repositoryName, this.installed, this.locking,
-      this.status, this.statusText, this.dependency) :
-        name = identifier.split(":").last;
+  ActivePluginData(this.identifier, this.repositoryName, this.installed,
+      this.locking, this.status, this.statusText, this.dependency)
+      : name = identifier.split(":").last;
 
   @JsonKey(name: "identifier")
   final String identifier;
@@ -68,10 +75,17 @@ class ActivePluginData {
     if (installed) {
       return true;
     }
-    if (status == ActionStatus.failed) {
+    return isRunning();
+  }
+
+  bool isRunning() {
+    if (status == ActionStatus.done) {
       return false;
+    } else if (status == ActionStatus.failed) {
+      return false;
+    } else {
+      return true;
     }
-    return true;
   }
 
   Plugin toPlugin() {
@@ -86,6 +100,7 @@ class ActivePluginData {
 List<AskData> _askData = <AskData>[];
 
 List<AskData> get askData => _askData;
+
 set askData(List<AskData> newData) {
   _askData = newData;
   for (PluginSysStatusWidgetState list in pluginSysStatusWidgets) {
@@ -98,7 +113,7 @@ enum AskStatus {
   done,
 }
 
-Map<int,AskStatus> askStatus = {};
+Map<int, AskStatus> askStatus = {};
 
 @JsonSerializable()
 class AskData {
@@ -125,6 +140,7 @@ class Plugin {
   final String? dir;
 
   Plugin(this.name, this.repositoryName, this.dir);
+
   factory Plugin.autoDir(String name, String? repositoryName) {
     var repoDir = pluginSysConfig.repositories[repositoryName];
     String? dir;
@@ -133,11 +149,13 @@ class Plugin {
     }
     return Plugin(name, repositoryName, dir);
   }
+
   factory Plugin.fromIdentifier(String identifier) {
     var split = identifier.split(":");
     if (split.length == 1) {
       try {
-        return getPluginsInRepositories().firstWhere((element) => element.name == identifier);
+        return getPluginsInRepositories()
+            .firstWhere((element) => element.name == identifier);
       } on StateError catch (_) {}
       return Plugin.autoDir(identifier, null);
     } else {

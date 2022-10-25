@@ -93,6 +93,7 @@
   "plugin_status_failed": "失敗",
 
   "plugin_button_install": "インストールする",
+  "plugin_button_stop_action": "実行中のアクションを停止する",
   "plugin_button_favorite": "お気に入り設定の変更",
   "plugin_button_config": "設定を開く",
   "plugin_button_clean": "このプラグインのユーザーデータを全て削除する",
