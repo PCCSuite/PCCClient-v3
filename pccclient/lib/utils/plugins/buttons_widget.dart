@@ -56,15 +56,12 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
   @override
   Widget build(BuildContext context) {
     List<ListTile> buttons = [];
-    String identifier = widget.plugin.repositoryName != null
-        ? "${widget.plugin.repositoryName}:${widget.plugin.name}"
-        : widget.plugin.name;
     if (activePlugin?.isInstalledOrInstalling() != true) {
       buttons.add(
         ListTile(
           title: Text(str.plugin_button_install),
           onTap: () => showPluginAddDialog(
-              context, PluginAddInfo(identifier: identifier, install: true)),
+              context, PluginAddInfo(identifier: widget.plugin.identifier, install: true)),
         ),
       );
     }
@@ -72,7 +69,7 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
       ListTile(
         title: Text(str.plugin_button_favorite),
         onTap: () =>
-            showPluginAddDialog(context, PluginAddInfo(identifier: identifier)),
+            showPluginAddDialog(context, PluginAddInfo(identifier: widget.plugin.identifier)),
       ),
     );
     if (dataExists) {

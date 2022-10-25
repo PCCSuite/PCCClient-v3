@@ -20,7 +20,7 @@ ActivePluginData _$ActivePluginDataFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ActivePluginDataToJson(ActivePluginData instance) =>
     <String, dynamic>{
       'identifier': instance.identifier,
-      'repository': instance.repository,
+      'repository': instance.repositoryName,
       'installed': instance.installed,
       'locking': instance.locking,
       'status': _$ActionStatusEnumMap[instance.status]!,

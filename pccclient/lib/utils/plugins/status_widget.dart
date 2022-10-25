@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pccclient/screens/part/error.dart';
+import 'package:pccclient/screens/plugin_detail.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/plugins/command.dart';
 import 'package:pccclient/utils/plugins/datas.dart';
@@ -80,9 +81,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
           pluginsData.firstWhere((element) => element.identifier == targetName);
       builtName.add(target.identifier);
       dest.add(_PluginStatusRow(
-        status: target.status,
-        name: target.identifier,
-        statusText: target.statusText,
+        plugin: target,
         indent: depth * indentPerDepth,
       ));
       _builtPluginChildList(dest, builtName, target.dependency, depth + 1);
@@ -133,15 +132,11 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
 class _PluginStatusRow extends StatelessWidget {
   const _PluginStatusRow(
       {Key? key,
-      required this.status,
-      required this.name,
-      required this.statusText,
+      required this.plugin,
       required this.indent})
       : super(key: key);
 
-  final ActionStatus status;
-  final String name;
-  final String? statusText;
+  final ActivePluginData plugin;
   final double indent;
 
   @override
@@ -149,9 +144,10 @@ class _PluginStatusRow extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: indent),
       child: ListTile(
-        leading: status.icon,
-        title: Text(name),
-        subtitle: statusText != null ? Text(statusText!) : null,
+        leading: plugin.status.icon,
+        title: Text(plugin.identifier),
+        subtitle: Text(plugin.statusText),
+        onTap: () => Navigator.pushNamed(context, PluginDetailScreen.routeName, arguments: plugin),
       ),
     );
   }
