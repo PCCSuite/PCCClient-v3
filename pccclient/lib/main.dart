@@ -13,7 +13,7 @@ import 'package:pccclient/screens/plugin_config.dart';
 import 'package:pccclient/screens/plugin_detail.dart';
 import 'package:pccclient/screens/plugin_manage.dart';
 
-const version = "3.0.0-alpha.3";
+const version = "3.0.0-alpha.4";
 
 void main() async {
   runApp(const MyApp());
