@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     List<Widget> content = [];
     content.add(const Expanded(
-      child: Text("Webview space"),
+      child: Text("Welcome to PCC!"),
     ));
     if (environment.enablePlugin) {
       content.add(const SizedBox(
