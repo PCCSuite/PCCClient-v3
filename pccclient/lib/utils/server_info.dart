@@ -15,7 +15,6 @@ class ServerInfo {
   final String defaultAuthMethod;
   final String getSambaPassURL;
   final String sambaServer;
-  final Map<String, String> sambaShares;
   final String setBrowserURL;
   final String tipsURL;
   final String pccCliManAddress;
@@ -26,7 +25,6 @@ class ServerInfo {
       this.defaultAuthMethod,
       this.getSambaPassURL,
       this.sambaServer,
-      this.sambaShares,
       this.setBrowserURL,
       this.tipsURL,
       this.pccCliManAddress,
