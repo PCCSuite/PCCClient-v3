@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pccclient/screens/login_app.dart';
 import 'package:pccclient/screens/login_webview.dart';
+import 'package:pccclient/screens/part/tips.dart';
 import 'package:pccclient/utils/local_config.dart';
 import 'package:pccclient/utils/server_info.dart';
 
@@ -54,12 +55,13 @@ class _LoginSelectScreenState extends State<LoginSelectScreen> {
       appBar: AppBar(
         title: Text(str.login_select_title),
       ),
+      bottomNavigationBar: getTipsBar(),
       body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Center(
-                child: Column(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Center(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
@@ -96,8 +98,10 @@ class _LoginSelectScreenState extends State<LoginSelectScreen> {
                   },
                 ),
               ],
-            )),
-          )),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

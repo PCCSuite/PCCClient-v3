@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pccclient/screens/part/tips.dart';
 
 import 'loggingin.dart';
 
@@ -20,6 +21,7 @@ class _LoginWebviewScreenState extends State<LoginWebviewScreen> {
         appBar: AppBar(
           title: const Text(LoginWebviewScreen.screenName),
         ),
+        bottomNavigationBar: getTipsBar(),
         body: Center(
           child: ElevatedButton(
             onPressed: () {

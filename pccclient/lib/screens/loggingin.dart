@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pccclient/screens/home.dart';
 import 'package:pccclient/screens/login_select.dart';
 import 'package:pccclient/screens/part/error.dart';
+import 'package:pccclient/screens/part/tips.dart';
 import 'package:pccclient/utils/auth.dart';
 import 'package:pccclient/utils/environment/common.dart';
 import 'package:pccclient/utils/general.dart';
@@ -37,6 +38,7 @@ class LoggingInScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(LoggingInScreen.screenName),
       ),
+      bottomNavigationBar: getTipsBar(),
       body: const _LoggingInStateWidget(),
     );
   }

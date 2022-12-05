@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pccclient/utils/get_uri.dart';
 import 'package:pccclient/utils/local_config.dart';
 
 part 'server_info.g.dart';
@@ -14,8 +15,9 @@ class ServerInfo {
   final String defaultAuthMethod;
   final String getSambaPassURL;
   final String sambaServer;
+  final Map<String, String> sambaShares;
   final String setBrowserURL;
-  final String getTipsAddress;
+  final String tipsURL;
   final String pccCliManAddress;
   final String pluginSysPath;
 
@@ -24,8 +26,9 @@ class ServerInfo {
       this.defaultAuthMethod,
       this.getSambaPassURL,
       this.sambaServer,
+      this.sambaShares,
       this.setBrowserURL,
-      this.getTipsAddress,
+      this.tipsURL,
       this.pccCliManAddress,
       this.pluginSysPath);
 
@@ -38,22 +41,7 @@ class ServerInfo {
 late ServerInfo serverInfo;
 
 Future<ServerInfo> getServerInfo() async {
-  Uri uri = Uri.parse(localConfig.serverInfoURL);
-  String raw;
-  switch (uri.scheme.toLowerCase()) {
-    case "http":
-    case "https":
-      http.Response response = await http.get(uri);
-      raw = response.body;
-      var json = jsonDecode(response.body);
-      break;
-    case "file":
-      File file = File.fromUri(uri);
-      raw = file.readAsStringSync();
-      break;
-    default:
-      throw UnsupportedError("This uri is not supported");
-  }
+  String raw = await getStringFromURIString(localConfig.serverInfoURL);
   var json = jsonDecode(raw);
   serverInfo = ServerInfo.fromJson(json);
   return serverInfo;

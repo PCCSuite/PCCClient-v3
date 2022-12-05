@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 import 'package:pccclient/screens/part/error.dart';
+import 'package:pccclient/screens/part/tips.dart';
 import 'package:pccclient/utils/plugins/buttons_widget.dart';
 import 'package:pccclient/utils/plugins/files.dart';
 
@@ -67,6 +68,7 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
       appBar: AppBar(
         title: Text(PluginDetailScreen.screenName),
       ),
+      bottomNavigationBar: getTipsBar(),
       body: ListView(
         children: [
           _PluginDetailRow(str.plugin_detail_name, plugin!.name),

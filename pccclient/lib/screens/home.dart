@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pccclient/screens/debug.dart';
+import 'package:pccclient/screens/part/tips.dart';
 import 'package:pccclient/screens/plugin_manage.dart';
 import 'package:pccclient/utils/environment/common.dart';
 import 'package:pccclient/utils/general.dart';
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(HomeScreen.screenName),
       ),
+      bottomNavigationBar: getTipsBar(),
       drawer: const _HomeDrawer(),
       body: Row(
         children: content,

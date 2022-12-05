@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pccclient/screens/loggingin.dart';
 import 'package:pccclient/screens/part/error.dart';
+import 'package:pccclient/screens/part/tips.dart';
 import 'package:pccclient/utils/auth.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/server_info.dart';
@@ -120,6 +121,7 @@ class _LoginBrowserScreenState extends State<LoginBrowserScreen> {
       appBar: AppBar(
         title: Text(str.login_browser_title),
       ),
+      bottomNavigationBar: getTipsBar(),
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

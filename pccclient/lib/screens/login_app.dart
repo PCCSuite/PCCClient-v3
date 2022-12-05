@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pccclient/screens/part/tips.dart';
 
 class LoginAppScreen extends StatefulWidget {
   const LoginAppScreen({Key? key}) : super(key: key);
@@ -37,6 +38,7 @@ class _LoginAppScreenState extends State<LoginAppScreen> {
       appBar: AppBar(
         title: const Text(LoginAppScreen.screenName),
       ),
+      bottomNavigationBar: getTipsBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

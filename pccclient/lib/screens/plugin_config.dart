@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pccclient/screens/part/tips.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/plugins/files.dart';
 
@@ -30,6 +31,7 @@ class _PluginConfigScreenState extends State<PluginConfigScreen> {
         automaticallyImplyLeading: !argument!.ask,
         title: Text(str.plugin_config_title),
       ),
+      bottomNavigationBar: getTipsBar(),
       body: Form(
         child: ListView(
           children: argument!.xml.config.map((e) => _ConfigRow()).toList(),

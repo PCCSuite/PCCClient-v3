@@ -3,6 +3,9 @@
   "error_dialog_description": "対応方法がわからない場合はサーバー管理者へお問い合わせください。",
   "error_dialog_ignore": "無視して続行する(非推奨)",
 
+  "tips_dialog_title": "Tips",
+  "tips_unloaded": "Tipsはまだ読み込まれていません",
+
   "input_integer_error": "数値を入力してください",
 
   "init_title": "Initializing",

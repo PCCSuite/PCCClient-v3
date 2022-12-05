@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 import 'package:pccclient/screens/part/error.dart';
+import 'package:pccclient/screens/part/tips.dart';
 import 'package:pccclient/screens/plugin_detail.dart';
 import 'package:pccclient/screens/plugin_add.dart';
 import 'package:pccclient/utils/plugins/files.dart';
@@ -25,6 +26,7 @@ class PluginManageScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(PluginManageScreen.screenName),
       ),
+      bottomNavigationBar: getTipsBar(),
       body: const _PluginManageWidget(),
     );
   }
