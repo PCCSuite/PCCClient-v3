@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pccclient/utils/plugins/files.dart';
+import 'package:pccclient/utils/server_info.dart';
 
 part 'list_file.g.dart';
 
@@ -27,6 +28,9 @@ class FavoritePlugin {
 
 Future<List<FavoritePlugin>> loadFavoritePlugins() async {
   File file = File(pluginSysConfig.pluginsList);
+  if (!await file.exists()) {
+    await File("${serverInfo.pluginSysPath}\\plugins.json").copy(pluginSysConfig.pluginsList);
+  }
   String str = await file.readAsString();
   var jsonRaw = jsonDecode(str);
   favoritePlugins = (jsonRaw["plugins"] as List<dynamic>).map((element) => FavoritePlugin.fromJson(element)).toList();
