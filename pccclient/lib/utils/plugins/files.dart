@@ -41,6 +41,10 @@ Future<void> loadPluginSysConfig() async {
   var jsonRaw = jsonDecode(str);
   pluginSysConfig = PluginSysConfig.fromJson(jsonRaw);
 
+  for (var dir in pluginSysConfig.repositories.values) {
+    await Directory(dir).create(recursive: true);
+  }
+
   await loadFavoritePlugins();
 }
 
