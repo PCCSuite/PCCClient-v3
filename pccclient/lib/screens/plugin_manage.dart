@@ -11,7 +11,6 @@ import 'package:pccclient/utils/plugins/status_enum.dart';
 
 import '../utils/general.dart';
 import '../utils/plugins/datas.dart';
-import '../utils/plugins/list_file.dart';
 
 class PluginManageScreen extends StatelessWidget {
   const PluginManageScreen({Key? key}) : super(key: key);

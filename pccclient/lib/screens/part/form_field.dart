@@ -57,7 +57,7 @@ class IntegerFormField extends FormField<int> {
               },
               onChanged: (val) => state.didChange(int.tryParse(val)),
               decoration: InputDecoration(
-                hintText: str.plugin_ask_int,
+                hintText: str.plugin_form_field_hint_int,
               ),
             );
           },

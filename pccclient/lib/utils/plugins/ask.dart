@@ -16,7 +16,7 @@ Future<void> showAskDialog(BuildContext context, AskData data) async {
       field = TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          hintText: str.plugin_ask_string,
+          hintText: str.plugin_form_field_hint_string,
         ),
         onSaved: (val) => result = val.toString(),
       );
@@ -28,7 +28,7 @@ Future<void> showAskDialog(BuildContext context, AskData data) async {
         autocorrect: false,
         keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
-          hintText: str.plugin_ask_password,
+          hintText: str.plugin_form_field_hint_password,
         ),
         onSaved: (val) => result = val.toString(),
       );

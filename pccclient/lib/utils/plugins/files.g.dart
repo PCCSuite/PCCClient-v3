@@ -21,3 +21,17 @@ Map<String, dynamic> _$PluginSysConfigToJson(PluginSysConfig instance) =>
       'data_dir': instance.dataDir,
       'temp_dir': instance.tempDir,
     };
+
+FavoritePlugin _$FavoritePluginFromJson(Map<String, dynamic> json) =>
+    FavoritePlugin(
+      json['identifier'] as String,
+      json['priority'] as int,
+      json['enabled'] as bool,
+    );
+
+Map<String, dynamic> _$FavoritePluginToJson(FavoritePlugin instance) =>
+    <String, dynamic>{
+      'identifier': instance.identifier,
+      'priority': instance.priority,
+      'enabled': instance.enabled,
+    };
