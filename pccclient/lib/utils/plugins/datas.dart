@@ -47,7 +47,7 @@ set activePlugins(List<ActivePluginData> newData) {
 @JsonSerializable()
 class ActivePluginData {
   ActivePluginData(this.identifier, this.repositoryName, this.installed,
-      this.locking, this.status, this.statusText, this.dependency)
+      this.locking, this.status, this.statusText, this.priority, this.dependency)
       : name = identifier.split(":").last;
 
   @JsonKey(name: "identifier")
@@ -63,6 +63,8 @@ class ActivePluginData {
   final ActionStatus status;
   @JsonKey(name: "status_text")
   final String statusText;
+  @JsonKey(name: "priority")
+  final int priority;
   @JsonKey(name: "dependency")
   final List<String> dependency;
 

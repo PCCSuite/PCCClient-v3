@@ -14,6 +14,7 @@ ActivePluginData _$ActivePluginDataFromJson(Map<String, dynamic> json) =>
       json['locking'] as bool,
       $enumDecode(_$ActionStatusEnumMap, json['status']),
       json['status_text'] as String,
+      json['priority'] as int,
       (json['dependency'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
@@ -25,6 +26,7 @@ Map<String, dynamic> _$ActivePluginDataToJson(ActivePluginData instance) =>
       'locking': instance.locking,
       'status': _$ActionStatusEnumMap[instance.status]!,
       'status_text': instance.statusText,
+      'priority': instance.priority,
       'dependency': instance.dependency,
     };
 

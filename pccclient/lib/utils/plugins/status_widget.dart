@@ -71,20 +71,21 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
 
   static const double indentPerDepth = 30.0;
 
-  void _builtPluginChildList(List<Widget> dest, List<String> builtName,
+  void _builtPluginChildList(List<Widget> dest, List<String> builtList,
       List<String> targetList, int depth) {
     for (String targetName in targetList) {
-      if (builtName.contains(targetName)) {
+      if (builtList.contains(targetName)) {
         continue;
       }
       ActivePluginData target =
           pluginsData.firstWhere((element) => element.identifier == targetName);
-      builtName.add(target.identifier);
-      dest.add(_PluginStatusRow(
+      builtList.add(target.identifier);
+      dest.add(PluginStatusRow(
         plugin: target,
         indent: depth * indentPerDepth,
+        clickable: true,
       ));
-      _builtPluginChildList(dest, builtName, target.dependency, depth + 1);
+      _builtPluginChildList(dest, builtList, target.dependency, depth + 1);
     }
   }
 
@@ -119,25 +120,32 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
         }
       default:
     }
+    pluginsData.sort((a, b) => a.priority.compareTo(b.priority));
+    List<String> noParentList = pluginsData.map((e) => e.identifier).toList();
+    for (ActivePluginData plugin in pluginsData) {
+      for (String depend in plugin.dependency) {
+        noParentList.remove(depend);
+      }
+    }
     List<String> builtName = [];
-    _builtPluginChildList(
-        list, builtName, pluginsData.map((e) => e.identifier).toList(), 0);
+    _builtPluginChildList(list, builtName, noParentList, 0);
     return ListView(
       children: list,
     );
   }
-
 }
 
-class _PluginStatusRow extends StatelessWidget {
-  const _PluginStatusRow(
+class PluginStatusRow extends StatelessWidget {
+  const PluginStatusRow(
       {Key? key,
       required this.plugin,
-      required this.indent})
+      required this.indent,
+      required this.clickable})
       : super(key: key);
 
   final ActivePluginData plugin;
   final double indent;
+  final bool clickable;
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +155,10 @@ class _PluginStatusRow extends StatelessWidget {
         leading: plugin.status.icon,
         title: Text(plugin.identifier),
         subtitle: Text(plugin.statusText),
-        onTap: () => Navigator.pushNamed(context, PluginDetailScreen.routeName, arguments: plugin.toPlugin()),
+        onTap: clickable
+            ? () => Navigator.pushNamed(context, PluginDetailScreen.routeName,
+                arguments: plugin.toPlugin())
+            : null,
       ),
     );
   }
