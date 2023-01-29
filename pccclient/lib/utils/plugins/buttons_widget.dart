@@ -28,6 +28,7 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
   @override
   void initState() {
     pluginButtonsWidgets.add(this);
+    Future.delayed(Duration.zero, () => updateList(activePlugins));
     dataDir.exists().then((value) => setState(() => dataExists = value));
     super.initState();
   }
@@ -58,6 +59,9 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
   @override
   Widget build(BuildContext context) {
     List<ListTile> buttons = [];
+    buttons.add(ListTile(
+      title: Text(str.plugin_button_header_manage),
+    ));
     if (activePlugin?.isInstalledOrInstalling() != true) {
       buttons.add(
         ListTile(
@@ -129,6 +133,25 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
           },
         ),
       );
+    }
+    if (activePlugin?.installed == true &&
+        !activePlugin!.isRunning() &&
+        widget.xml != null &&
+        widget.xml!.buttons.isNotEmpty) {
+      buttons.add(ListTile(
+        title: Text(str.plugin_button_header_defined),
+      ));
+      for (var btnData in widget.xml!.buttons) {
+        buttons.add(
+          ListTile(
+            title: Text(btnData.name),
+            onTap: () {
+              startPluginActionCommand(
+                  activePlugin!.identifier, btnData.action);
+            },
+          ),
+        );
+      }
     }
     return Column(
       children: buttons,

@@ -97,6 +97,7 @@
   "plugin_status_done": "完了",
   "plugin_status_failed": "失敗",
 
+  "plugin_button_header_manage": "プラグイン管理",
   "plugin_button_install": "インストールする",
   "plugin_button_stop_action": "実行中のアクションを停止する",
   "plugin_button_favorite": "お気に入り設定の変更",
@@ -105,6 +106,7 @@
   "plugin_button_clean_description": "このプラグインがdatadir(変更していなければpcc_homes_v3)に保存しているデータ(設定など)をすべて削除します。\nリポジトリにあるプラグイン本体は削除されません。\nまた、このPCにソフトウェアがインストールされていてもそれは削除されません。再起動してください。\nこの操作は元に戻せません。本当に実行しますか？",
   "plugin_button_clean_confirm": "削除する",
   "plugin_button_clean_cancel": "キャンセル",
+  "plugin_button_header_defined": "プラグイン機能",
 
   "plugin_add_dialog_title": "プラグインの追加/削除",
   "plugin_add_dialog_plugin_id": "プラグイン識別子",
