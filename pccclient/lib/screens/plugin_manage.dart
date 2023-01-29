@@ -7,7 +7,6 @@ import 'package:pccclient/screens/part/tips.dart';
 import 'package:pccclient/screens/plugin_detail.dart';
 import 'package:pccclient/screens/plugin_add.dart';
 import 'package:pccclient/utils/plugins/files.dart';
-import 'package:pccclient/utils/plugins/status_enum.dart';
 
 import '../utils/general.dart';
 import '../utils/plugins/datas.dart';
@@ -148,7 +147,8 @@ class _PluginManageWidgetState extends State<_PluginManageWidget> {
 Future<Widget> _getFavoriteView() async {
   try {
     List<FavoritePlugin> favorites = await loadFavoritePlugins();
-    List<Plugin> list = favorites.map((e) => Plugin.fromIdentifier(e.identifier)).toList();
+    List<Plugin> list =
+        favorites.map((e) => Plugin.fromIdentifier(e.identifier)).toList();
     return FavoriteView(
       list: list,
     );
@@ -179,7 +179,8 @@ class FavoriteView extends StatelessWidget {
                   onTap: () {
                     if (e.repositoryName == null) {
                       try {
-                        e = getPluginsInRepositories().firstWhere((element) => element.name == e.name);
+                        e = getPluginsInRepositories()
+                            .firstWhere((element) => element.name == e.name);
                       } on StateError catch (_) {}
                     }
                     Navigator.pushNamed(context, PluginDetailScreen.routeName,
@@ -218,12 +219,12 @@ class InstalledView extends StatelessWidget {
       body: ListView(
         children: list
             .map((e) => ListTile(
-          title: Text("${e.name} (${e.repositoryName})"),
-          onTap: () {
-            Navigator.pushNamed(context, PluginDetailScreen.routeName,
-                arguments: e.toPlugin());
-          },
-        ))
+                  title: Text("${e.name} (${e.repositoryName})"),
+                  onTap: () {
+                    Navigator.pushNamed(context, PluginDetailScreen.routeName,
+                        arguments: e.toPlugin());
+                  },
+                ))
             .toList(),
       ),
     );

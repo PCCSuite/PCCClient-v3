@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:pccclient/utils/plugins/command.dart';
 import 'package:pccclient/utils/plugins/datas.dart';
 import 'package:pccclient/utils/plugins/files.dart';
-import 'package:pccclient/utils/plugins/status_enum.dart';
 
 import '../utils/general.dart';
 
@@ -182,7 +181,6 @@ Future<void> showPluginAddDialog(BuildContext context, PluginAddInfo info,
   }
   await saveFavoritePlugins();
 }
-
 
 FavoritePlugin? _getMatchFavorite(String identifier) {
   List<String> splitId = identifier.split(":");

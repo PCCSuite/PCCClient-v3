@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/get_uri.dart';
-import 'package:pccclient/utils/local_config.dart';
 import 'package:pccclient/utils/server_info.dart';
 
 TipsBar? _tips;

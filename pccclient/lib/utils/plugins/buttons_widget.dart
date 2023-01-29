@@ -9,7 +9,6 @@ import 'package:pccclient/utils/plugins/datas.dart';
 import 'package:pccclient/utils/plugins/files.dart';
 
 import 'package:path/path.dart' as path;
-import 'package:pccclient/utils/plugins/status_enum.dart';
 
 List<PluginButtonsWidgetState> pluginButtonsWidgets = [];
 

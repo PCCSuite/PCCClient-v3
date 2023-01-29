@@ -35,7 +35,7 @@ class ToggleFormField extends FormField<bool> {
                     ? SelectableText(
                         state.errorText.toString(),
                         style: TextStyle(
-                            color: Theme.of(state.context).errorColor),
+                            color: Theme.of(state.context).colorScheme.error),
                       )
                     : SelectableText(state.value.toString())
               ],
