@@ -62,11 +62,13 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
     try {
       _runningProcess++;
       setState(() {
-        _serverState = StateMsgSet(ProcessState.ok, str.init_load_srv_info_start);
+        _serverState =
+            StateMsgSet(ProcessState.ok, str.init_load_srv_info_start);
       });
       await getServer();
       setState(() {
-        _serverState = StateMsgSet(ProcessState.ok, str.init_load_srv_info_done);
+        _serverState =
+            StateMsgSet(ProcessState.ok, str.init_load_srv_info_done);
       });
       _runningProcess--;
       _checkDone();
@@ -131,10 +133,12 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
 
   @override
   void initState() {
-    _loadConfig();
-    _checkEnv();
-    _getUsername();
     super.initState();
+    Future.delayed(Duration.zero, () {
+      _loadConfig();
+      _checkEnv();
+      _getUsername();
+    });
   }
 
   @override
