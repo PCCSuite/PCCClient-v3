@@ -26,17 +26,19 @@ class PluginConfigScreen extends StatefulWidget {
 class _PluginConfigScreenState extends State<PluginConfigScreen> {
   PluginConfigScreenArgument? argument;
 
+  bool initialized = false;
+
   Widget content = const Text("Loading...");
 
   @override
   void initState() {
-    argument ??= ModalRoute.of(context)!.settings.arguments
-        as PluginConfigScreenArgument;
-    loadConfig();
     super.initState();
   }
 
   void loadConfig() async {
+    argument ??= ModalRoute.of(context)!.settings.arguments
+        as PluginConfigScreenArgument;
+
     Map<String, dynamic> store;
 
     File file = File(pluginSysConfig.pluginsList);
@@ -93,6 +95,10 @@ class _PluginConfigScreenState extends State<PluginConfigScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (!initialized) {
+      initialized = true;
+      loadConfig();
+    }
     return content;
   }
 }
