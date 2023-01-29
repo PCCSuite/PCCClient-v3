@@ -61,6 +61,7 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
     List<ListTile> buttons = [];
     buttons.add(ListTile(
       title: Text(str.plugin_button_header_manage),
+      dense: true,
     ));
     if (activePlugin?.isInstalledOrInstalling() != true) {
       buttons.add(
@@ -140,6 +141,7 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
         widget.xml!.buttons.isNotEmpty) {
       buttons.add(ListTile(
         title: Text(str.plugin_button_header_defined),
+        dense: true,
       ));
       for (var btnData in widget.xml!.buttons) {
         buttons.add(
