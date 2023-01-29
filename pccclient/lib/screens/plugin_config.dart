@@ -49,8 +49,10 @@ class _PluginConfigScreenState extends State<PluginConfigScreen> {
       store = {};
     }
     List<Widget> children = [];
-    children
-        .addAll(argument!.xml.config.map((e) => formPartFromData(e, store)));
+    children.addAll(argument!.xml.config.map((e) => Container(
+          padding: const EdgeInsets.all(16.0),
+          child: formPartFromData(e, store),
+        )));
 
     var formKey = GlobalKey<FormState>();
 
@@ -84,7 +86,7 @@ class _PluginConfigScreenState extends State<PluginConfigScreen> {
     setState(() {
       content = Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: argument!.ask != null,
+          automaticallyImplyLeading: argument!.ask == null,
           title: Text(str.plugin_config_title),
         ),
         bottomNavigationBar: getTipsBar(),
