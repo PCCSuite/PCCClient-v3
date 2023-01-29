@@ -148,8 +148,7 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
           ListTile(
             title: Text(btnData.name),
             onTap: () {
-              startPluginActionCommand(
-                  activePlugin!.identifier, btnData.action);
+              startPluginActionCommand(activePlugin!.name, btnData.action);
             },
           ),
         );
