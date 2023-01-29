@@ -63,7 +63,9 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
         ListTile(
           title: Text(str.plugin_button_install),
           onTap: () => showPluginAddDialog(
-              context, PluginAddInfo(identifier: widget.plugin.getIdentifier(), install: true)),
+              context,
+              PluginAddInfo(
+                  identifier: widget.plugin.getIdentifier(), install: true)),
         ),
       );
     } else if (activePlugin?.isRunning() == true) {
@@ -77,8 +79,8 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
     buttons.add(
       ListTile(
         title: Text(str.plugin_button_favorite),
-        onTap: () =>
-            showPluginAddDialog(context, PluginAddInfo(identifier: widget.plugin.getIdentifier())),
+        onTap: () => showPluginAddDialog(
+            context, PluginAddInfo(identifier: widget.plugin.getIdentifier())),
       ),
     );
     if (dataExists) {
@@ -86,7 +88,9 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
         buttons.add(
           ListTile(
             title: Text(str.plugin_button_config),
-            onTap: () => Navigator.of(context).pushNamed(PluginConfigScreen.routeName, arguments: PluginConfigScreenArgument(false, widget.xml!)),
+            onTap: () => Navigator.of(context).pushNamed(
+                PluginConfigScreen.routeName,
+                arguments: PluginConfigScreenArgument(null, widget.xml!)),
           ),
         );
       }

@@ -1,10 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:pccclient/screens/part/form_part.dart';
 import 'package:pccclient/screens/part/tips.dart';
 import 'package:pccclient/utils/general.dart';
 import 'package:pccclient/utils/plugins/files.dart';
 
 class PluginConfigScreenArgument {
-  final bool ask;
+  final String? ask;
   final PluginXml xml;
 
   PluginConfigScreenArgument(this.ask, this.xml);
@@ -20,41 +24,75 @@ class PluginConfigScreen extends StatefulWidget {
 }
 
 class _PluginConfigScreenState extends State<PluginConfigScreen> {
-
   PluginConfigScreenArgument? argument;
 
+  Widget content = const Text("Loading...");
+
   @override
-  Widget build(BuildContext context) {
-    argument ??= ModalRoute.of(context)!.settings.arguments as PluginConfigScreenArgument;
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: !argument!.ask,
-        title: Text(str.plugin_config_title),
-      ),
-      bottomNavigationBar: getTipsBar(),
-      body: Form(
-        child: ListView(
-          children: argument!.xml.config.map((e) => _ConfigRow()).toList(),
-        ),
-      ),
-    );
+  void initState() {
+    argument ??= ModalRoute.of(context)!.settings.arguments
+        as PluginConfigScreenArgument;
+    loadConfig();
+    super.initState();
   }
-}
 
-class _ConfigRow extends StatefulWidget {
-  const _ConfigRow({Key? key}) : super(key: key);
+  void loadConfig() async {
+    Map<String, dynamic> store;
 
-  @override
-  State<_ConfigRow> createState() => _ConfigRowState();
-}
+    File file = File(pluginSysConfig.pluginsList);
+    if (await file.exists()) {
+      String str = await file.readAsString();
+      store = jsonDecode(str);
+    } else {
+      store = {};
+    }
+    List<Widget> children =
+        argument!.xml.config.map((e) => formPartFromData(e, store)).toList();
 
-class _ConfigRowState extends State<_ConfigRow> {
+    var formKey = GlobalKey<FormState>();
+
+    children.add(
+      Row(
+        children: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(
+              str.plugin_ask_cancel,
+              style: const TextStyle(color: Colors.redAccent),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              formKey.currentState!.save();
+              Navigator.pop(context, true);
+            },
+            child: Text(
+              str.plugin_ask_submit,
+            ),
+          ),
+        ],
+      ),
+    );
+
+    setState(() {
+      content = Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: argument!.ask != null,
+          title: Text(str.plugin_config_title),
+        ),
+        bottomNavigationBar: getTipsBar(),
+        body: Form(
+          key: formKey,
+          child: ListView(
+            children: children,
+          ),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text("Row"),
-      ],
-    );
+    return content;
   }
 }

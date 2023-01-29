@@ -60,7 +60,7 @@ class _LoginAppScreenState extends State<LoginAppScreen> {
                     }
                     return null;
                   },
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 32.0,
                   ),
                 ),
@@ -75,7 +75,7 @@ class _LoginAppScreenState extends State<LoginAppScreen> {
                     }
                     return null;
                   },
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 32.0,
                   ),
                 ),

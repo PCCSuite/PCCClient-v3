@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pccclient/screens/part/form_field.dart';
 import 'package:pccclient/utils/local_config.dart';
 import 'package:pccclient/utils/server_info.dart';
 import 'package:xml/xml.dart';
+
+import 'package:path/path.dart' as path;
 
 part 'files.g.dart';
 
@@ -56,7 +59,8 @@ class PluginXml {
   final String author;
   final String licence;
   final List<String> dependency;
-  final List<PluginConfigItem> config;
+  final List<PluginButtonData> buttons;
+  final List<PluginFormFieldData> config;
 
   factory PluginXml.fromXml(XmlDocument xml) {
     XmlElement plugin = xml.getElement("plugin")!;
@@ -69,26 +73,18 @@ class PluginXml {
     for (var dependent in dependency.childElements) {
       dependencyList.add(dependent.text);
     }
+    XmlElement? buttons = plugin.getElement("buttons");
+    List<PluginButtonData> buttonList = [];
+    if (buttons != null) {
+      for (var buttonItem in buttons.childElements) {
+        buttonList.add(PluginButtonData.fromXml(buttonItem));
+      }
+    }
     XmlElement? config = plugin.getElement("config");
-    List<PluginConfigItem> configList = [];
+    List<PluginFormFieldData> configList = [];
     if (config != null) {
       for (var configItem in config.childElements) {
-        var attrs = configItem.attributes;
-        String id = "", type = "", hint = "";
-        for (var attr in attrs) {
-          switch (attr.name.local) {
-            case "id":
-              id = attr.value;
-              break;
-            case "type":
-              type = attr.value;
-              break;
-            case "hint":
-              hint = attr.value;
-              break;
-          }
-        }
-        configList.add(PluginConfigItem(id, type, hint, configItem.innerText));
+        configList.add(PluginFormFieldData.fromXml(configItem));
       }
     }
     return PluginXml(
@@ -98,20 +94,65 @@ class PluginXml {
         general.getElement("plugin_author")!.innerText,
         general.getElement("plugin_licence")!.innerText,
         dependencyList,
+        buttonList,
         configList);
   }
 
+  String get dataDir {
+    return path.join(pluginSysConfig.dataDir, name);
+  }
+
   PluginXml(this.name, this.version, this.description, this.author,
-      this.licence, this.dependency, this.config);
+      this.licence, this.dependency, this.buttons, this.config);
 }
 
-class PluginConfigItem {
-  final String id;
-  final String type;
-  final String hint;
+class PluginButtonData {
   final String name;
+  final String action;
+  final List<PluginFormFieldData> form;
 
-  PluginConfigItem(this.id, this.type, this.hint, this.name);
+  factory PluginButtonData.fromXml(XmlElement xml) {
+    String name = xml.getElement("name")!.innerText;
+    String action = xml.getElement("action")!.innerText;
+    XmlElement? formData = xml.getElement("form");
+    List<PluginFormFieldData> form = [];
+    if (formData != null) {
+      for (var field in formData.childElements) {
+        form.add(PluginFormFieldData.fromXml(field));
+      }
+    }
+    return PluginButtonData(name, action, form);
+  }
+
+  PluginButtonData(this.name, this.action, this.form);
+}
+
+class PluginFormFieldData {
+  final PluginFormFieldType type;
+  final String? filePicker;
+  final String id;
+  final String? title;
+  final String? description;
+  final String? label;
+  final String? hint;
+  final String? initial;
+
+  factory PluginFormFieldData.fromXml(XmlElement xml) {
+    PluginFormFieldType type =
+        PluginFormFieldType.values.byName(xml.getAttribute("type")!);
+    String? filePicker = xml.getAttribute("file_picker");
+    String id = xml.getElement("id")!.innerText;
+    String? title = xml.getElement("title")?.innerText;
+    String? description = xml.getElement("description")?.innerText;
+    String? label = xml.getElement("label")?.innerText;
+    String? hint = xml.getElement("hint")?.innerText;
+    String? initial = xml.getElement("initial")?.innerText;
+    return PluginFormFieldData(
+        type, filePicker, id, title, description, label, hint, initial);
+  }
+
+  PluginFormFieldData(this.type, this.filePicker, this.id, this.title,
+      this.description, this.label, this.hint, this.initial);
 }
 
 Future<PluginXml> loadPluginXml(String path) async {
@@ -119,7 +160,6 @@ Future<PluginXml> loadPluginXml(String path) async {
   XmlDocument xml = XmlDocument.parse(await xmlFile.readAsString());
   return PluginXml.fromXml(xml);
 }
-
 
 List<FavoritePlugin> favoritePlugins = [];
 
@@ -143,16 +183,20 @@ class FavoritePlugin {
 Future<List<FavoritePlugin>> loadFavoritePlugins() async {
   File file = File(pluginSysConfig.pluginsList);
   if (!await file.exists()) {
-    await File("${serverInfo.pluginSysPath}\\plugins.json").copy(pluginSysConfig.pluginsList);
+    await File("${serverInfo.pluginSysPath}\\plugins.json")
+        .copy(pluginSysConfig.pluginsList);
   }
   String str = await file.readAsString();
   var jsonRaw = jsonDecode(str);
-  favoritePlugins = (jsonRaw["plugins"] as List<dynamic>).map((element) => FavoritePlugin.fromJson(element)).toList();
+  favoritePlugins = (jsonRaw["plugins"] as List<dynamic>)
+      .map((element) => FavoritePlugin.fromJson(element))
+      .toList();
   return favoritePlugins;
 }
 
 Future<void> saveFavoritePlugins() async {
-  var jsonRaw = const JsonEncoder.withIndent("	").convert({"plugins": favoritePlugins.map((e) => e.toJson()).toList()});
+  var jsonRaw = const JsonEncoder.withIndent("	")
+      .convert({"plugins": favoritePlugins.map((e) => e.toJson()).toList()});
   File file = File(pluginSysConfig.pluginsList);
   await file.writeAsString(jsonRaw);
 }

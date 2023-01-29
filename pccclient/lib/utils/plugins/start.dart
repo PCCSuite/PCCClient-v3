@@ -14,7 +14,7 @@ import 'package:path/path.dart' as path;
 Process? pluginSysProcess;
 
 Future<void> startPluginSys() async {
-  var logDir = Directory(pluginSysConfig!.tempDir);
+  var logDir = Directory(pluginSysConfig.tempDir);
   if (await logDir.exists()) {
     try {
       await _connectPluginSys(0);

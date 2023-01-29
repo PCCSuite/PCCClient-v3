@@ -2,16 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pccclient/utils/general.dart';
 
+enum PluginFormFieldType {
+  string,
+  password,
+  file,
+  int,
+  bool;
+}
+
 class ToggleFormField extends FormField<bool> {
   ToggleFormField({
     super.key,
+    AutovalidateMode? autovalidateMode,
+    bool enabled = true,
+    bool initialValue = false,
     FormFieldSetter<bool?>? onSaved,
     FormFieldValidator<bool?>? validator,
-    bool initialValue = false,
   }) : super(
+          autovalidateMode: autovalidateMode,
+          enabled: enabled,
+          initialValue: initialValue,
           onSaved: onSaved,
           validator: validator,
-          initialValue: initialValue,
           builder: (FormFieldState<bool> state) {
             return Row(
               children: [
@@ -35,13 +47,18 @@ class ToggleFormField extends FormField<bool> {
 class IntegerFormField extends FormField<int> {
   IntegerFormField({
     super.key,
+    AutovalidateMode? autovalidateMode,
+    bool enabled = true,
+    int? initialValue,
+    InputDecoration? decoration,
     FormFieldSetter<int?>? onSaved,
     FormFieldValidator<int?>? validator,
-    int initialValue = 0,
   }) : super(
+          autovalidateMode: autovalidateMode,
+          enabled: enabled,
+          initialValue: initialValue,
           onSaved: onSaved,
           validator: validator,
-          initialValue: initialValue,
           builder: (FormFieldState<int> state) {
             return TextFormField(
               keyboardType: const TextInputType.numberWithOptions(
@@ -56,9 +73,7 @@ class IntegerFormField extends FormField<int> {
                 return state.errorText;
               },
               onChanged: (val) => state.didChange(int.tryParse(val)),
-              decoration: InputDecoration(
-                hintText: str.plugin_form_field_hint_int,
-              ),
+              decoration: decoration,
             );
           },
         );
