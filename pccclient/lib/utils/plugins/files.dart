@@ -50,8 +50,6 @@ Future<void> loadPluginSysConfig() async {
   await loadFavoritePlugins();
 }
 
-Map<String, PluginXml> pluginXmls = {};
-
 class PluginXml {
   final String name;
   final String version;
