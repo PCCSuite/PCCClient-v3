@@ -38,12 +38,12 @@ class _PluginManageWidget extends StatefulWidget {
   State<_PluginManageWidget> createState() => _PluginManageWidgetState();
 }
 
-final String _installed = str.plugin_manage_installed;
 final String _favorite = str.plugin_manage_favorite;
+final String _installed = str.plugin_manage_installed;
 final String _repository = str.plugin_manage_repository;
 
 class _PluginManageWidgetState extends State<_PluginManageWidget> {
-  String showing = _installed;
+  String showing = _favorite;
 
   static const Widget loading = Text("Loading");
 
@@ -63,21 +63,6 @@ class _PluginManageWidgetState extends State<_PluginManageWidget> {
   Widget build(BuildContext context) {
     List<Widget> list = [
       ListTile(
-        title: Text(_installed),
-        selected: showing == _installed,
-        onTap: () {
-          setState(() {
-            showing = _installed;
-            content = loading;
-          });
-          _getInstalledView().then((value) {
-            setState(() {
-              content = value;
-            });
-          });
-        },
-      ),
-      ListTile(
         title: Text(_favorite),
         selected: showing == _favorite,
         onTap: () {
@@ -86,6 +71,21 @@ class _PluginManageWidgetState extends State<_PluginManageWidget> {
             content = loading;
           });
           _getFavoriteView().then((value) {
+            setState(() {
+              content = value;
+            });
+          });
+        },
+      ),
+      ListTile(
+        title: Text(_installed),
+        selected: showing == _installed,
+        onTap: () {
+          setState(() {
+            showing = _installed;
+            content = loading;
+          });
+          _getInstalledView().then((value) {
             setState(() {
               content = value;
             });
@@ -145,44 +145,6 @@ class _PluginManageWidgetState extends State<_PluginManageWidget> {
   }
 }
 
-Future<Widget> _getInstalledView() async {
-  try {
-    return InstalledView(
-      list: installingAndInstalledPlugins,
-    );
-  } catch (err, trace) {
-    return getErrorContent(err, trace);
-  }
-}
-
-class InstalledView extends StatelessWidget {
-  const InstalledView({Key? key, required this.list}) : super(key: key);
-
-  final List<ActivePluginData> list;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            showPluginAddDialog(context, PluginAddInfo(install: true)),
-        child: const Icon(Icons.add),
-      ),
-      body: ListView(
-        children: list
-            .map((e) => ListTile(
-                  title: Text("${e.name} (${e.repositoryName})"),
-                  onTap: () {
-                    Navigator.pushNamed(context, PluginDetailScreen.routeName,
-                        arguments: e.toPlugin());
-                  },
-                ))
-            .toList(),
-      ),
-    );
-  }
-}
-
 Future<Widget> _getFavoriteView() async {
   try {
     List<FavoritePlugin> favorites = await loadFavoritePlugins();
@@ -230,11 +192,49 @@ class FavoriteView extends StatelessWidget {
   }
 }
 
+Future<Widget> _getInstalledView() async {
+  try {
+    return InstalledView(
+      list: installingAndInstalledPlugins,
+    );
+  } catch (err, trace) {
+    return getErrorContent(err, trace);
+  }
+}
+
+class InstalledView extends StatelessWidget {
+  const InstalledView({Key? key, required this.list}) : super(key: key);
+
+  final List<ActivePluginData> list;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () =>
+            showPluginAddDialog(context, PluginAddInfo(install: true)),
+        child: const Icon(Icons.add),
+      ),
+      body: ListView(
+        children: list
+            .map((e) => ListTile(
+          title: Text("${e.name} (${e.repositoryName})"),
+          onTap: () {
+            Navigator.pushNamed(context, PluginDetailScreen.routeName,
+                arguments: e.toPlugin());
+          },
+        ))
+            .toList(),
+      ),
+    );
+  }
+}
+
 Future<Widget> _getRepositoryView(String? repoName) async {
   try {
     List<Plugin> list = [];
     if (repoName != null) {
-      String repoDir = pluginSysConfig!.repositories[repoName]!;
+      String repoDir = pluginSysConfig.repositories[repoName]!;
       for (var dir in Directory(repoDir).listSync()) {
         list.add(Plugin(path.basename(dir.path), repoName, dir.path));
       }
@@ -278,7 +278,7 @@ class RepositoryView extends StatelessWidget {
 
 List<Plugin> getPluginsInRepositories() {
   List<Plugin> list = [];
-  for (var repo in pluginSysConfig!.repositories.entries) {
+  for (var repo in pluginSysConfig.repositories.entries) {
     for (var dir in Directory(repo.value).listSync()) {
       list.add(Plugin(path.basename(dir.path), repo.key, dir.path));
     }
