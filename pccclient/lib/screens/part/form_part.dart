@@ -49,19 +49,35 @@ FormPart formPartFromData(
   }
 }
 
+List<Widget> _getBase(String? title, String? description) {
+  return [
+    Container(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        title ?? "",
+        textAlign: TextAlign.left,
+        style: const TextStyle(
+          fontSize: 16,
+        ),
+      ),
+    ),
+    Container(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        description ?? "",
+        textAlign: TextAlign.left,
+      ),
+    ),
+  ];
+}
+
 class StringFormPart extends FormPart<String> {
   const StringFormPart(
       {super.key, required super.data, required super.store, super.initial});
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [];
-    if (data.title != null) {
-      children.add(Text(data.title!));
-    }
-    if (data.description != null) {
-      children.add(Text(data.description!));
-    }
+    List<Widget> children = _getBase(data.title, data.description);
     children.add(TextFormField(
       keyboardType: TextInputType.text,
       initialValue: initial ?? data.initial,
@@ -83,13 +99,7 @@ class PasswordFormPart extends FormPart<String> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [];
-    if (data.title != null) {
-      children.add(Text(data.title!));
-    }
-    if (data.description != null) {
-      children.add(Text(data.description!));
-    }
+    List<Widget> children = _getBase(data.title, data.description);
     children.add(TextFormField(
       obscureText: true,
       enableSuggestions: false,
@@ -114,13 +124,7 @@ class FileFormPart extends FormPart<String> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [];
-    if (data.title != null) {
-      children.add(Text(data.title!));
-    }
-    if (data.description != null) {
-      children.add(Text(data.description!));
-    }
+    List<Widget> children = _getBase(data.title, data.description);
     TextEditingController textControler = TextEditingController();
     children.add(Row(
       children: [
@@ -164,13 +168,7 @@ class IntFormPart extends FormPart<int> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [];
-    if (data.title != null) {
-      children.add(Text(data.title!));
-    }
-    if (data.description != null) {
-      children.add(Text(data.description!));
-    }
+    List<Widget> children = _getBase(data.title, data.description);
     children.add(IntegerFormField(
       initialValue: initial ??
           (data.initial != null ? int.tryParse(data.initial!) : null),
@@ -192,13 +190,7 @@ class BoolFormPart extends FormPart<bool> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [];
-    if (data.title != null) {
-      children.add(Text(data.title!));
-    }
-    if (data.description != null) {
-      children.add(Text(data.description!));
-    }
+    List<Widget> children = _getBase(data.title, data.description);
     children.add(ToggleFormField(
       initialValue: initial ?? data.initial?.toLowerCase() == "true",
       onSaved: (newValue) => store[data.id] = newValue,

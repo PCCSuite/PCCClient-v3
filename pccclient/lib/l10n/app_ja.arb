@@ -86,6 +86,8 @@
   "plugin_detail_unknown": "不明",
 
   "plugin_config_title": "プラグイン設定",
+  "plugin_config_save": "保存",
+  "plugin_config_cancel": "キャンセル",
 
   "plugin_status_waitStart": "処理開始待ち",
   "plugin_status_waitDepend": "依存関係の完了待ち",

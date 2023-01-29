@@ -60,7 +60,9 @@ class _PluginConfigScreenState extends State<PluginConfigScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(
-              str.plugin_ask_cancel,
+              argument!.ask != null
+                  ? str.plugin_ask_cancel
+                  : str.plugin_config_cancel,
               style: const TextStyle(color: Colors.redAccent),
             ),
           ),
@@ -70,7 +72,9 @@ class _PluginConfigScreenState extends State<PluginConfigScreen> {
               Navigator.pop(context, true);
             },
             child: Text(
-              str.plugin_ask_submit,
+              argument!.ask != null
+                  ? str.plugin_ask_submit
+                  : str.plugin_config_save,
             ),
           ),
         ],
