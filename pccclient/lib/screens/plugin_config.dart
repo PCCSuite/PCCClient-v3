@@ -48,8 +48,9 @@ class _PluginConfigScreenState extends State<PluginConfigScreen> {
     } else {
       store = {};
     }
-    List<Widget> children =
-        argument!.xml.config.map((e) => formPartFromData(e, store)).toList();
+    List<Widget> children = [];
+    children
+        .addAll(argument!.xml.config.map((e) => formPartFromData(e, store)));
 
     var formKey = GlobalKey<FormState>();
 
