@@ -50,7 +50,7 @@ class _PluginManageWidgetState extends State<_PluginManageWidget> {
 
   @override
   void initState() {
-    _getInstalledView().then((value) {
+    _getFavoriteView().then((value) {
       setState(() {
         content = value;
       });
