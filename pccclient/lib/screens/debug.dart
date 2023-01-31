@@ -83,6 +83,7 @@ class _DebugMenuState extends State<_DebugMenu> {
             });
             future.catchError((err, trace) {
               showError(context, err, trace);
+              return false;
             });
           },
           child: const Text("Stop PluginSys"),

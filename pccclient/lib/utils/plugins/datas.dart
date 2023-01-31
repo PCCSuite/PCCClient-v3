@@ -31,7 +31,6 @@ List<ActivePluginData> get installingAndInstalledPlugins =>
 
 set activePlugins(List<ActivePluginData> newData) {
   _activePlugins = newData;
-  List<ActivePluginData> list = [];
   _installingAndInstalledPlugins = _activePlugins
       .where((element) =>
           element.installed || element.status != ActionStatus.failed)
@@ -46,8 +45,15 @@ set activePlugins(List<ActivePluginData> newData) {
 
 @JsonSerializable()
 class ActivePluginData {
-  ActivePluginData(this.identifier, this.repositoryName, this.installed,
-      this.locking, this.status, this.statusText, this.priority, this.dependency)
+  ActivePluginData(
+      this.identifier,
+      this.repositoryName,
+      this.installed,
+      this.locking,
+      this.status,
+      this.statusText,
+      this.priority,
+      this.dependency)
       : name = identifier.split(":").last;
 
   @JsonKey(name: "identifier")
@@ -134,6 +140,8 @@ class AskData {
 
   factory AskData.fromJson(Map<String, dynamic> json) =>
       _$AskDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AskDataToJson(this);
 }
 
 class Plugin {
