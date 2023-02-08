@@ -124,6 +124,9 @@ class _PluginAddDialogState extends State<_PluginAddDialog> {
                     })
                 : null,
             title: Text(str.plugin_add_dialog_auto_restore),
+            subtitle: info.favorite
+                ? null
+                : Text(str.plugin_add_dialog_need_favorite),
           ),
           info.autoRestore
               ? TextField(
