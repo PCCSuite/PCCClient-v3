@@ -20,7 +20,7 @@ Future<void> showAskDialog(BuildContext context, AskData data) async {
           arguments: PluginConfigScreenArgument(
               data.message,
               await loadPluginXml(path.join(
-                  Plugin.fromIdentifier(data.plugin).dir!, "plugin.xml"))),
+                  Package.fromIdentifier(data.plugin).dir!, "plugin.xml"))),
         ) ==
         true;
   } else {

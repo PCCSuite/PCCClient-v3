@@ -6,8 +6,8 @@ part of 'datas.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ActivePluginData _$ActivePluginDataFromJson(Map<String, dynamic> json) =>
-    ActivePluginData(
+ActivePackageData _$ActivePluginDataFromJson(Map<String, dynamic> json) =>
+    ActivePackageData(
       json['identifier'] as String,
       json['repository'] as String,
       json['installed'] as bool,
@@ -18,7 +18,7 @@ ActivePluginData _$ActivePluginDataFromJson(Map<String, dynamic> json) =>
       (json['dependency'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$ActivePluginDataToJson(ActivePluginData instance) =>
+Map<String, dynamic> _$ActivePluginDataToJson(ActivePackageData instance) =>
     <String, dynamic>{
       'identifier': instance.identifier,
       'repository': instance.repositoryName,

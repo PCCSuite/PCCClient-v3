@@ -161,7 +161,7 @@ class _PluginAddDialogState extends State<_PluginAddDialog> {
 }
 
 Future<void> showPluginAddDialog(BuildContext context, PluginAddInfo info,
-    {Plugin? plugin}) async {
+    {Package? plugin}) async {
   if (info.identifier == "" && plugin != null) {}
   bool? submit = await showDialog(
     context: context,

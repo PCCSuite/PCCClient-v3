@@ -38,7 +38,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
     });
   }
 
-  void updateList(List<ActivePluginData> newData) {
+  void updateList(List<ActivePackageData> newData) {
     setState(() {
       pluginsData = newData;
     });
@@ -66,7 +66,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
   }
 
   PluginSysStatus sysStatus = pluginSysStatus;
-  List<ActivePluginData> pluginsData = activePlugins;
+  List<ActivePackageData> pluginsData = activePackages;
   List<AskData> _askData = askData;
 
   static const double indentPerDepth = 30.0;
@@ -77,11 +77,11 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
       if (builtList.contains(targetName)) {
         continue;
       }
-      ActivePluginData target =
+      ActivePackageData target =
           pluginsData.firstWhere((element) => element.identifier == targetName);
       builtList.add(target.identifier);
-      dest.add(PluginStatusRow(
-        plugin: target,
+      dest.add(PackageStatusRow(
+        package: target,
         indent: depth * indentPerDepth,
         clickable: true,
       ));
@@ -122,7 +122,7 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
     }
     pluginsData.sort((a, b) => a.priority.compareTo(b.priority));
     List<String> noParentList = pluginsData.map((e) => e.identifier).toList();
-    for (ActivePluginData plugin in pluginsData) {
+    for (ActivePackageData plugin in pluginsData) {
       for (String depend in plugin.dependency) {
         noParentList.remove(depend);
       }
@@ -135,15 +135,15 @@ class PluginSysStatusWidgetState extends State<PluginSysStatusWidget> {
   }
 }
 
-class PluginStatusRow extends StatelessWidget {
-  const PluginStatusRow(
+class PackageStatusRow extends StatelessWidget {
+  const PackageStatusRow(
       {Key? key,
-      required this.plugin,
+      required this.package,
       required this.indent,
       required this.clickable})
       : super(key: key);
 
-  final ActivePluginData plugin;
+  final ActivePackageData package;
   final double indent;
   final bool clickable;
 
@@ -152,12 +152,12 @@ class PluginStatusRow extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: indent),
       child: ListTile(
-        leading: plugin.status.icon,
-        title: Text(plugin.identifier),
-        subtitle: Text(plugin.statusText),
+        leading: package.status.icon,
+        title: Text(package.identifier),
+        subtitle: Text(package.statusText),
         onTap: clickable
             ? () => Navigator.pushNamed(context, PluginDetailScreen.routeName,
-                arguments: plugin.toPlugin())
+                arguments: package.toPlugin())
             : null,
       ),
     );

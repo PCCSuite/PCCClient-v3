@@ -4,6 +4,7 @@ import 'package:pccclient/screens/part/error.dart';
 import 'package:pccclient/screens/part/tips.dart';
 import 'package:pccclient/utils/plugins/buttons_widget.dart';
 import 'package:pccclient/utils/plugins/files.dart';
+import 'package:pccclient/utils/plugins/status_widget.dart';
 
 import '../utils/general.dart';
 import '../utils/plugins/datas.dart';
@@ -25,7 +26,7 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
 
   bool initiated = false;
 
-  Plugin? plugin;
+  Package? package;
 
   @override
   void initState() {
@@ -34,19 +35,19 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (plugin == null) {
-      Plugin plugin = ModalRoute.of(context)!.settings.arguments as Plugin;
-      this.plugin = plugin;
-      if (plugin.dir != null) {
+    if (package == null) {
+      Package package = ModalRoute.of(context)!.settings.arguments as Package;
+      this.package = package;
+      if (package.dir != null) {
         Future<PluginXml> xmlFuture =
-            loadPluginXml(path.join(plugin.dir!, "plugin.xml"));
+            loadPluginXml(path.join(package.dir!, "plugin.xml"));
         xmlFuture.then((value) {
           setState(() {
             xmlWidget = _PluginXmlWidget(
               xml: value,
             );
             buttonsWidget = PluginButtonsWidget(
-              plugin: plugin,
+              plugin: package,
               xml: value,
             );
           });
@@ -59,11 +60,12 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
       } else {
         xmlWidget = Container();
         buttonsWidget = PluginButtonsWidget(
-          plugin: plugin,
+          plugin: package,
           xml: null,
         );
       }
     }
+    var activePackageData = package!.getActiveData();
     return Scaffold(
       appBar: AppBar(
         title: Text(PluginDetailScreen.screenName),
@@ -71,9 +73,13 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
       bottomNavigationBar: getTipsBar(),
       body: ListView(
         children: [
-          _PluginDetailRow(str.plugin_detail_name, plugin!.name),
+          activePackageData != null
+              ? PackageStatusRow(
+                  package: activePackageData, indent: 0, clickable: false)
+              : Container(),
+          _PluginDetailRow(str.plugin_detail_name, package!.name),
           _PluginDetailRow(
-              str.plugin_detail_repository, plugin!.repositoryName),
+              str.plugin_detail_repository, package!.repositoryName),
           xmlWidget,
           buttonsWidget,
         ],

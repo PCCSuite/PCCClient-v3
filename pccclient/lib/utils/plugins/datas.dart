@@ -1,10 +1,10 @@
+import 'dart:collection';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pccclient/screens/plugin_manage.dart';
 import 'package:pccclient/utils/plugins/files.dart';
 import 'package:pccclient/utils/plugins/status_enum.dart';
 import 'package:pccclient/utils/plugins/status_widget.dart';
-
-import 'buttons_widget.dart';
 
 import 'package:path/path.dart' as path;
 
@@ -21,31 +21,53 @@ set pluginSysStatus(PluginSysStatus newData) {
   }
 }
 
-List<ActivePluginData> _activePlugins = <ActivePluginData>[];
-List<ActivePluginData> _installingAndInstalledPlugins = <ActivePluginData>[];
+Map<String, HashSet<Function(ActivePackageData)>> _activePackageListener = {};
 
-List<ActivePluginData> get activePlugins => _activePlugins;
+List<ActivePackageData> _activePackages = <ActivePackageData>[];
+List<ActivePackageData> _installingAndInstalledPackages = <ActivePackageData>[];
 
-List<ActivePluginData> get installingAndInstalledPlugins =>
-    _installingAndInstalledPlugins;
+List<ActivePackageData> get activePackages => _activePackages;
 
-set activePlugins(List<ActivePluginData> newData) {
-  _activePlugins = newData;
-  _installingAndInstalledPlugins = _activePlugins
+List<ActivePackageData> get installingAndInstalledPlugins =>
+    _installingAndInstalledPackages;
+
+set activePackages(List<ActivePackageData> newData) {
+  _activePackages = newData;
+  _installingAndInstalledPackages = _activePackages
       .where((element) =>
           element.installed || element.status != ActionStatus.failed)
       .toList();
   for (PluginSysStatusWidgetState wid in pluginSysStatusWidgets) {
     wid.updateList(newData);
   }
-  for (PluginButtonsWidgetState wid in pluginButtonsWidgets) {
-    wid.updateList(newData);
+  for (var data in newData) {
+    var listeners = _activePackageListener[data.identifier];
+    if (listeners == null) continue;
+    for (var listener in listeners) {
+      listener(data);
+    }
   }
 }
 
+void subscribeActivePackage(
+    String packageName, Function(ActivePackageData) func) {
+  var listeners = _activePackageListener[packageName];
+  if (listeners == null) {
+    listeners = HashSet();
+    _activePackageListener[packageName] = listeners;
+  }
+  listeners.add(func);
+}
+
+void unsubscribeActivePackage(
+    String packageName, Function(ActivePackageData) func) {
+  var listeners = _activePackageListener[packageName];
+  listeners!.remove(func);
+}
+
 @JsonSerializable()
-class ActivePluginData {
-  ActivePluginData(
+class ActivePackageData {
+  ActivePackageData(
       this.identifier,
       this.repositoryName,
       this.installed,
@@ -74,7 +96,7 @@ class ActivePluginData {
   @JsonKey(name: "dependency")
   final List<String> dependency;
 
-  factory ActivePluginData.fromJson(Map<String, dynamic> json) =>
+  factory ActivePackageData.fromJson(Map<String, dynamic> json) =>
       _$ActivePluginDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$ActivePluginDataToJson(this);
@@ -96,12 +118,21 @@ class ActivePluginData {
     }
   }
 
-  Plugin toPlugin() {
-    return Plugin.autoDir(name, repositoryName);
+  Package toPlugin() {
+    return Package.autoDir(name, repositoryName);
   }
 
   String getFullIdentifier() {
     return "$repositoryName:$name";
+  }
+
+  static ActivePackageData? findByName(String name) {
+    for (var data in activePackages) {
+      if (data.name == name) {
+        return data;
+      }
+    }
+    return null;
   }
 }
 
@@ -144,32 +175,32 @@ class AskData {
   Map<String, dynamic> toJson() => _$AskDataToJson(this);
 }
 
-class Plugin {
+class Package {
   final String name;
   final String? repositoryName;
   final String? dir;
 
-  Plugin(this.name, this.repositoryName, this.dir);
+  Package(this.name, this.repositoryName, this.dir);
 
-  factory Plugin.autoDir(String name, String? repositoryName) {
+  factory Package.autoDir(String name, String repositoryName) {
     var repoDir = pluginSysConfig.repositories[repositoryName];
     String? dir;
     if (repoDir != null) {
       dir = path.join(repoDir, name);
     }
-    return Plugin(name, repositoryName, dir);
+    return Package(name, repositoryName, dir);
   }
 
-  factory Plugin.fromIdentifier(String identifier) {
+  factory Package.fromIdentifier(String identifier) {
     var split = identifier.split(":");
     if (split.length == 1) {
       try {
         return getPluginsInRepositories()
             .firstWhere((element) => element.name == identifier);
       } on StateError catch (_) {}
-      return Plugin.autoDir(identifier, null);
+      return Package(identifier, null, null);
     } else {
-      return Plugin.autoDir(split[1], split[0]);
+      return Package.autoDir(split[1], split[0]);
     }
   }
 
@@ -179,5 +210,14 @@ class Plugin {
     } else {
       return "$repositoryName:$name";
     }
+  }
+
+  ActivePackageData? getActiveData() {
+    for (var data in activePackages) {
+      if (data.name == name) {
+        return data;
+      }
+    }
+    return null;
   }
 }

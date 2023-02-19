@@ -73,11 +73,11 @@ void _listener(Uint8List data) {
   switch (map["data_type"]) {
     case "notify":
       pluginSysStatus = PluginSysStatus.from(map["status"]);
-      List<ActivePluginData> newActivePlugins = [];
+      List<ActivePackageData> newActivePlugins = [];
       for (Map<String, dynamic> pluginRaw in map["plugins"]) {
-        newActivePlugins.add(ActivePluginData.fromJson(pluginRaw));
+        newActivePlugins.add(ActivePackageData.fromJson(pluginRaw));
       }
-      activePlugins = newActivePlugins;
+      activePackages = newActivePlugins;
       List<AskData> newAskData = [];
       for (Map<String, dynamic> askRaw in map["asking"]) {
         newAskData.add(AskData.fromJson(askRaw));

@@ -10,13 +10,11 @@ import 'package:pccclient/utils/plugins/files.dart';
 
 import 'package:path/path.dart' as path;
 
-List<PluginButtonsWidgetState> pluginButtonsWidgets = [];
-
 class PluginButtonsWidget extends StatefulWidget {
   const PluginButtonsWidget({Key? key, required this.plugin, required this.xml})
       : super(key: key);
 
-  final Plugin plugin;
+  final Package plugin;
   final PluginXml? xml;
 
   @override
@@ -26,33 +24,32 @@ class PluginButtonsWidget extends StatefulWidget {
 class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
   @override
   void initState() {
-    pluginButtonsWidgets.add(this);
-    Future.delayed(Duration.zero, () => updateList(activePlugins));
+    listener = (ActivePackageData data) {
+      setState(() {
+        activePlugin = data;
+      });
+    };
+    subscribeActivePackage(widget.plugin.name, listener);
+    activePlugin = ActivePackageData.findByName(widget.plugin.name);
     dataDir.exists().then((value) => setState(() => dataExists = value));
     super.initState();
   }
 
   @override
   void dispose() {
-    pluginButtonsWidgets.remove(this);
+    unsubscribeActivePackage(widget.plugin.name, listener);
     super.dispose();
   }
 
-  void updateList(List<ActivePluginData> newData) {
-    for (var data in newData) {
-      if (data.name == widget.plugin.name) {
-        setState(() {
-          activePlugin = data;
-        });
-        break;
-      }
-    }
-  }
+  late void Function(ActivePackageData) listener;
 
-  ActivePluginData? activePlugin;
+  void updateList(List<ActivePackageData> newData) {}
+
+  ActivePackageData? activePlugin;
 
   late final Directory dataDir =
       Directory(path.join(pluginSysConfig.dataDir, widget.plugin.name));
+
   bool dataExists = false;
 
   @override

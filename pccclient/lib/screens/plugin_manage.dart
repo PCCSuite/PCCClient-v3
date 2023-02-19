@@ -44,18 +44,70 @@ final String _repository = str.plugin_manage_repository;
 class _PluginManageWidgetState extends State<_PluginManageWidget> {
   String showing = _favorite;
 
-  static const Widget loading = Text("Loading");
+  static const Widget _loading = Text("Loading");
 
-  Widget content = loading;
+  Widget content = _loading;
+
+  List<Package> _list = [];
+
+  String _search = "";
+  final _searchFieldController = TextEditingController();
 
   @override
   void initState() {
-    _getFavoriteView().then((value) {
-      setState(() {
-        content = value;
-      });
+    _searchFieldController.addListener(() {
+      _search = _searchFieldController.text;
+      _refresh();
     });
+
+    _showFavorite();
     super.initState();
+  }
+
+  Future<void> _showFavorite() async {
+    showing = _favorite;
+    List<FavoritePlugin> favorites = await loadFavoritePlugins();
+    _list = favorites.map((e) => Package.fromIdentifier(e.identifier)).toList();
+    _refresh();
+  }
+
+  Future<void> _showInstalled() async {
+    showing = _installed;
+    _list = installingAndInstalledPlugins.map((e) => e.toPlugin()).toList();
+    _refresh();
+  }
+
+  Future<void> _showRepository(String? repoName) async {
+    showing = repoName ?? _repository;
+    _list = [];
+    if (repoName != null) {
+      String repoDir = pluginSysConfig.repositories[repoName]!;
+      for (var dir in Directory(repoDir).listSync()) {
+        _list.add(Package(path.basename(dir.path), repoName, dir.path));
+      }
+    } else {
+      _list = getPluginsInRepositories();
+    }
+    _refresh();
+  }
+
+  void _refresh() {
+    _list.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+    setState(() {
+      content = _PluginListWidget(
+        list: _search == ""
+            ? _list
+            : _list
+                .where((element) =>
+                    element.name.toLowerCase().contains(_search.toLowerCase()))
+                .toList(),
+        showRepoName: showing == _installed ||
+            showing == _favorite ||
+            showing == _repository,
+        favorite: showing == _favorite,
+        install: showing == _installed,
+      );
+    });
   }
 
   @override
@@ -65,45 +117,21 @@ class _PluginManageWidgetState extends State<_PluginManageWidget> {
         title: Text(_favorite),
         selected: showing == _favorite,
         onTap: () {
-          setState(() {
-            showing = _favorite;
-            content = loading;
-          });
-          _getFavoriteView().then((value) {
-            setState(() {
-              content = value;
-            });
-          });
+          _showFavorite();
         },
       ),
       ListTile(
         title: Text(_installed),
         selected: showing == _installed,
         onTap: () {
-          setState(() {
-            showing = _installed;
-            content = loading;
-          });
-          _getInstalledView().then((value) {
-            setState(() {
-              content = value;
-            });
-          });
+          _showInstalled();
         },
       ),
       ListTile(
         title: Text(_repository),
         selected: showing == _repository,
         onTap: () {
-          setState(() {
-            showing = _repository;
-            content = loading;
-          });
-          _getRepositoryView(null).then((value) {
-            setState(() {
-              content = value;
-            });
-          });
+          _showRepository(null);
         },
       ),
     ];
@@ -113,161 +141,83 @@ class _PluginManageWidgetState extends State<_PluginManageWidget> {
         title: Text(repo),
         selected: showing == repo,
         onTap: () {
-          setState(() {
-            showing = repo;
-            content = loading;
-          });
-          _getRepositoryView(repo).then(
-            (value) {
-              setState(() {
-                content = value;
-              });
-            },
-          );
+          _showRepository(repo);
         },
       ));
     }
-    return Row(
-      children: [
-        Container(
-          width: 250,
-          color: Colors.black26,
-          child: ListView(
-            children: list,
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showPluginAddDialog(
+            context,
+            PluginAddInfo(
+              favorite: showing == _favorite,
+              install: showing == _installed,
+            )),
+        child: const Icon(Icons.add),
+      ),
+      body: Row(
+        children: [
+          Container(
+            width: 250,
+            color: Colors.black26,
+            child: ListView(
+              children: list,
+            ),
           ),
-        ),
-        Expanded(
-          child: content,
-        )
-      ],
-    );
-  }
-}
-
-Future<Widget> _getFavoriteView() async {
-  try {
-    List<FavoritePlugin> favorites = await loadFavoritePlugins();
-    List<Plugin> list =
-        favorites.map((e) => Plugin.fromIdentifier(e.identifier)).toList();
-    return FavoriteView(
-      list: list,
-    );
-  } catch (err, trace) {
-    return getErrorContent(err, trace);
-  }
-}
-
-class FavoriteView extends StatelessWidget {
-  const FavoriteView({Key? key, required this.list}) : super(key: key);
-
-  final List<Plugin> list;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            showPluginAddDialog(context, PluginAddInfo(favorite: true)),
-        child: const Icon(Icons.add),
-      ),
-      body: ListView(
-        children: list
-            .map((e) => ListTile(
-                  title: Text(e.repositoryName != null
-                      ? "${e.name} (${e.repositoryName})"
-                      : e.name),
-                  onTap: () {
-                    if (e.repositoryName == null) {
-                      try {
-                        e = getPluginsInRepositories()
-                            .firstWhere((element) => element.name == e.name);
-                      } on StateError catch (_) {}
-                    }
-                    Navigator.pushNamed(context, PluginDetailScreen.routeName,
-                        arguments: e);
-                  },
-                ))
-            .toList(),
+          Expanded(
+            child: Column(
+              children: [
+                TextField(
+                  controller: _searchFieldController,
+                  decoration: InputDecoration(
+                    // isDense: true,
+                    icon: const Icon(Icons.search),
+                    suffixIcon: IconButton(
+                        onPressed: _searchFieldController.clear,
+                        icon: const Icon(Icons.clear)),
+                  ),
+                ),
+                Expanded(
+                  child: content,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-Future<Widget> _getInstalledView() async {
-  try {
-    return InstalledView(
-      list: installingAndInstalledPlugins,
-    );
-  } catch (err, trace) {
-    return getErrorContent(err, trace);
-  }
-}
-
-class InstalledView extends StatelessWidget {
-  const InstalledView({Key? key, required this.list}) : super(key: key);
-
-  final List<ActivePluginData> list;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            showPluginAddDialog(context, PluginAddInfo(install: true)),
-        child: const Icon(Icons.add),
-      ),
-      body: ListView(
-        children: list
-            .map((e) => ListTile(
-                  title: Text("${e.name} (${e.repositoryName})"),
-                  onTap: () {
-                    Navigator.pushNamed(context, PluginDetailScreen.routeName,
-                        arguments: e.toPlugin());
-                  },
-                ))
-            .toList(),
-      ),
-    );
-  }
-}
-
-Future<Widget> _getRepositoryView(String? repoName) async {
-  try {
-    List<Plugin> list = [];
-    if (repoName != null) {
-      String repoDir = pluginSysConfig.repositories[repoName]!;
-      for (var dir in Directory(repoDir).listSync()) {
-        list.add(Plugin(path.basename(dir.path), repoName, dir.path));
-      }
-    } else {
-      list = getPluginsInRepositories();
-    }
-    return RepositoryView(
-      list: list,
-      repositoryName: repoName,
-    );
-  } catch (err, trace) {
-    return getErrorContent(err, trace);
-  }
-}
-
-class RepositoryView extends StatelessWidget {
-  const RepositoryView({Key? key, required this.list, this.repositoryName})
+class _PluginListWidget extends StatelessWidget {
+  const _PluginListWidget(
+      {Key? key,
+      required this.list,
+      this.showRepoName = true,
+      this.favorite = false,
+      this.install = false})
       : super(key: key);
 
-  final List<Plugin> list;
+  final bool showRepoName;
+  final bool favorite;
+  final bool install;
 
-  final String? repositoryName;
+  final List<Package> list;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: list
           .map((e) => ListTile(
-                title: Text(repositoryName != null
-                    ? e.name
-                    : "${e.name} (${e.repositoryName})"),
+                title: Text(showRepoName && e.repositoryName != null
+                    ? "${e.name} (${e.repositoryName})"
+                    : e.name),
                 onTap: () {
+                  if (e.repositoryName == null) {
+                    try {
+                      e = Package.fromIdentifier(e.name);
+                    } on StateError catch (_) {}
+                  }
                   Navigator.pushNamed(context, PluginDetailScreen.routeName,
                       arguments: e);
                 },
@@ -277,11 +227,11 @@ class RepositoryView extends StatelessWidget {
   }
 }
 
-List<Plugin> getPluginsInRepositories() {
-  List<Plugin> list = [];
+List<Package> getPluginsInRepositories() {
+  List<Package> list = [];
   for (var repo in pluginSysConfig.repositories.entries) {
     for (var dir in Directory(repo.value).listSync()) {
-      list.add(Plugin(path.basename(dir.path), repo.key, dir.path));
+      list.add(Package(path.basename(dir.path), repo.key, dir.path));
     }
   }
   return list;
