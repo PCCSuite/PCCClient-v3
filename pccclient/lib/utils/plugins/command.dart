@@ -16,11 +16,10 @@ void startPluginActionCommand(String plugin, String action) {
 }
 
 void cancelActionCommand(String package) {
-  socket!.write(
-      json.encode({"data_type": "cancel", "package": package}));
+  socket!.write(json.encode({"data_type": "cancel", "package": package}));
 }
 
 void answerAskingCommand(int id, String answer) {
-  socket!.write(
-      json.encode({"data_type": "answer", "id": id, "value": answer}));
+  socket!
+      .write(json.encode({"data_type": "answer", "id": id, "value": answer}));
 }
