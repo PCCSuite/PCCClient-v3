@@ -20,7 +20,6 @@ Future<String> getStringFromURI(Uri uri) async {
     case "file":
       File file = File.fromUri(uri);
       return file.readAsStringSync();
-      break;
     default:
       throw UnsupportedError("This uri is not supported");
   }
