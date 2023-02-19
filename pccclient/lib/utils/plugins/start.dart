@@ -74,7 +74,7 @@ void _listener(Uint8List data) {
     case "notify":
       pluginSysStatus = PluginSysStatus.from(map["status"]);
       List<ActivePackageData> newActivePlugins = [];
-      for (Map<String, dynamic> pluginRaw in map["plugins"]) {
+      for (Map<String, dynamic> pluginRaw in map["packages"]) {
         newActivePlugins.add(ActivePackageData.fromJson(pluginRaw));
       }
       activePackages = newActivePlugins;

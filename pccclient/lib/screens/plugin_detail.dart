@@ -28,6 +28,8 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
 
   Package? package;
 
+  ActivePackageData? activePackageData;
+
   @override
   void initState() {
     super.initState();
@@ -64,8 +66,10 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
           xml: null,
         );
       }
+      subscribeActivePackage(
+          package.name, (data) => setState(() => activePackageData = data));
+      activePackageData = package.getActiveData();
     }
-    var activePackageData = package!.getActiveData();
     return Scaffold(
       appBar: AppBar(
         title: Text(PluginDetailScreen.screenName),
@@ -75,7 +79,7 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
         children: [
           activePackageData != null
               ? PackageStatusRow(
-                  package: activePackageData, indent: 0, clickable: false)
+                  package: activePackageData!, indent: 0, clickable: false)
               : Container(),
           _PluginDetailRow(str.plugin_detail_name, package!.name),
           _PluginDetailRow(
