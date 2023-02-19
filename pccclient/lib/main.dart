@@ -29,7 +29,11 @@ class MyApp extends StatelessWidget {
       title: 'PCCClient v$version',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData.dark(),
+      theme: ThemeData.dark().copyWith(
+        scrollbarTheme: ScrollbarThemeData(
+          thumbVisibility: MaterialStateProperty.all(true),
+        ),
+      ),
       initialRoute: InitialScreen.routeName,
       routes: {
         InitialScreen.routeName: (context) => const InitialScreen(),
