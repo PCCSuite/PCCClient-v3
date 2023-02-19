@@ -50,18 +50,18 @@ set activePackages(List<ActivePackageData> newData) {
 }
 
 void subscribeActivePackage(
-    String packageName, Function(ActivePackageData) func) {
-  var listeners = _activePackageListener[packageName];
+    String packageIdentifier, Function(ActivePackageData) func) {
+  var listeners = _activePackageListener[packageIdentifier];
   if (listeners == null) {
     listeners = HashSet();
-    _activePackageListener[packageName] = listeners;
+    _activePackageListener[packageIdentifier] = listeners;
   }
   listeners.add(func);
 }
 
 void unsubscribeActivePackage(
-    String packageName, Function(ActivePackageData) func) {
-  var listeners = _activePackageListener[packageName];
+    String packageIdentifier, Function(ActivePackageData) func) {
+  var listeners = _activePackageListener[packageIdentifier];
   listeners!.remove(func);
 }
 

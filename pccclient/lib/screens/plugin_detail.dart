@@ -29,10 +29,20 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
   Package? package;
 
   ActivePackageData? activePackageData;
+  void Function(ActivePackageData)? activePackageDataListener;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (activePackageDataListener != null) {
+      unsubscribeActivePackage(
+          package!.getIdentifier(), activePackageDataListener!);
+    }
+    super.dispose();
   }
 
   @override
@@ -66,8 +76,12 @@ class _PluginDetailScreenState extends State<PluginDetailScreen> {
           xml: null,
         );
       }
+      activePackageDataListener =
+          (data) => setState(() => activePackageData = data);
       subscribeActivePackage(
-          package.name, (data) => setState(() => activePackageData = data));
+        package.getIdentifier(),
+        activePackageDataListener!,
+      );
       activePackageData = package.getActiveData();
     }
     return Scaffold(

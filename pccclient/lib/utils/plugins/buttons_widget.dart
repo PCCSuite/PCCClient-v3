@@ -29,7 +29,7 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
         activePlugin = data;
       });
     };
-    subscribeActivePackage(widget.plugin.name, listener);
+    subscribeActivePackage(widget.plugin.getIdentifier(), listener);
     activePlugin = ActivePackageData.findByName(widget.plugin.name);
     dataDir.exists().then((value) => setState(() => dataExists = value));
     super.initState();
@@ -37,7 +37,7 @@ class PluginButtonsWidgetState extends State<PluginButtonsWidget> {
 
   @override
   void dispose() {
-    unsubscribeActivePackage(widget.plugin.name, listener);
+    unsubscribeActivePackage(widget.plugin.getIdentifier(), listener);
     super.dispose();
   }
 
