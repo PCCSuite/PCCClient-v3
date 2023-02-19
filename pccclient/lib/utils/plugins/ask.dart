@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/plugin_config.dart';
-import 'package:pccclient/utils/plugins/command.dart';
-import 'package:pccclient/utils/plugins/files.dart';
+import '../../screens/plugin_config.dart';
+import 'command.dart';
+import 'files.dart';
 
 import 'package:path/path.dart' as path;
 

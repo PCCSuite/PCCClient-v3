@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/part/error.dart';
-import 'package:pccclient/screens/plugin_detail.dart';
-import 'package:pccclient/utils/general.dart';
-import 'package:pccclient/utils/plugins/command.dart';
-import 'package:pccclient/utils/plugins/datas.dart';
-import 'package:pccclient/utils/plugins/start.dart';
-import 'package:pccclient/utils/plugins/status_enum.dart';
+import '../../screens/part/error.dart';
+import '../../screens/plugin_detail.dart';
+import '../general.dart';
+import 'command.dart';
+import 'datas.dart';
+import 'start.dart';
+import 'status_enum.dart';
 
 import 'ask.dart';
 

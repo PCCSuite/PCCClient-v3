@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/debug.dart';
-import 'package:pccclient/screens/first.dart';
-import 'package:pccclient/screens/home.dart';
-import 'package:pccclient/screens/loggingin.dart';
-import 'package:pccclient/screens/login_app.dart';
-import 'package:pccclient/screens/login_browser.dart';
-import 'package:pccclient/screens/login_select.dart';
-import 'package:pccclient/screens/login_webview.dart';
+import 'screens/debug.dart';
+import 'screens/first.dart';
+import 'screens/home.dart';
+import 'screens/loggingin.dart';
+import 'screens/login_app.dart';
+import 'screens/login_browser.dart';
+import 'screens/login_select.dart';
+import 'screens/login_webview.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pccclient/screens/plugin_config.dart';
-import 'package:pccclient/screens/plugin_detail.dart';
-import 'package:pccclient/screens/plugin_manage.dart';
+import 'screens/plugin_config.dart';
+import 'screens/plugin_detail.dart';
+import 'screens/plugin_manage.dart';
 
 const version = "3.0.0-beta.2";
 

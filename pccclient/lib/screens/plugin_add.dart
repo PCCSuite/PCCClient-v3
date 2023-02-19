@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pccclient/utils/plugins/command.dart';
-import 'package:pccclient/utils/plugins/datas.dart';
-import 'package:pccclient/utils/plugins/files.dart';
+import '../utils/plugins/command.dart';
+import '../utils/plugins/datas.dart';
+import '../utils/plugins/files.dart';
 
 import '../utils/general.dart';
 

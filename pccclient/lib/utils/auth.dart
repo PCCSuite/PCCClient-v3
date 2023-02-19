@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:pccclient/utils/general.dart';
-import 'package:pccclient/utils/server_info.dart';
+import 'general.dart';
+import 'server_info.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> getServer() async {

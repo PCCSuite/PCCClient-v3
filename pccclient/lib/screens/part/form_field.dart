@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pccclient/utils/general.dart';
+import '../../utils/general.dart';
 
 enum PluginFormFieldType {
   string,

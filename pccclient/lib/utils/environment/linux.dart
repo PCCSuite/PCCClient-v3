@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:pccclient/utils/environment/common.dart';
+import 'common.dart';
 
 Future<void> checkEnvLinux() async {
   environment = Environment(MachineType.linux);

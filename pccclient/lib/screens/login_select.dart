@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/login_app.dart';
-import 'package:pccclient/screens/login_webview.dart';
-import 'package:pccclient/screens/part/tips.dart';
-import 'package:pccclient/utils/local_config.dart';
-import 'package:pccclient/utils/server_info.dart';
+import 'login_app.dart';
+import 'login_webview.dart';
+import 'part/tips.dart';
+import '../utils/local_config.dart';
+import '../utils/server_info.dart';
 
 import '../utils/general.dart';
 import 'login_browser.dart';

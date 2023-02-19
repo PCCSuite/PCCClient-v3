@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:pccclient/utils/environment/windows.dart';
-import 'package:pccclient/utils/local_config.dart';
+import 'windows.dart';
+import '../local_config.dart';
 
 late Environment environment;
 

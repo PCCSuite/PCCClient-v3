@@ -1,10 +1,10 @@
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:pccclient/screens/plugin_manage.dart';
-import 'package:pccclient/utils/plugins/files.dart';
-import 'package:pccclient/utils/plugins/status_enum.dart';
-import 'package:pccclient/utils/plugins/status_widget.dart';
+import '../../screens/plugin_manage.dart';
+import 'files.dart';
+import 'status_enum.dart';
+import 'status_widget.dart';
 
 import 'package:path/path.dart' as path;
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/home.dart';
-import 'package:pccclient/screens/login_select.dart';
-import 'package:pccclient/screens/part/error.dart';
-import 'package:pccclient/screens/part/tips.dart';
-import 'package:pccclient/utils/auth.dart';
-import 'package:pccclient/utils/environment/common.dart';
-import 'package:pccclient/utils/general.dart';
-import 'package:pccclient/utils/manager.dart';
-import 'package:pccclient/utils/plugins/start.dart';
+import 'home.dart';
+import 'login_select.dart';
+import 'part/error.dart';
+import 'part/tips.dart';
+import '../utils/auth.dart';
+import '../utils/environment/common.dart';
+import '../utils/general.dart';
+import '../utils/manager.dart';
+import '../utils/plugins/start.dart';
 
 import '../utils/plugins/files.dart';
 

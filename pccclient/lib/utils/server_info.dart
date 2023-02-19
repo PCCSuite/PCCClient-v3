@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:pccclient/utils/get_uri.dart';
-import 'package:pccclient/utils/local_config.dart';
+import 'get_uri.dart';
+import 'local_config.dart';
 
 part 'server_info.g.dart';
 

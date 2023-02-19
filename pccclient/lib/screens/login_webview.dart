@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/part/tips.dart';
+import 'part/tips.dart';
 
 import 'loggingin.dart';
 

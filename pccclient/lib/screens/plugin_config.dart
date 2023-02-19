@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/part/form_part.dart';
-import 'package:pccclient/screens/part/tips.dart';
-import 'package:pccclient/utils/general.dart';
-import 'package:pccclient/utils/plugins/files.dart';
+import 'part/form_part.dart';
+import 'part/tips.dart';
+import '../utils/general.dart';
+import '../utils/plugins/files.dart';
 
 import 'package:path/path.dart' as path;
 

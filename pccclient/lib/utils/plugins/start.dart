@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:pccclient/utils/local_config.dart';
-import 'package:pccclient/utils/plugins/command.dart';
-import 'package:pccclient/utils/plugins/datas.dart';
-import 'package:pccclient/utils/plugins/files.dart';
-import 'package:pccclient/utils/plugins/status_enum.dart';
-import 'package:pccclient/utils/server_info.dart';
+import '../local_config.dart';
+import 'command.dart';
+import 'datas.dart';
+import 'files.dart';
+import 'status_enum.dart';
+import '../server_info.dart';
 
 import 'package:path/path.dart' as path;
 

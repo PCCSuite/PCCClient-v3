@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:pccclient/utils/plugins/files.dart';
+import '../../utils/plugins/files.dart';
 
 import 'form_field.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:pccclient/utils/general.dart';
+import '../general.dart';
 
 enum PluginSysStatus {
   starting(-1),

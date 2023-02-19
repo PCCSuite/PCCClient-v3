@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
-import 'package:pccclient/screens/part/tips.dart';
-import 'package:pccclient/screens/plugin_detail.dart';
-import 'package:pccclient/screens/plugin_add.dart';
-import 'package:pccclient/utils/plugins/files.dart';
+import 'part/tips.dart';
+import 'plugin_detail.dart';
+import 'plugin_add.dart';
+import '../utils/plugins/files.dart';
 
 import '../utils/general.dart';
 import '../utils/plugins/datas.dart';

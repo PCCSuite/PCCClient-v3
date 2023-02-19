@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/part/error.dart';
-import 'package:pccclient/utils/auth.dart';
-import 'package:pccclient/utils/plugins/start.dart';
+import 'part/error.dart';
+import '../utils/auth.dart';
+import '../utils/plugins/start.dart';
 
 import '../utils/general.dart';
 

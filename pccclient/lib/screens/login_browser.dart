@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pccclient/screens/loggingin.dart';
-import 'package:pccclient/screens/part/error.dart';
-import 'package:pccclient/screens/part/tips.dart';
-import 'package:pccclient/utils/auth.dart';
-import 'package:pccclient/utils/general.dart';
-import 'package:pccclient/utils/server_info.dart';
+import 'loggingin.dart';
+import 'part/error.dart';
+import 'part/tips.dart';
+import '../utils/auth.dart';
+import '../utils/general.dart';
+import '../utils/server_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginBrowserScreen extends StatefulWidget {

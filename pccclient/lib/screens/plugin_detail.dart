@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
-import 'package:pccclient/screens/part/error.dart';
-import 'package:pccclient/screens/part/tips.dart';
-import 'package:pccclient/utils/plugins/files.dart';
-import 'package:pccclient/utils/plugins/status_widget.dart';
+import 'part/error.dart';
+import 'part/tips.dart';
 import 'plugin_add.dart';
 import 'plugin_config.dart';
 import '../utils/plugins/command.dart';
+import '../utils/plugins/files.dart';
+import '../utils/plugins/status_widget.dart';
 
 import '../utils/general.dart';
 import '../utils/plugins/datas.dart';

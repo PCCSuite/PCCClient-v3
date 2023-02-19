@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/part/tips.dart';
+import 'part/tips.dart';
 
 class LoginAppScreen extends StatefulWidget {
   const LoginAppScreen({Key? key}) : super(key: key);

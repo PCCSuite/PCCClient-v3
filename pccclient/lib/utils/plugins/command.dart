@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:pccclient/utils/plugins/start.dart';
+import 'start.dart';
 
 void startPluginRestore() {
   socket!.write(json.encode({"data_type": "restore"}));

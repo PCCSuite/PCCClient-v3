@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:pccclient/screens/part/form_field.dart';
-import 'package:pccclient/utils/local_config.dart';
-import 'package:pccclient/utils/server_info.dart';
+import '../../screens/part/form_field.dart';
+import '../local_config.dart';
+import '../server_info.dart';
 import 'package:xml/xml.dart';
 
 import 'package:path/path.dart' as path;

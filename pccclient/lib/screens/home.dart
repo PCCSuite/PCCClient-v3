@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pccclient/screens/debug.dart';
-import 'package:pccclient/screens/part/tips.dart';
-import 'package:pccclient/screens/plugin_manage.dart';
-import 'package:pccclient/utils/environment/common.dart';
-import 'package:pccclient/utils/general.dart';
-import 'package:pccclient/utils/plugins/status_widget.dart';
+import 'debug.dart';
+import 'part/tips.dart';
+import 'plugin_manage.dart';
+import '../utils/environment/common.dart';
+import '../utils/general.dart';
+import '../utils/plugins/status_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
