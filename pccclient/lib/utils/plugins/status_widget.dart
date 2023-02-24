@@ -4,7 +4,7 @@ import '../../screens/plugin_detail.dart';
 import '../general.dart';
 import 'command.dart';
 import 'datas.dart';
-import 'start.dart';
+import 'general.dart';
 import 'status_enum.dart';
 
 import 'ask.dart';

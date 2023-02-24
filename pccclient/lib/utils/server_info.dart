@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'auth.dart';
 import 'get_uri.dart';
 import 'local_config.dart';
 
@@ -9,9 +10,10 @@ part 'server_info.g.dart';
 
 @JsonSerializable()
 class ServerInfo {
+  final String authEndpoint;
   final String tokenEndpoint;
-  final String defaultAuthMethod;
-  final String getSambaPassURL;
+  final LoginMethod defaultLoginMethod;
+  final String pccSambaURL;
   final String sambaServer;
   final String setBrowserURL;
   final String tipsURL;
@@ -19,9 +21,10 @@ class ServerInfo {
   final String pluginSysPath;
 
   ServerInfo(
+      this.authEndpoint,
       this.tokenEndpoint,
-      this.defaultAuthMethod,
-      this.getSambaPassURL,
+      this.defaultLoginMethod,
+      this.pccSambaURL,
       this.sambaServer,
       this.setBrowserURL,
       this.tipsURL,

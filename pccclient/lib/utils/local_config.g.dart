@@ -9,9 +9,6 @@ part of 'local_config.dart';
 LocalConfig _$LocalConfigFromJson(Map<String, dynamic> json) => LocalConfig(
       json['configVersion'] as int,
       json['serverInfoURL'] as String,
-      json['authMethod'] as String? ?? '',
-      json['pluginSysConfig'] as String? ?? '',
-      json['autoRestore'] as bool? ?? true,
       json['environment'] as String? ?? '',
     );
 
@@ -19,8 +16,5 @@ Map<String, dynamic> _$LocalConfigToJson(LocalConfig instance) =>
     <String, dynamic>{
       'configVersion': instance.configVersion,
       'serverInfoURL': instance.serverInfoURL,
-      'authMethod': instance.authMethod,
-      'pluginSysConfig': instance.pluginSysConfig,
-      'autoRestore': instance.autoRestore,
       'environment': instance.environment,
     };

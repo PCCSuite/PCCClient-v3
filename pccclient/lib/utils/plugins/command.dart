@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'start.dart';
+import 'general.dart';
 
 void startPluginRestore() {
   socket!.write(json.encode({"data_type": "restore"}));

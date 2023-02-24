@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import '../utils/local_config.dart';
+import '../utils/mount.dart';
+import '../utils/samba.dart';
 import 'part/error.dart';
 import '../utils/auth.dart';
-import '../utils/plugins/start.dart';
+import '../utils/plugins/general.dart';
 
 import '../utils/general.dart';
 
@@ -38,13 +41,14 @@ class _DebugMenuState extends State<_DebugMenu> {
     return Row(
       children: [
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            String token = await getToken();
             showDialog(
               context: context,
               builder: (BuildContext context) => AlertDialog(
                 title: const Text("loginState"),
                 content: SelectableText(
-                    "username: ${loginState.username}\naccessToken: ${loginState.accessToken}\nsambaPassword: ${loginState.sambaPassword}"),
+                    "username: $username\naccessToken: $token\nsambaPassword: $sambaPassword"),
               ),
             );
           },

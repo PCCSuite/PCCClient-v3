@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../utils/auth.dart';
+import '../utils/user_settings.dart';
 import 'login_app.dart';
 import 'login_webview.dart';
 import 'part/tips.dart';
@@ -24,26 +26,28 @@ class _LoginSelectScreenState extends State<LoginSelectScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      switch (localConfig.authMethod) {
-        case "browser":
+      switch (userSettings.loginMethod) {
+        case LoginMethod.browser:
           Navigator.pushNamed(context, LoginBrowserScreen.routeName);
           return;
-        case "webview":
+        case LoginMethod.webview:
           Navigator.pushNamed(context, LoginWebviewScreen.routeName);
           return;
-        case "app":
-          Navigator.pushNamed(context, LoginAppScreen.routeName);
+        case LoginMethod.internal:
+          Navigator.pushNamed(context, LoginInternalScreen.routeName);
           return;
+        case null:
+          break;
       }
-      switch (serverInfo.defaultAuthMethod) {
-        case "browser":
+      switch (serverInfo.defaultLoginMethod) {
+        case LoginMethod.browser:
           Navigator.pushNamed(context, LoginBrowserScreen.routeName);
           return;
-        case "webview":
+        case LoginMethod.webview:
           Navigator.pushNamed(context, LoginWebviewScreen.routeName);
           return;
-        case "app":
-          Navigator.pushNamed(context, LoginAppScreen.routeName);
+        case LoginMethod.internal:
+          Navigator.pushNamed(context, LoginInternalScreen.routeName);
           return;
       }
     });
@@ -90,11 +94,11 @@ class _LoginSelectScreenState extends State<LoginSelectScreen> {
                   child: const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        LoginAppScreen.screenName,
+                        LoginInternalScreen.screenName,
                         textScaleFactor: 2.0,
                       )),
                   onPressed: () {
-                    Navigator.pushNamed(context, LoginAppScreen.routeName);
+                    Navigator.pushNamed(context, LoginInternalScreen.routeName);
                   },
                 ),
               ],

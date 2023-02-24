@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import '../local_config.dart';
+import '../user_settings.dart';
 import 'command.dart';
 import 'datas.dart';
 import 'files.dart';
@@ -24,11 +25,15 @@ Future<void> startPluginSys() async {
   } else {
     await logDir.create();
   }
+  var configPath = "${serverInfo.pluginSysPath}\\config.json";
+  if (userSettings.pluginSysConfig.isNotEmpty) {
+    configPath = userSettings.pluginSysConfig;
+  }
   pluginSysProcess = await Process.start("cmd.exe", [
     "/C",
     "${serverInfo.pluginSysPath}\\PCCPluginSys.exe",
     "host",
-    "${serverInfo.pluginSysPath}\\config.json",
+    configPath,
     ">",
     path.join(logDir.path, "sys.log"),
     "2>&1",
@@ -83,7 +88,8 @@ void _listener(Uint8List data) {
         newAskData.add(AskData.fromJson(askRaw));
       }
       askData = newAskData;
-      if (pluginSysStatus == PluginSysStatus.ready && localConfig.autoRestore) {
+      if (pluginSysStatus == PluginSysStatus.ready &&
+          userSettings.pluginAutoRestore) {
         startPluginRestore();
       }
   }

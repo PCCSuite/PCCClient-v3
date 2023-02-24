@@ -3,11 +3,12 @@ import 'dart:io';
 
 import 'package:json_annotation/json_annotation.dart';
 import '../../screens/part/form_field.dart';
-import '../local_config.dart';
 import '../server_info.dart';
 import 'package:xml/xml.dart';
 
 import 'package:path/path.dart' as path;
+
+import '../user_settings.dart';
 
 part 'files.g.dart';
 
@@ -35,8 +36,8 @@ class PluginSysConfig {
 
 Future<void> loadPluginSysConfig() async {
   var configPath = "${serverInfo.pluginSysPath}\\config.json";
-  if (localConfig.pluginSysConfig.isNotEmpty) {
-    configPath = localConfig.pluginSysConfig;
+  if (userSettings.pluginSysConfig.isNotEmpty) {
+    configPath = userSettings.pluginSysConfig;
   }
   File configFile = File(configPath);
   String str = await configFile.readAsString();

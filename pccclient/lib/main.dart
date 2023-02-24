@@ -12,6 +12,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'screens/plugin_config.dart';
 import 'screens/plugin_detail.dart';
 import 'screens/plugin_manage.dart';
+import 'screens/samba.dart';
+import 'screens/settings.dart';
 
 const version = "3.0.0-beta.2";
 
@@ -40,9 +42,11 @@ class MyApp extends StatelessWidget {
         LoginSelectScreen.routeName: (context) => const LoginSelectScreen(),
         LoginBrowserScreen.routeName: (context) => const LoginBrowserScreen(),
         LoginWebviewScreen.routeName: (context) => const LoginWebviewScreen(),
-        LoginAppScreen.routeName: (context) => const LoginAppScreen(),
+        LoginInternalScreen.routeName: (context) => const LoginInternalScreen(),
         LoggingInScreen.routeName: (context) => const LoggingInScreen(),
         HomeScreen.routeName: (context) => const HomeScreen(),
+        SambaScreen.routeName: (context) => const SambaScreen(),
+        SettingsScreen.routeName: (context) => const SettingsScreen(),
         PluginManageScreen.routeName: (context) => const PluginManageScreen(),
         PluginDetailScreen.routeName: (context) => const PluginDetailScreen(),
         PluginConfigScreen.routeName: (context) => const PluginConfigScreen(),

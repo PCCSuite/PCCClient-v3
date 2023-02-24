@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../utils/user_settings.dart';
+import 'loggingin.dart';
 import 'part/error.dart';
 import '../utils/local_config.dart';
 
@@ -28,6 +30,8 @@ class _InitializeStateView extends StatefulWidget {
 }
 
 class _InitializeStateViewState extends State<_InitializeStateView> {
+  StateMsgSet _settingsState =
+      StateMsgSet(ProcessState.getting, str.init_load_settings_start);
   StateMsgSet _configState =
       StateMsgSet(ProcessState.getting, str.init_load_config_start);
   StateMsgSet _envState =
@@ -40,10 +44,33 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
   int _runningProcess = 0;
   int _errorShowing = 0;
 
+  bool _settingLoaded = false;
+  bool _serverInfoLoaded = false;
+
+  Future<void> _loadSettings() async {
+    try {
+      _runningProcess++;
+      loadUserSettings();
+      _settingLoaded = true;
+      setState(() {
+        _settingsState =
+            StateMsgSet(ProcessState.ok, str.init_load_settings_done);
+      });
+      _initAuth();
+      _runningProcess--;
+    } catch (e, trace) {
+      setState(() {
+        _settingsState =
+            StateMsgSet(ProcessState.failed, str.init_load_settings_fail);
+      });
+      _errorShow(e, trace);
+    }
+  }
+
   Future<void> _loadConfig() async {
     try {
       _runningProcess++;
-      readConfig();
+      readLocalConfig();
       setState(() {
         _configState = StateMsgSet(ProcessState.ok, str.init_load_config_done);
       });
@@ -66,10 +93,12 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
             StateMsgSet(ProcessState.ok, str.init_load_srv_info_start);
       });
       await getServer();
+      _serverInfoLoaded = true;
       setState(() {
         _serverState =
             StateMsgSet(ProcessState.ok, str.init_load_srv_info_done);
       });
+      _initAuth();
       _runningProcess--;
       _checkDone();
     } catch (e, trace) {
@@ -98,10 +127,13 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
     }
   }
 
-  Future<void> _getUsername() async {
+  Future<void> _initAuth() async {
+    if (!_settingLoaded || !_serverInfoLoaded) {
+      return;
+    }
     try {
       _runningProcess++;
-      await getUser();
+      await initAuth();
       setState(() {
         _usernameState =
             StateMsgSet(ProcessState.ok, str.init_check_username_done);
@@ -119,7 +151,11 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
 
   _checkDone() {
     if (_runningProcess == 0 && _errorShowing == 0) {
-      Navigator.popAndPushNamed(context, LoginSelectScreen.routeName);
+      if (tokenAvailable) {
+        Navigator.popAndPushNamed(context, LoggingInScreen.routeName);
+      } else {
+        Navigator.popAndPushNamed(context, LoginSelectScreen.routeName);
+      }
     }
   }
 
@@ -135,9 +171,9 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
+      _loadSettings();
       _loadConfig();
       _checkEnv();
-      _getUsername();
     });
   }
 
@@ -146,6 +182,7 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
     return Column(
       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        Expanded(child: _InitializeStateRow(_settingsState)),
         Expanded(child: _InitializeStateRow(_configState)),
         Expanded(child: _InitializeStateRow(_serverState)),
         Expanded(child: _InitializeStateRow(_envState)),

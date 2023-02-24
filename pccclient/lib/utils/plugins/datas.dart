@@ -97,9 +97,9 @@ class ActivePackageData {
   final List<String> dependency;
 
   factory ActivePackageData.fromJson(Map<String, dynamic> json) =>
-      _$ActivePluginDataFromJson(json);
+      _$ActivePackageDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ActivePluginDataToJson(this);
+  Map<String, dynamic> toJson() => _$ActivePackageDataToJson(this);
 
   bool isInstalledOrInstalling() {
     if (installed) {

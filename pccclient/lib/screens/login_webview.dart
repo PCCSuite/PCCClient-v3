@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login_select.dart';
 import 'part/tips.dart';
 
 import 'loggingin.dart';
@@ -25,6 +26,8 @@ class _LoginWebviewScreenState extends State<LoginWebviewScreen> {
         body: Center(
           child: ElevatedButton(
             onPressed: () {
+              Navigator.popUntil(
+                  context, ModalRoute.withName(LoginSelectScreen.routeName));
               Navigator.pushNamed(context, LoggingInScreen.routeName);
             },
             child: Text("Login"),

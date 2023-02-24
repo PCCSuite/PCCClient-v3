@@ -7,9 +7,10 @@ part of 'server_info.dart';
 // **************************************************************************
 
 ServerInfo _$ServerInfoFromJson(Map<String, dynamic> json) => ServerInfo(
+      json['authEndpoint'] as String,
       json['tokenEndpoint'] as String,
-      json['defaultAuthMethod'] as String,
-      json['getSambaPassURL'] as String,
+      $enumDecode(_$LoginMethodEnumMap, json['defaultLoginMethod']),
+      json['pccSambaURL'] as String,
       json['sambaServer'] as String,
       json['setBrowserURL'] as String,
       json['tipsURL'] as String,
@@ -19,12 +20,19 @@ ServerInfo _$ServerInfoFromJson(Map<String, dynamic> json) => ServerInfo(
 
 Map<String, dynamic> _$ServerInfoToJson(ServerInfo instance) =>
     <String, dynamic>{
+      'authEndpoint': instance.authEndpoint,
       'tokenEndpoint': instance.tokenEndpoint,
-      'defaultAuthMethod': instance.defaultAuthMethod,
-      'getSambaPassURL': instance.getSambaPassURL,
+      'defaultLoginMethod': _$LoginMethodEnumMap[instance.defaultLoginMethod]!,
+      'pccSambaURL': instance.pccSambaURL,
       'sambaServer': instance.sambaServer,
       'setBrowserURL': instance.setBrowserURL,
       'tipsURL': instance.tipsURL,
       'pccCliManAddress': instance.pccCliManAddress,
       'pluginSysPath': instance.pluginSysPath,
     };
+
+const _$LoginMethodEnumMap = {
+  LoginMethod.browser: 'browser',
+  LoginMethod.webview: 'webview',
+  LoginMethod.internal: 'internal',
+};

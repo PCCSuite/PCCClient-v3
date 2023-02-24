@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../utils/auth.dart';
 import 'loggingin.dart';
+import 'login_select.dart';
 import 'part/error.dart';
 import 'part/tips.dart';
 import '../utils/auth.dart';
@@ -24,6 +27,9 @@ class _LoginBrowserScreenState extends State<LoginBrowserScreen> {
   String status = "Initializing...";
 
   HttpServer? _server;
+
+  static const String redirectUri = "http://127.0.0.1:15456/return";
+  String stateParam = generateRandomString(64);
 
   @override
   void initState() {
@@ -53,30 +59,76 @@ class _LoginBrowserScreenState extends State<LoginBrowserScreen> {
           request.response.close();
           return;
         }
-        var bodyRaw = await utf8.decoder.bind(request).join();
-        var params = Uri(query: bodyRaw).queryParameters;
-        if (params["access_token"] != null) {
-          request.response.statusCode = 200;
-          request.response.headers.contentType =
-              ContentType("text", "html", charset: "utf-8");
-          request.response.write("<script>window.close()</script>");
-          request.response
-              .write("<h1>${str.login_browser_response_success}</h1>");
-          request.response.close();
-          loginState.accessToken = params["access_token"];
-          parseToken();
-          setState(() {
-            status = str.login_browser_success;
-            Navigator.pushNamed(context, LoggingInScreen.routeName);
-          });
-        } else {
+        var code = request.uri.queryParameters["code"];
+        if (code == null) {
           request.response.statusCode = 400;
           request.response.write(str.login_browser_response_failed);
           request.response.close();
           setState(() {
-            status = str.login_browser_failed;
+            status =
+                "${str.login_browser_failed}\nrequest doesn't contain code";
           });
+          return;
         }
+        var respState = request.uri.queryParameters["state"];
+        if (respState == null) {
+          request.response.statusCode = 400;
+          request.response.write(str.login_browser_response_failed);
+          request.response.close();
+          setState(() {
+            status =
+                "${str.login_browser_failed}\nrequest doesn't contain state";
+          });
+          return;
+        }
+        if (respState != stateParam) {
+          request.response.statusCode = 400;
+          request.response.write(str.login_browser_response_failed);
+          request.response.close();
+          setState(() {
+            status = "${str.login_browser_failed}\nstate verification failed";
+          });
+          return;
+        }
+        var body = <String, String>{
+          "client_id": "pccclient",
+          "grant_type": "authorization_code",
+          "code": code,
+          "redirect_uri": redirectUri,
+        };
+        Uri tokenEndpoint = Uri.parse(serverInfo.tokenEndpoint);
+        DateTime now = DateTime.now();
+        var resp = await http.post(tokenEndpoint, body: body);
+        if (resp.statusCode != 200) {
+          request.response.statusCode = 400;
+          request.response.write(str.login_browser_response_failed);
+          request.response.close();
+          setState(() {
+            status =
+                "${str.login_browser_failed}\ntoken endpoint failed ${resp.statusCode}: ${resp.body}";
+          });
+          return;
+        }
+        Map<String, dynamic> result = jsonDecode(resp.body);
+        loginState = LoginState(
+            result["access_token"],
+            now.add(Duration(seconds: result["expires_in"])),
+            result["refresh_token"],
+            now.add(Duration(seconds: result["refresh_expires_in"])));
+
+        request.response.statusCode = 200;
+        request.response.headers.contentType =
+            ContentType("text", "html", charset: "utf-8");
+        request.response.write("<script>window.close()</script>");
+        request.response
+            .write("<h1>${str.login_browser_response_success}</h1>");
+        request.response.close();
+        setState(() {
+          status = str.login_browser_success;
+          Navigator.popUntil(
+              context, ModalRoute.withName(LoginSelectScreen.routeName));
+          Navigator.pushNamed(context, LoggingInScreen.routeName);
+        });
       });
       setState(() {
         status = str.login_browser_server_started;
@@ -91,7 +143,8 @@ class _LoginBrowserScreenState extends State<LoginBrowserScreen> {
   }
 
   void _openBrowser() async {
-    var openBrowser = launchUrl(getTokenEndpoint());
+    var openBrowser =
+        launchUrl(getAuthEndpoint(redirectUri: redirectUri, state: stateParam));
     setState(() {
       status = str.login_browser_launching_browser;
     });

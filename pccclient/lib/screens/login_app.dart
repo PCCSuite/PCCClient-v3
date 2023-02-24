@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'part/tips.dart';
 
-class LoginAppScreen extends StatefulWidget {
-  const LoginAppScreen({Key? key}) : super(key: key);
+class LoginInternalScreen extends StatefulWidget {
+  const LoginInternalScreen({Key? key}) : super(key: key);
 
-  static const routeName = "/login_app";
+  static const routeName = "/login_internal";
 
   static const screenName = "Login in App";
 
   @override
-  State<LoginAppScreen> createState() => _LoginAppScreenState();
+  State<LoginInternalScreen> createState() => _LoginInternalScreenState();
 }
 
-_LoginAppScreenState? _loginScreenState;
+_LoginInternalScreenState? _loginScreenState;
 
 updateLoginForm(String status, bool isChangeable) {
   _loginScreenState?.update(status, isChangeable);
 }
 
-class _LoginAppScreenState extends State<LoginAppScreen> {
+class _LoginInternalScreenState extends State<LoginInternalScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String status = "ログイン準備中";
@@ -36,7 +36,7 @@ class _LoginAppScreenState extends State<LoginAppScreen> {
     _loginScreenState = this;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(LoginAppScreen.screenName),
+        title: const Text(LoginInternalScreen.screenName),
       ),
       bottomNavigationBar: getTipsBar(),
       body: Padding(

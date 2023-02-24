@@ -1,25 +1,165 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
-import 'package:flutter/material.dart';
 import 'general.dart';
 import 'server_info.dart';
-import 'package:http/http.dart' as http;
+import 'user_settings.dart';
+
+enum LoginMethod {
+  browser,
+  webview,
+  internal;
+}
+
+extension LoginMethodExt on LoginMethod {
+  String get name {
+    switch (this) {
+      case LoginMethod.browser:
+        return str.login_method_browser;
+      case LoginMethod.webview:
+        return str.login_method_webview;
+      case LoginMethod.internal:
+        return str.login_method_internal;
+    }
+  }
+}
+
+class NeedLoginExeption implements Exception {}
+
+class LoginState {
+  String accessToken;
+  DateTime accessTokenPeriod;
+  String refreshToken;
+  DateTime refreshTokenPeriod;
+
+  LoginState(this.accessToken, this.accessTokenPeriod, this.refreshToken,
+      this.refreshTokenPeriod);
+}
+
+void saveRefreshToken() {
+  if (userSettings.appAutoLogin) {
+    userSettings.appRefreshToken = _loginState!.refreshToken;
+    userSettings.appRefreshTokenPeriod =
+        _loginState!.refreshTokenPeriod.millisecondsSinceEpoch;
+    saveUserSettings();
+  }
+}
+
+LoginState? _loginState;
+
+Future<bool> initAuth() async {
+  if (userSettings.appAutoLogin) {
+    _loginState = LoginState(
+        "",
+        DateTime.fromMillisecondsSinceEpoch(0),
+        userSettings.appRefreshToken,
+        DateTime.fromMillisecondsSinceEpoch(
+            userSettings.appRefreshTokenPeriod));
+    try {
+      await getToken();
+      _parseToken();
+    } on NeedLoginExeption {
+      _loginState = null;
+    }
+  }
+  if (_username != "") {
+    return true;
+  }
+  return await _getUser();
+}
+
+bool get tokenAvailable {
+  if (_loginState == null) return false;
+  if (!_loginState!.refreshTokenPeriod.isAfter(DateTime.now())) {
+    _loginState = null;
+    return false;
+  }
+  return true;
+}
+
+set loginState(LoginState s) {
+  _loginState = s;
+  _parseToken();
+  saveRefreshToken();
+}
+
+void _parseToken() {
+  String rawJson = utf8.decode(base64Url
+      .decode(base64Url.normalize(_loginState!.accessToken.split(".")[1])));
+  var jsonMap = jsonDecode(rawJson);
+  _username = jsonMap["preferred_username"];
+  var rolesArray = jsonMap["resource_access"]?["samba"]?["roles"];
+  if (rolesArray != null) {
+    _sambaRoles = List<String>.from(rolesArray);
+  }
+}
+
+String _username = "";
+
+String get username => _username;
+
+List<String> _sambaRoles = [];
+
+List<String> get sambaRoles => _sambaRoles;
 
 Future<void> getServer() async {
   await getServerInfo();
   return;
 }
 
-Uri getTokenEndpoint() {
-  var url = serverInfo.tokenEndpoint;
-  if (loginState.username != null) {
-    url += loginState.username!;
+Uri getAuthEndpoint(
+    {String redirectUri = "http://127.0.0.1:15456/return",
+    required String state}) {
+  var param = <String, String>{
+    "client_id": "pccclient",
+    "response_type": "code",
+    "scope": "samba",
+    "redirect_uri": redirectUri,
+    "state": state,
+  };
+  if (username != "") {
+    param["login_hint"] = username;
   }
-  return Uri.parse(url);
+  return Uri.parse(serverInfo.authEndpoint).replace(queryParameters: param);
 }
 
-Future<bool> getUser() async {
+Future<String> getToken() async {
+  var state = _loginState;
+  if (state == null) {
+    throw NeedLoginExeption();
+  }
+  if (state.accessTokenPeriod.isAfter(DateTime.now())) {
+    return state.accessToken;
+  }
+  if (!state.refreshTokenPeriod.isAfter(DateTime.now())) {
+    _loginState = null;
+    throw NeedLoginExeption();
+  }
+  var body = <String, String>{
+    "client_id": "pccclient",
+    "grant_type": "refresh_token",
+    "refresh_token": state.refreshToken,
+  };
+  Uri tokenEndpoint = Uri.parse(serverInfo.tokenEndpoint);
+  DateTime now = DateTime.now();
+  var resp = await http.post(tokenEndpoint, body: body);
+  if (resp.statusCode != 200) {
+    _loginState = null;
+    throw NeedLoginExeption();
+  }
+  Map<String, dynamic> result = jsonDecode(resp.body);
+  state.accessToken = result["access_token"];
+  state.accessTokenPeriod = now.add(Duration(seconds: result["expires_in"]));
+  state.refreshToken = result["refresh_token"];
+  state.refreshTokenPeriod =
+      now.add(Duration(seconds: result["refresh_expires_in"]));
+  saveRefreshToken();
+  return state.accessToken;
+}
+
+Future<bool> _getUser() async {
   if (!Platform.isWindows) {
     return false;
   }
@@ -30,139 +170,6 @@ Future<bool> getUser() async {
   if (index == -1) {
     return false;
   }
-  loginState.username =
-      result.substring(index, index + 7).replaceAll("ts", "pc");
+  _username = result.substring(index, index + 7).replaceAll("ts", "pc");
   return true;
-}
-
-StateMsgSet getSavedToken() {
-  return StateMsgSet(ProcessState.ok, "Remember me未実装");
-}
-
-LoginState loginState = LoginState();
-
-class LoginState {
-  String? username;
-  String? accessToken;
-  String? sambaPassword;
-}
-
-void parseToken() async {
-  String normalizedSource =
-      base64Url.normalize(loginState.accessToken!.split(".")[1]);
-  String rawJson = utf8.decode(base64Url.decode(normalizedSource));
-  var jsonMap = jsonDecode(rawJson);
-  loginState.username = jsonMap["preferred_username"];
-}
-
-Future<void> getSambaPass() async {
-  http.Response response = await http.get(Uri.parse(serverInfo.getSambaPassURL),
-      headers: {"Authorization": "Bearer ${loginState.accessToken!}"});
-  if (response.statusCode != 200) {
-    throw Exception(
-        "Failed to get token status: ${response.statusCode}, body: ${response.body}");
-  }
-  var json = jsonDecode(response.body);
-  if (json["mode"] is! int) {
-    throw Exception("Unexpected password data: $json");
-  }
-  switch (json["mode"]) {
-    case 1:
-      loginState.sambaPassword = json["data"];
-      break;
-    case 2:
-      loginState.sambaPassword = json["data"];
-      break;
-    case 3:
-      throw UnimplementedError("Password encryption not supported yet");
-    case 4:
-      throw UnimplementedError("Password unlisted not supported yet");
-    default:
-      throw Exception("Unexpected password type: ${json["mode"]}");
-  }
-}
-
-Future<void> mountSamba(BuildContext context) async {
-  if (Platform.isWindows) {
-    await _mountWindows(context);
-    return;
-  }
-  if (Platform.isLinux) {
-    await _mountLinux();
-    return;
-  }
-  throw UnimplementedError("Unsupported platform to mount");
-}
-
-Future<void> _mountWindows(BuildContext context) async {
-  bool hasMounted =
-      await Directory.fromUri(Uri.directory("A:\\", windows: true)).exists();
-  if (hasMounted) {
-    bool remount = await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        content: Text(str.mount_already_mounted),
-        actions: [
-          SimpleDialogOption(
-            child: Text(str.mount_unmount),
-            onPressed: () => Navigator.pop(context, true),
-          ),
-          SimpleDialogOption(
-            child: Text(str.mount_skip),
-            onPressed: () => Navigator.pop(context, false),
-          ),
-        ],
-      ),
-    );
-    if (remount) {
-      await _unmountWindowsCmd("A:");
-      await _unmountWindowsCmd("B:");
-    } else {
-      return;
-    }
-  }
-  await _mountWindowsCmd(loginState.username!, loginState.sambaPassword!,
-      "\\\\${serverInfo.sambaServer}\\pcc_homes_v3", "A:");
-  await _mountWindowsCmd(loginState.username!, loginState.sambaPassword!,
-      "\\\\${serverInfo.sambaServer}\\share_v3", "B:");
-}
-
-// letter should "X:"
-Future<void> _mountWindowsCmd(
-    String username, String password, String path, String letter) async {
-  List<String> param = ["use", letter, path, password, "/user:$username", "/y"];
-  var process = await Process.run('net', param);
-  if (process.exitCode != 0) {
-    throw Exception(
-        "Failed to execute: net ${param.join(" ")}\n${process.stderr} ${process.stdout}");
-  }
-}
-
-// letter should "X:"
-Future<void> _unmountWindowsCmd(String letter) async {
-  List<String> param = ["use", letter, "/DELETE", "/y"];
-  var process = await Process.run('net', param);
-  if (process.exitCode != 0) {
-    throw Exception(
-        "Failed to execute: net ${param.join(" ")}\n${process.stderr} ${process.stdout}");
-  }
-}
-
-Future<void> _mountLinux() async {
-  await _mountLinuxCmd(loginState.username!, loginState.sambaPassword!,
-      serverInfo.sambaServer, "pcc_homes_v3");
-  await _mountLinuxCmd(loginState.username!, loginState.sambaPassword!,
-      serverInfo.sambaServer, "share_v3");
-}
-
-Future<void> _mountLinuxCmd(
-    String username, String password, String server, String name) async {
-  List<String> param = ["mount", "smb://$username@$server/$name"];
-  var process = await Process.start('gio', param);
-  process.stdin.write("\n$password\n");
-  if (await process.exitCode != 0) {
-    throw Exception(
-        "Failed to mount: gio ${param.join(" ")}\n${await process.stderr.transform(utf8.decoder).join()} ${await process.stdout.transform(utf8.decoder).join()}");
-  }
 }
