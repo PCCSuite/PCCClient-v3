@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:wordpress_api/wordpress_api.dart';
 import '../main.dart';
 import '../utils/auth.dart';
 import '../utils/user_settings.dart';
@@ -23,11 +25,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Widget _mainContent = const Text("Loading...");
+
+  @override
+  void initState() {
+    _loadWordpress();
+    super.initState();
+  }
+
+  Future<void> _loadWordpress() async {
+    var wordpress = WordPressAPI("pccs3.tama-st-h.local/wordpress");
+    var posts = await wordpress.posts.fetch();
+    List<_WordPressPostWidget> postWidgets = [];
+    for (Post post in posts.data) {
+      print(post);
+      postWidgets.add(_WordPressPostWidget(post: post));
+    }
+    setState(() {
+      _mainContent = ListView(
+        children: postWidgets,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> content = [];
-    content.add(const Expanded(
-      child: Text("Welcome to PCC!"),
+    content.add(Expanded(
+      child: _mainContent,
     ));
     if (environment.enablePlugin) {
       content.add(const SizedBox(
@@ -128,6 +153,24 @@ class _HomeDrawer extends StatelessWidget {
               : Container(),
         ],
       ),
+    );
+  }
+}
+
+class _WordPressPostWidget extends StatelessWidget {
+  const _WordPressPostWidget({Key? key, required this.post}) : super(key: key);
+
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(post.title!),
+      subtitle: Text(post.date!),
+      isThreeLine: true,
+      onTap: () {
+        launchUrl(Uri.parse(post.link!));
+      },
     );
   }
 }
