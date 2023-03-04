@@ -97,14 +97,14 @@ class _SettingsWidgetState extends State<_SettingsWidget> {
             userSettings.loginMethod = val;
           }),
         ),
-        RadioListTile<LoginMethod?>(
-          title: Text(LoginMethod.webview.name),
-          value: LoginMethod.webview,
-          groupValue: userSettings.loginMethod,
-          onChanged: (val) => setState(() {
-            userSettings.loginMethod = val;
-          }),
-        ),
+        // RadioListTile<LoginMethod?>(
+        //   title: Text(LoginMethod.webview.name),
+        //   value: LoginMethod.webview,
+        //   groupValue: userSettings.loginMethod,
+        //   onChanged: (val) => setState(() {
+        //     userSettings.loginMethod = val;
+        //   }),
+        // ),
         RadioListTile<LoginMethod?>(
           title: Text(LoginMethod.internal.name),
           value: LoginMethod.internal,

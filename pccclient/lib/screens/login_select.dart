@@ -79,17 +79,17 @@ class _LoginSelectScreenState extends State<LoginSelectScreen> {
                     Navigator.pushNamed(context, LoginBrowserScreen.routeName);
                   },
                 ),
-                ElevatedButton(
-                  child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "Login in WebView",
-                        textScaleFactor: 2.0,
-                      )),
-                  onPressed: () {
-                    Navigator.pushNamed(context, LoginWebviewScreen.routeName);
-                  },
-                ),
+                // ElevatedButton(
+                //   child: const Padding(
+                //       padding: EdgeInsets.all(16.0),
+                //       child: Text(
+                //         "Login in WebView",
+                //         textScaleFactor: 2.0,
+                //       )),
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, LoginWebviewScreen.routeName);
+                //   },
+                // ),
                 ElevatedButton(
                   child: Padding(
                       padding: const EdgeInsets.all(16.0),
