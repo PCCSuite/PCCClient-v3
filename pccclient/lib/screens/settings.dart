@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import '../utils/auth.dart';
+import '../utils/server_info.dart';
 import '../utils/user_settings.dart';
 import 'part/tips.dart';
 
@@ -82,7 +83,8 @@ class _SettingsWidgetState extends State<_SettingsWidget> {
           title: Text(str.settings_login_method),
         ),
         RadioListTile<LoginMethod?>(
-          title: Text(str.settings_login_method_default),
+          title: Text(
+              "${str.settings_login_method_default}(${serverInfo.defaultLoginMethod.name})"),
           value: null,
           groupValue: userSettings.loginMethod,
           onChanged: (val) => setState(() {
