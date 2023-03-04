@@ -109,13 +109,15 @@ Future<void> getServer() async {
   return;
 }
 
+const oAuthScope = "samba";
+
 Uri getAuthEndpoint(
     {String redirectUri = "http://127.0.0.1:15456/return",
     required String state}) {
   var param = <String, String>{
     "client_id": "pccclient",
     "response_type": "code",
-    "scope": "samba",
+    "scope": oAuthScope,
     "redirect_uri": redirectUri,
     "state": state,
   };

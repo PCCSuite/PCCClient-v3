@@ -91,8 +91,8 @@ class _LoginSelectScreenState extends State<LoginSelectScreen> {
                   },
                 ),
                 ElevatedButton(
-                  child: const Padding(
-                      padding: EdgeInsets.all(16.0),
+                  child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Text(
                         LoginInternalScreen.screenName,
                         textScaleFactor: 2.0,

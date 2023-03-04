@@ -47,6 +47,14 @@
   "login_browser_success": "認証に成功しました",
   "login_browser_failed": "認証に失敗しました\n再試行するかサーバー管理者にお問い合わせください",
 
+  "login_internal_title": "アプリ内でログイン",
+  "login_internal_username": "pcアカウント名",
+  "login_internal_password": "パスワード",
+  "login_internal_submit": "ログイン",
+  "login_internal_status_wait": "ユーザー名とパスワードを入力してください",
+  "login_internal_status_running": "ログイン処理中...",
+  "login_internal_status_done": "ログイン成功",
+
   "loggingin_title": "ログイン処理中...",
   "loggingin_get_password_start": "ネットワークドライブのパスワードを取得中...",
   "loggingin_get_password_done": "ネットワークドライブのパスワードを取得完了",
