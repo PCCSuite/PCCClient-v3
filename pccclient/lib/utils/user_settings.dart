@@ -4,14 +4,13 @@ import 'dart:io';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'auth.dart';
-import 'plugins/files.dart';
 
 part 'user_settings.g.dart';
 
 const String _fileName = "pccclient_settings.json";
 
 UserSettings userSettings =
-    UserSettings(1, false, "", 0, LoginMethod.browser, "", true, false, false);
+    UserSettings(1, false, "", 0, null, "", true, false, false);
 
 @JsonSerializable()
 class UserSettings {
@@ -57,6 +56,9 @@ class UserSettings {
 
 UserSettings loadUserSettings() {
   File file = File(_fileName);
+  if (!file.existsSync()) {
+    return userSettings;
+  }
   String str = file.readAsStringSync();
   Map<String, dynamic> json = jsonDecode(str);
   userSettings = UserSettings.fromJson(json);
