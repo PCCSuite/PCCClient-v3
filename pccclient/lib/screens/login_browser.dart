@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../utils/auth.dart';
 import 'loggingin.dart';
 import 'login_select.dart';
 import 'part/error.dart';

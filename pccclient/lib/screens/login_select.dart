@@ -4,7 +4,6 @@ import '../utils/user_settings.dart';
 import 'login_app.dart';
 import 'login_webview.dart';
 import 'part/tips.dart';
-import '../utils/local_config.dart';
 import '../utils/server_info.dart';
 
 import '../utils/general.dart';

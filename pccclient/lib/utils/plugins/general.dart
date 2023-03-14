@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import '../local_config.dart';
 import '../user_settings.dart';
 import 'command.dart';
 import 'datas.dart';

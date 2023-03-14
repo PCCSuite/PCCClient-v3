@@ -30,7 +30,7 @@ class _LoginWebviewScreenState extends State<LoginWebviewScreen> {
                   context, ModalRoute.withName(LoginSelectScreen.routeName));
               Navigator.pushNamed(context, LoggingInScreen.routeName);
             },
-            child: Text("Login"),
+            child: const Text("Login"),
           ),
         ));
   }

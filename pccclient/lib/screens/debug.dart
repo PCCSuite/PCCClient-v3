@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../utils/local_config.dart';
-import '../utils/mount.dart';
 import '../utils/samba.dart';
 import 'part/error.dart';
 import '../utils/auth.dart';
@@ -43,6 +41,7 @@ class _DebugMenuState extends State<_DebugMenu> {
         ElevatedButton(
           onPressed: () async {
             String token = await getToken();
+            if (!mounted) return;
             showDialog(
               context: context,
               builder: (BuildContext context) => AlertDialog(

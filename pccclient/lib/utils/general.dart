@@ -51,7 +51,7 @@ class StateMsgSet {
 
 String generateRandomString(int len) {
   var r = Random.secure();
-  const _chars =
+  const chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  return List.generate(len, (index) => _chars[r.nextInt(_chars.length)]).join();
+  return List.generate(len, (index) => chars[r.nextInt(chars.length)]).join();
 }

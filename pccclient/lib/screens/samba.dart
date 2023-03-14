@@ -1,11 +1,6 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
 
 import '../utils/general.dart';
-import '../utils/mount.dart';
 import '../utils/samba.dart';
 import 'part/error.dart';
 import 'part/tips.dart';
@@ -165,8 +160,8 @@ class _SambaWidgetState extends State<_SambaWidget> {
                     ),
                     trailing: IconButton(
                       icon: _passwordVisible
-                          ? Icon(Icons.visibility_off)
-                          : Icon(Icons.visibility),
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
                       onPressed: () => setState(() {
                         _passwordVisible = !_passwordVisible;
                       }),
