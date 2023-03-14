@@ -38,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
     var posts = await wordpress.posts.fetch();
     List<_WordPressPostWidget> postWidgets = [];
     for (Post post in posts.data) {
-      print(post);
       postWidgets.add(_WordPressPostWidget(post: post));
     }
     setState(() {
