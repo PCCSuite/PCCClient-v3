@@ -14,7 +14,7 @@ ServerInfo _$ServerInfoFromJson(Map<String, dynamic> json) => ServerInfo(
       json['sambaServer'] as String,
       json['setBrowserURL'] as String,
       json['tipsURL'] as String,
-      json['pccCliManAddress'] as String,
+      json['attendanceURL'] as String,
       json['pluginSysPath'] as String,
     );
 
@@ -27,7 +27,7 @@ Map<String, dynamic> _$ServerInfoToJson(ServerInfo instance) =>
       'sambaServer': instance.sambaServer,
       'setBrowserURL': instance.setBrowserURL,
       'tipsURL': instance.tipsURL,
-      'pccCliManAddress': instance.pccCliManAddress,
+      'attendanceURL': instance.attendanceURL,
       'pluginSysPath': instance.pluginSysPath,
     };
 

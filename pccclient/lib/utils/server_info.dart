@@ -17,7 +17,7 @@ class ServerInfo {
   final String sambaServer;
   final String setBrowserURL;
   final String tipsURL;
-  final String pccCliManAddress;
+  final String attendanceURL;
   final String pluginSysPath;
 
   ServerInfo(
@@ -28,7 +28,7 @@ class ServerInfo {
       this.sambaServer,
       this.setBrowserURL,
       this.tipsURL,
-      this.pccCliManAddress,
+      this.attendanceURL,
       this.pluginSysPath);
 
   factory ServerInfo.fromJson(Map<String, dynamic> json) =>

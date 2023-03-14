@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/attendance.dart';
 import '../utils/mount.dart';
 import '../utils/samba.dart';
 import 'home.dart';
@@ -54,13 +55,15 @@ class _LoggingInStateWidget extends StatefulWidget {
 
 class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
   late StateMsgSet _getSambaPassState =
-      StateMsgSet(ProcessState.waiting, str.loggingin_get_password_start);
+      StateMsgSet(ProcessState.getting, str.loggingin_get_password_start);
   late StateMsgSet _mountSambaState =
       StateMsgSet(ProcessState.waiting, str.loggingin_mount_wait);
   late StateMsgSet _loadPluginSysConfigState =
       StateMsgSet(ProcessState.waiting, str.loggingin_load_plugin_wait);
   late StateMsgSet _startPluginSysState =
       StateMsgSet(ProcessState.waiting, str.loggingin_start_plugin_wait);
+  late StateMsgSet _registerAttendanceState =
+      StateMsgSet(ProcessState.getting, str.loggingin_start_plugin_wait);
 
   int _runningProcess = 0;
   int _errorShowing = 0;
@@ -157,9 +160,29 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
     }
   }
 
+  Future<void> _registerAttendance() async {
+    try {
+      _runningProcess++;
+      await registerAttendance();
+      setState(() {
+        _registerAttendanceState = StateMsgSet(
+            ProcessState.ok, str.loggingin_register_attendance_done);
+      });
+      _runningProcess--;
+      _checkDone();
+    } catch (e, trace) {
+      setState(() {
+        _registerAttendanceState = StateMsgSet(
+            ProcessState.ok, str.loggingin_register_attendance_fail);
+      });
+      _errorShow(e, trace);
+    }
+  }
+
   @override
   void initState() {
     _startGetSambaPass();
+    _registerAttendance();
     super.initState();
   }
 
@@ -186,6 +209,7 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
       content.add(_LoggingInStateRow(_loadPluginSysConfigState));
       content.add(_LoggingInStateRow(_startPluginSysState));
     }
+    content.add(_LoggingInStateRow(_registerAttendanceState));
     return Column(
       children: content,
     );

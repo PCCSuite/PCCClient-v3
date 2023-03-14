@@ -71,6 +71,9 @@
   "loggingin_start_plugin_start": "PluginSysを起動中...",
   "loggingin_start_plugin_done": "PluginSysの起動完了",
   "loggingin_start_plugin_fail": "PluginSysの起動失敗",
+  "loggingin_register_attendance_start": "出席を登録中...",
+  "loggingin_register_attendance_done": "出席の登録完了",
+  "loggingin_register_attendance_fail": "出席の登録失敗",
 
   "mount_already_mounted": "pcc_homesはすでにマウント済みです。",
   "mount_unmount": "アンマウントして再マウントする",
