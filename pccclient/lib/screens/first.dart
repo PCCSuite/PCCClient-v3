@@ -133,10 +133,15 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
     }
     try {
       _runningProcess++;
-      await initAuth();
+      bool found = await initAuth();
       setState(() {
-        _usernameState =
-            StateMsgSet(ProcessState.ok, str.init_check_username_done);
+        if (found) {
+          _usernameState =
+              StateMsgSet(ProcessState.ok, str.init_check_username_done);
+        } else {
+          _usernameState =
+              StateMsgSet(ProcessState.failed, str.init_check_username_fail);
+        }
       });
       _runningProcess--;
       _checkDone();
