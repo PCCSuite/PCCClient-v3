@@ -54,6 +54,7 @@ class _LoginInternalScreenState extends State<LoginInternalScreen> {
             status = "Error: ${str.login_internal_status_invalid_credentials}";
             isChangeable = true;
           });
+          return;
         }
         if (resp.statusCode != 200) {
           throw Exception(
