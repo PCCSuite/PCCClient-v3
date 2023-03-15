@@ -165,7 +165,7 @@
   "plugin_add_dialog_add_favorite": "お気に入り",
   "plugin_add_dialog_auto_restore": "起動時に自動リストア",
   "plugin_add_dialog_need_favorite": "お気に入りに登録する必要があります",
-  "plugin_add_dialog_priority": "リストア優先度",
+  "plugin_add_dialog_priority": "リストア優先度(小さいほど優先)",
   "plugin_add_dialog_submit": "実行",
   "plugin_add_dialog_cancel": "キャンセル",
 
