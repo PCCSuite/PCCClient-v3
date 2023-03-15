@@ -3,7 +3,7 @@ import 'screens/debug.dart';
 import 'screens/first.dart';
 import 'screens/home.dart';
 import 'screens/loggingin.dart';
-import 'screens/login_app.dart';
+import 'screens/login_internal.dart';
 import 'screens/login_browser.dart';
 import 'screens/login_select.dart';
 import 'screens/login_webview.dart';

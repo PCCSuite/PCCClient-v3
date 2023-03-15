@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/auth.dart';
 import '../utils/user_settings.dart';
-import 'login_app.dart';
+import 'login_internal.dart';
 import 'login_webview.dart';
 import 'part/tips.dart';
 import '../utils/server_info.dart';
