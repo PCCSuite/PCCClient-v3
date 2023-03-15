@@ -1,6 +1,6 @@
 {
   "error_dialog_title": "エラー",
-  "error_dialog_description": "対応方法がわからない場合はサーバー管理者へお問い合わせください。",
+  "error_dialog_description": "予期しないエラーが発生しました。\nサーバー管理者にこの画面を見せてください。",
   "error_dialog_ignore": "無視して続行する(非推奨)",
 
   "tips_dialog_title": "Tips",
