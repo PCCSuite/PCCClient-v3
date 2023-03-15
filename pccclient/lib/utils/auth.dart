@@ -108,7 +108,7 @@ Future<void> getServer() async {
   return;
 }
 
-const oAuthScope = "samba";
+const oAuthScope = "samba offline_access";
 
 Uri getAuthEndpoint(
     {String redirectUri = "http://127.0.0.1:15456/return",

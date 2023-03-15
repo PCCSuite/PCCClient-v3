@@ -41,7 +41,7 @@ class _LoginInternalScreenState extends State<LoginInternalScreen> {
         var body = <String, String>{
           "client_id": "pccclient",
           "grant_type": "password",
-          "scope": "samba",
+          "scope": oAuthScope,
           "username": _username,
           "password": _password,
         };
