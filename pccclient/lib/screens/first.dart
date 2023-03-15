@@ -30,16 +30,16 @@ class _InitializeStateView extends StatefulWidget {
 }
 
 class _InitializeStateViewState extends State<_InitializeStateView> {
-  StateMsgSet _settingsState =
-      StateMsgSet(ProcessState.getting, str.init_load_settings_start);
-  StateMsgSet _configState =
-      StateMsgSet(ProcessState.getting, str.init_load_config_start);
   StateMsgSet _envState =
       StateMsgSet(ProcessState.getting, str.init_check_env_start);
+  StateMsgSet _configState =
+      StateMsgSet(ProcessState.getting, str.init_load_config_start);
   StateMsgSet _serverState =
       StateMsgSet(ProcessState.getting, str.init_load_srv_info_wait);
-  StateMsgSet _usernameState =
-      StateMsgSet(ProcessState.getting, str.init_check_username_start);
+  StateMsgSet _settingsState =
+      StateMsgSet(ProcessState.getting, str.init_load_settings_start);
+  StateMsgSet _prepareAuthState =
+      StateMsgSet(ProcessState.getting, str.init_prepare_auth_wait);
 
   int _runningProcess = 0;
   int _errorShowing = 0;
@@ -56,7 +56,7 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
         _settingsState =
             StateMsgSet(ProcessState.ok, str.init_load_settings_done);
       });
-      _initAuth();
+      _prepareAuth();
       _runningProcess--;
     } catch (e, trace) {
       setState(() {
@@ -98,7 +98,7 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
         _serverState =
             StateMsgSet(ProcessState.ok, str.init_load_srv_info_done);
       });
-      _initAuth();
+      _prepareAuth();
       _runningProcess--;
       _checkDone();
     } catch (e, trace) {
@@ -127,28 +127,27 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
     }
   }
 
-  Future<void> _initAuth() async {
+  Future<void> _prepareAuth() async {
     if (!_settingLoaded || !_serverInfoLoaded) {
       return;
     }
     try {
       _runningProcess++;
-      bool found = await initAuth();
       setState(() {
-        if (found) {
-          _usernameState =
-              StateMsgSet(ProcessState.ok, str.init_check_username_done);
-        } else {
-          _usernameState =
-              StateMsgSet(ProcessState.failed, str.init_check_username_fail);
-        }
+        _prepareAuthState =
+            StateMsgSet(ProcessState.ok, str.init_prepare_auth_start);
+      });
+      await initAuth();
+      setState(() {
+        _prepareAuthState =
+            StateMsgSet(ProcessState.ok, str.init_prepare_auth_done);
       });
       _runningProcess--;
       _checkDone();
     } catch (e, trace) {
       setState(() {
-        _usernameState =
-            StateMsgSet(ProcessState.failed, str.init_check_username_fail);
+        _prepareAuthState =
+            StateMsgSet(ProcessState.failed, str.init_prepare_auth_fail);
       });
       _errorShow(e, trace);
     }
@@ -176,9 +175,9 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      _loadSettings();
-      _loadConfig();
       _checkEnv();
+      _loadConfig();
+      _loadSettings();
     });
   }
 
@@ -187,11 +186,11 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
     return Column(
       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Expanded(child: _InitializeStateRow(_settingsState)),
+        Expanded(child: _InitializeStateRow(_envState)),
         Expanded(child: _InitializeStateRow(_configState)),
         Expanded(child: _InitializeStateRow(_serverState)),
-        Expanded(child: _InitializeStateRow(_envState)),
-        Expanded(child: _InitializeStateRow(_usernameState)),
+        Expanded(child: _InitializeStateRow(_settingsState)),
+        Expanded(child: _InitializeStateRow(_prepareAuthState)),
       ],
     );
   }

@@ -22,10 +22,10 @@
   "init_load_srv_info_start": "サーバー情報の取得中",
   "init_load_srv_info_done": "サーバー情報の取得完了",
   "init_load_srv_info_fail": "サーバー情報の取得失敗",
-  "init_check_username_start": "ユーザー名を取得中",
-  "init_check_username_done": "ユーザー名を取得完了",
-  "init_check_username_no": "ユーザー名の取得無効",
-  "init_check_username_fail": "ユーザー名を取得失敗",
+  "init_prepare_auth_wait": "認証準備: 情報取得待ち",
+  "init_prepare_auth_start": "認証準備中",
+  "init_prepare_auth_done": "認証準備完了",
+  "init_prepare_auth_fail": "認証準備失敗",
 
   "login_select_title": "ログイン方法を選択",
 
