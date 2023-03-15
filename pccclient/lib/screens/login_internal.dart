@@ -48,11 +48,17 @@ class _LoginInternalScreenState extends State<LoginInternalScreen> {
         Uri tokenEndpoint = Uri.parse(serverInfo.tokenEndpoint);
         DateTime now = DateTime.now();
         var resp = await http.post(tokenEndpoint, body: body);
+        Map<String, dynamic> result = jsonDecode(resp.body);
+        if (resp.statusCode == 401 && result["error"] == "invalid_grant") {
+          setState(() {
+            status = "Error: ${str.login_internal_status_invalid_credentials}";
+            isChangeable = true;
+          });
+        }
         if (resp.statusCode != 200) {
           throw Exception(
               "token endpoint failed ${resp.statusCode}: ${resp.body}");
         }
-        Map<String, dynamic> result = jsonDecode(resp.body);
         loginState = LoginState(
             result["access_token"],
             now.add(Duration(seconds: result["expires_in"])),

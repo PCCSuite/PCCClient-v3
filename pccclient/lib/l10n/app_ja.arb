@@ -52,6 +52,7 @@
   "login_internal_password": "パスワード",
   "login_internal_submit": "ログイン",
   "login_internal_status_wait": "ユーザー名とパスワードを入力してください",
+  "login_internal_status_invalid_credentials": "ログイン情報が間違っています",
   "login_internal_status_running": "ログイン処理中...",
   "login_internal_status_done": "ログイン成功",
 
