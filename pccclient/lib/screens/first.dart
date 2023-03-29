@@ -30,10 +30,10 @@ class _InitializeStateView extends StatefulWidget {
 }
 
 class _InitializeStateViewState extends State<_InitializeStateView> {
-  StateMsgSet _envState =
-      StateMsgSet(ProcessState.getting, str.init_check_env_start);
   StateMsgSet _configState =
       StateMsgSet(ProcessState.getting, str.init_load_config_start);
+  StateMsgSet _envState =
+      StateMsgSet(ProcessState.getting, str.init_check_env_wait);
   StateMsgSet _serverState =
       StateMsgSet(ProcessState.getting, str.init_load_srv_info_wait);
   StateMsgSet _settingsState =
@@ -114,6 +114,9 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
   Future<void> _checkEnv() async {
     try {
       _runningProcess++;
+      setState(() {
+        _serverState = StateMsgSet(ProcessState.ok, str.init_check_env_start);
+      });
       await checkEnv();
       setState(() {
         _envState = StateMsgSet(ProcessState.ok, str.init_check_env_done);
@@ -186,8 +189,8 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
     return Column(
       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Expanded(child: _InitializeStateRow(_envState)),
         Expanded(child: _InitializeStateRow(_configState)),
+        Expanded(child: _InitializeStateRow(_envState)),
         Expanded(child: _InitializeStateRow(_serverState)),
         Expanded(child: _InitializeStateRow(_settingsState)),
         Expanded(child: _InitializeStateRow(_prepareAuthState)),
