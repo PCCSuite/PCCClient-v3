@@ -74,6 +74,7 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
       setState(() {
         _configState = StateMsgSet(ProcessState.ok, str.init_load_config_done);
       });
+      _checkEnv();
       _loadServer();
       _runningProcess--;
     } catch (e, trace) {
@@ -175,7 +176,6 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      _checkEnv();
       _loadConfig();
       _loadSettings();
     });
