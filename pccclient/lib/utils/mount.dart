@@ -65,7 +65,7 @@ Future<void> _mountWindowsCmd(
   var process = await Process.run('net', param);
   if (process.exitCode != 0) {
     throw Exception(
-        "Failed to execute: net ${param.join(" ")}\n${process.stderr} ${process.stdout}");
+        "Failed to mount drive $path:\n${process.stderr} ${process.stdout}");
   }
 }
 
