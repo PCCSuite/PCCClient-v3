@@ -139,7 +139,7 @@ class _InitializeStateViewState extends State<_InitializeStateView> {
       _runningProcess++;
       setState(() {
         _prepareAuthState =
-            StateMsgSet(ProcessState.ok, str.init_prepare_auth_start);
+            StateMsgSet(ProcessState.getting, str.init_prepare_auth_start);
       });
       await initAuth();
       setState(() {
