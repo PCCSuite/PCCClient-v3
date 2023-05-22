@@ -1,13 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 import '../main.dart';
 import '../utils/auth.dart';
 import '../utils/user_settings.dart';
 import 'debug.dart';
-import 'part/appIcon.dart';
+import 'part/app_icon.dart';
 import 'part/tips.dart';
 import 'plugin_manage.dart';
 import '../utils/environment/common.dart';
