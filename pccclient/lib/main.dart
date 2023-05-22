@@ -15,7 +15,7 @@ import 'screens/plugin_manage.dart';
 import 'screens/samba.dart';
 import 'screens/settings.dart';
 
-const version = "3.0.1-beta.1";
+const version = "3.0.1-beta.2";
 
 void main() async {
   runApp(const MyApp());
