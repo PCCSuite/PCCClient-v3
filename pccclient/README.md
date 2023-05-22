@@ -1,16 +1,11 @@
-# pccclient
+# PCCClient-v3
 
-A new PCCClient project.
+new PCCClient!
 
-## Getting Started
+学校PCでPCC系サービスを利用しやすくするためのクライアントです。
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Keycloakでログインを行います
+- 共有フォルダのマウントを行います
+- 出席登録を行います
+- お知らせ掲示板の内容を表示します
+- PCCPluginの管理を行います
