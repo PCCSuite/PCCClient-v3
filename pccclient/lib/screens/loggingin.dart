@@ -60,8 +60,8 @@ class _LoggingInStateWidgetState extends State<_LoggingInStateWidget> {
       StateMsgSet(ProcessState.waiting, str.loggingin_load_plugin_wait);
   late StateMsgSet _startPluginSysState =
       StateMsgSet(ProcessState.waiting, str.loggingin_start_plugin_wait);
-  late StateMsgSet _registerAttendanceState =
-      StateMsgSet(ProcessState.getting, str.loggingin_start_plugin_wait);
+  late StateMsgSet _registerAttendanceState = StateMsgSet(
+      ProcessState.getting, str.loggingin_register_attendance_start);
 
   int _runningProcess = 0;
   int _errorShowing = 0;
