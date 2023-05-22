@@ -1,4 +1,7 @@
 {
+  "app_name": "PCCClient-v3",
+  "app_license": "©Copyright 2022-2023 PCC Server Admins, ozraru\nPublished at MIT License",
+
   "error_dialog_title": "エラー",
   "error_dialog_description": "予期しないエラーが発生しました。\nサーバー管理者にこの画面を見せてください。",
   "error_dialog_ignore": "無視して続行する(非推奨)",
