@@ -208,6 +208,13 @@ class _PluginListWidget extends StatelessWidget {
     return ListView(
       children: list
           .map((e) => ListTile(
+                leading: e.dir != null
+                    ? Image.file(
+                        File(path.join(e.dir!, "icon.png")),
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.extension),
+                      )
+                    : const Icon(Icons.extension),
                 title: Text(showRepoName && e.repositoryName != null
                     ? "${e.name} (${e.repositoryName})"
                     : e.name),
